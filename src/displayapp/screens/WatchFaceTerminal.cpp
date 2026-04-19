@@ -65,9 +65,11 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   connectState = lv_label_create(container, nullptr);
   lv_label_set_recolor(connectState, true);
 
-  labelPrompt2 = lv_label_create(container, nullptr);
+  labelPrompt2 = lv_label_create(container, nullptr);k
   lv_obj_set_style_local_text_color(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
-  lv_label_set_text_static(labelPrompt2, "user@watch:~ $");
+  lv_label_set_long_mode(labelPrompt2, LV_LABEL_LONG_SROLL_CIRC);
+lv_obj_set_width(labelPrompt2, 240);
+lv_label_set_text(labelPrompt2, "Breathing 5 deep times  |  Holding eye contact · looking away less  |  Visualizing outcomes I DO want  |  Speaking in Optimum Pitch  |  Shifting attention to fun comments · remember to smile  |  Remove I · shift to invitational questions  |  Subconscious visual check-in  |  Grateful mentality · daydream what you're grateful for  |  Reading peoples social auras and delivery  |  Fasting · self control · pot · coffee · food  |  ");
 
   lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
 
