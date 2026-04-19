@@ -3,6 +3,7 @@ name: CI
 # Run this workflow whenever the build may be affected
 on:
   push:
+  workflow_dispatch: 
     branches: [ main ]
     paths-ignore:
       - 'doc/**'
