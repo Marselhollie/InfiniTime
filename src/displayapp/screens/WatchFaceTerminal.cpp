@@ -65,7 +65,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   connectState = lv_label_create(container, nullptr);
   lv_label_set_recolor(connectState, true);
 
-  labelPrompt2 = lv_label_create(container, nullptr);k
+  labelPrompt2 = lv_label_create(container, nullptr);
   lv_obj_set_style_local_text_color(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
   lv_label_set_long_mode(labelPrompt2, LV_LABEL_LONG_SROLL_CIRC);
 lv_obj_set_width(labelPrompt2, 240);
