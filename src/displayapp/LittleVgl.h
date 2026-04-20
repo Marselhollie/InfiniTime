@@ -29,6 +29,10 @@ namespace Pinetime {
       void ClearTouchState();
       bool IsScrolling();
 
+      // Set the ST7789 MADCTL register directly to change display orientation.
+      // Call with the original value to restore when done.
+      void SetOrientation(uint8_t madctl);
+
       bool GetFullRefresh() {
         bool returnValue = fullRefresh;
         if (fullRefresh) {
