@@ -1,5 +1,5 @@
 #include <lvgl/lvgl.h>
- 
+
 #include "displayapp/screens/WatchFaceTerminal.h"
 #include "displayapp/screens/BatteryIcon.h"
 #include "components/battery/BatteryController.h"
@@ -82,12 +82,22 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
   lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
 
+  // Rotate the display 90° clockwise for this watch face only.
+  // lv_disp_set_rotation is restored in the destructor so other screens are unaffected.
+  lv_disp_t* disp = lv_disp_get_default();
+  disp->driver.sw_rotate = 1;
+  lv_disp_set_rotation(disp, LV_DISP_ROT_90);
+
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
   Refresh();
 }
 
 WatchFaceTerminal::~WatchFaceTerminal() {
   lv_task_del(taskRefresh);
+  // Restore default display rotation before leaving this watch face.
+  lv_disp_t* disp = lv_disp_get_default();
+  lv_disp_set_rotation(disp, LV_DISP_ROT_NONE);
+  disp->driver.sw_rotate = 0;
   lv_obj_clean(lv_scr_act());
 }
 
