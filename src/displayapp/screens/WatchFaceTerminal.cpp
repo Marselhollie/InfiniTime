@@ -42,13 +42,13 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   notificationIcon = lv_label_create(container, nullptr);
 
   labelPrompt1 = lv_label_create(container, nullptr);
-  lv_obj_set_style_local_text_color(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
-   lv_obj_set_style_local_text_font(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20); 
+  lv_obj_set_style_local_text_color(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::white);
+  lv_obj_set_style_local_text_font(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_extrabold_compressed);
   lv_label_set_text_static(labelPrompt1, "00:00 AM");
 
   labelTime = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelTime, true);
-   lv_obj_set_hidden(labelTime, true);
+  lv_obj_set_hidden(labelTime, true);
 
   labelDate = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelDate, true);
@@ -72,13 +72,15 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   labelPrompt2 = lv_label_create(container, nullptr);
   lv_obj_set_style_local_text_color(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
   lv_label_set_long_mode(labelPrompt2, LV_LABEL_LONG_SROLL_CIRC);
-lv_obj_set_width(labelPrompt2, 240);
+  lv_obj_set_width(labelPrompt2, 240);
 
-static const char* promptText = "Breathing 5 deep times  |  Holding eye contact · looking away less  |  Visualizing outcomes I DO want  |  Speaking in Optimum Pitch  |  Shifting attention to fun comments · remember to smile  |  Remove I · shift to invitational questions  |  Subconscious visual check-in  |  Grateful mentality · daydream what you're grateful for  |  Reading peoples social auras and delivery  |  Fasting · self control · pot · coffee · food  |  ";
-uint16_t len = strlen(promptText);
-uint16_t startPos = xTaskGetTickCount() % len;
-std::string shifted = std::string(promptText + startPos) + std::string(promptText, startPos);
-lv_label_set_text(labelPrompt2, shifted.c_str());  lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
+  static const char* promptText = "Breathing 5 deep times  |  Holding eye contact · looking away less  |  Visualizing outcomes I DO want  |  Speaking in Optimum Pitch  |  Shifting attention to fun comments · remember to smile  |  Remove I · shift to invitational questions  |  Subconscious visual check-in  |  Grateful mentality · daydream what you're grateful for  |  Reading peoples social auras and delivery  |  Fasting · self control · pot · coffee · food  |  ";
+  uint16_t len = strlen(promptText);
+  uint16_t startPos = xTaskGetTickCount() % len;
+  std::string shifted = std::string(promptText + startPos) + std::string(promptText, startPos);
+  lv_label_set_text(labelPrompt2, shifted.c_str());
+
+  lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
 
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
   Refresh();
@@ -103,7 +105,6 @@ void WatchFaceTerminal::Refresh() {
   if (currentDateTime.IsUpdated()) {
     uint8_t hour = dateTimeController.Hours();
     uint8_t minute = dateTimeController.Minutes();
-    
 
     if (settingsController.GetClockType() == Controllers::Settings::ClockType::H12) {
       char ampmChar[3] = "AM";
@@ -115,21 +116,21 @@ void WatchFaceTerminal::Refresh() {
         hour = hour - 12;
         ampmChar[0] = 'P';
       }
-     lv_label_set_text_fmt(labelPrompt1, "%02d:%02d %s " , hour, minute, ampmChar);
+      lv_label_set_text_fmt(labelPrompt1, "%02d:%02d %s", hour, minute, ampmChar);
       lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d %s#", hour, minute, ampmChar);
-     
     } else {
-     lv_label_set_text_fmt(labelPrompt1, "%02d:%02d %s " , hour, minute);
+      lv_label_set_text_fmt(labelPrompt1, "%02d:%02d", hour, minute);
       lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d#", hour, minute);
     }
 
     currentDate = std::chrono::time_point_cast<std::chrono::days>(currentDateTime.Get());
     if (currentDate.IsUpdated()) {
       Controllers::DateTime::Months month = dateTimeController.Month();
-uint8_t day = dateTimeController.Day();
-lv_label_set_text_fmt(labelDate, "#ffffff [DATE]# #007fff %02d-%02d#", month, day);
+      uint8_t day = dateTimeController.Day();
+      lv_label_set_text_fmt(labelDate, "#ffffff [DATE]# #007fff %02d-%02d#", month, day);
+    }
   }
-  }
+
   powerPresent = batteryController.IsPowerPresent();
   batteryPercentRemaining = batteryController.PercentRemaining();
   if (batteryPercentRemaining.IsUpdated() || powerPresent.IsUpdated()) {
