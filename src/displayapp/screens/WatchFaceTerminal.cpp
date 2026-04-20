@@ -1,4 +1,5 @@
 #include <lvgl/lvgl.h>
+
 #include "displayapp/screens/WatchFaceTerminal.h"
 #include "displayapp/screens/BatteryIcon.h"
 #include "components/battery/BatteryController.h"
@@ -95,7 +96,7 @@ void WatchFaceTerminal::Refresh() {
   if (currentDateTime.IsUpdated()) {
     uint8_t hour = dateTimeController.Hours();
     uint8_t minute = dateTimeController.Minutes();
-    uint8_t second = dateTimeController.Seconds();
+    
 
     if (settingsController.GetClockType() == Controllers::Settings::ClockType::H12) {
       char ampmChar[3] = "AM";
@@ -107,19 +108,18 @@ void WatchFaceTerminal::Refresh() {
         hour = hour - 12;
         ampmChar[0] = 'P';
       }
-      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d:%02d %s#", hour, minute, ampmChar);
+      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d %s#", hour, minute, ampmChar);
     } else {
-      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d:%02d#", hour, minute);
+      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d#", hour, minute);
     }
 
     currentDate = std::chrono::time_point_cast<std::chrono::days>(currentDateTime.Get());
     if (currentDate.IsUpdated()) {
-      uint16_t year = dateTimeController.Year();
       Controllers::DateTime::Months month = dateTimeController.Month();
-      uint8_t day = dateTimeController.Day();
-      lv_label_set_text_fmt(label_date, "[DATE]#007fff %02d-%02d#", month, day);
+uint8_t day = dateTimeController.Day();
+lv_label_set_text_fmt(labelDate, "#ffffff [DATE]# #007fff %02d-%02d#", month, day);
   }
-
+  }
   powerPresent = batteryController.IsPowerPresent();
   batteryPercentRemaining = batteryController.PercentRemaining();
   if (batteryPercentRemaining.IsUpdated() || powerPresent.IsUpdated()) {
