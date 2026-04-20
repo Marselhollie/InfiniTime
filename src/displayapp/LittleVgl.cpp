@@ -268,6 +268,10 @@ void LittleVgl::ClearTouchState() {
   tapped = false;
 }
 
+void LittleVgl::SetOrientation(uint8_t madctl) {
+  lcd.SetOrientation(madctl);
+}
+
 bool LittleVgl::GetTouchPadInfo(lv_indev_data_t* ptr) {
   ptr->point.x = touchPoint.x;
   ptr->point.y = touchPoint.y;
