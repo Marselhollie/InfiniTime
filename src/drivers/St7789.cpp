@@ -267,6 +267,11 @@ void St7789::VerticalScrollStartAddress(uint16_t line) {
 void St7789::Uninit() {
 }
 
+void St7789::SetOrientation(uint8_t madctl) {
+  WriteCommand(static_cast<uint8_t>(Commands::MemoryDataAccessControl));
+  WriteData(madctl);
+}
+
 void St7789::DrawBuffer(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const uint8_t* data, size_t size) {
   SetAddrWindow(x, y, x + width - 1, y + height - 1);
   WriteToRam(data, size);
