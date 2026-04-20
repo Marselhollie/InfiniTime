@@ -11,6 +11,7 @@
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/screens/WeatherSymbols.h"
 #include "displayapp/InfiniTimeTheme.h"
+#include "displayapp/LittleVgl.h"
 #include <string>
 
 using namespace Pinetime::Applications::Screens;
@@ -22,7 +23,8 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
                                      Controllers::Settings& settingsController,
                                      Controllers::HeartRateController& heartRateController,
                                      Controllers::MotionController& motionController,
-                                     Controllers::SimpleWeatherService& weatherService)
+                                     Controllers::SimpleWeatherService& weatherService,
+                                     Components::LittleVgl& lvgl)
   : currentDateTime {{}},
     dateTimeController {dateTimeController},
     batteryController {batteryController},
@@ -31,7 +33,8 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
     settingsController {settingsController},
     heartRateController {heartRateController},
     motionController {motionController},
-    weatherService {weatherService} {
+    weatherService {weatherService},
+    lvgl {lvgl} {
 
   container = lv_cont_create(lv_scr_act(), nullptr);
   lv_cont_set_layout(container, LV_LAYOUT_COLUMN_LEFT);
@@ -82,11 +85,9 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
   lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
 
-  // Rotate the display 90° clockwise for this watch face only.
-  // lv_disp_set_rotation is restored in the destructor so other screens are unaffected.
-  lv_disp_t* disp = lv_disp_get_default();
-  disp->driver.sw_rotate = 1;
-  lv_disp_set_rotation(disp, LV_DISP_ROT_90);
+  // Rotate display 90° clockwise via ST7789 MADCTL hardware register.
+  // MX (0x40) | MV (0x20) = 90° CW. Restored in destructor.
+  lvgl.SetOrientation(0x60);
 
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
   Refresh();
@@ -94,10 +95,12 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
 WatchFaceTerminal::~WatchFaceTerminal() {
   lv_task_del(taskRefresh);
-  // Restore default display rotation before leaving this watch face.
-  lv_disp_t* disp = lv_disp_get_default();
-  lv_disp_set_rotation(disp, LV_DISP_ROT_NONE);
-  disp->driver.sw_rotate = 0;
+  // Restore default orientation (matches MemoryDataAccessControl() in St7789.cpp).
+#ifdef DRIVER_DISPLAY_MIRROR
+  lvgl.SetOrientation(0b01000000);
+#else
+  lvgl.SetOrientation(0x00);
+#endif
   lv_obj_clean(lv_scr_act());
 }
 
