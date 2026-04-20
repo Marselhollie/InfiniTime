@@ -41,7 +41,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
   labelPrompt1 = lv_label_create(container, nullptr);
   lv_obj_set_style_local_text_color(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
-  lv_label_set_text_static(labelPrompt1, "user@watch:~ $ now");
+  lv_label_set_text_static(labelPrompt1, "<3");
 
   labelTime = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelTime, true);
@@ -67,9 +67,9 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
   labelPrompt2 = lv_label_create(container, nullptr);
   lv_obj_set_style_local_text_color(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
-lv_label_set_long_mode(label_prompt_2, LV_LABEL_LONG_SROLL_CIRC);
-lv_obj_set_width(label_prompt2, 240);
-lv_label_set_text(label_prompt2, "Breathing 5 deep times  |  Holding eye contact · looking away less  |  Visualizing outcomes I DO want  |  Speaking in Optimum Pitch  |  Shifting attention to fun comments · remember to smile  |  Remove I · shift to invitational questions  |  Subconscious visual check-in  |  Grateful mentality · daydream what you're grateful for  |  Reading peoples social auras and delivery  |  Fasting · self control · pot · coffee · food  |  ");
+  lv_label_set_long_mode(label_prompt2, LV_LABEL_LONG_SROLL_CIRC);
+  lv_obj_set_width(label_prompt2, 240);
+  lv_label_set_text(label_prompt2, "Breathing 5 deep times  |  Holding eye contact · looking away less  |  Visualizing outcomes I DO want  |  Speaking in Optimum Pitch  |  Shifting attention to fun comments · remember to smile  |  Remove I · shift to invitational questions  |  Subconscious visual check-in  |  Grateful mentality · daydream what you're grateful for  |  Reading peoples social auras and delivery  |  Fasting · self control · pot · coffee · food  |  ");
   lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
 
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
@@ -107,9 +107,9 @@ void WatchFaceTerminal::Refresh() {
         hour = hour - 12;
         ampmChar[0] = 'P';
       }
-      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d:%02d %s#", hour, minute, second, ampmChar);
+      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d:%02d %s#", hour, minute, ampmChar);
     } else {
-      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d:%02d#", hour, minute, second);
+      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d:%02d#", hour, minute);
     }
 
     currentDate = std::chrono::time_point_cast<std::chrono::days>(currentDateTime.Get());
@@ -117,8 +117,7 @@ void WatchFaceTerminal::Refresh() {
       uint16_t year = dateTimeController.Year();
       Controllers::DateTime::Months month = dateTimeController.Month();
       uint8_t day = dateTimeController.Day();
-      lv_label_set_text_fmt(labelDate, "#ffffff [DATE]# #007fff %04d-%02d-%02d#", year, month, day);
-    }
+      lv_label_set_text_fmt(label_date, "[DATE]#007fff %02d-%02d#", month, day);
   }
 
   powerPresent = batteryController.IsPowerPresent();
