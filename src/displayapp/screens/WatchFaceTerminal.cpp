@@ -11,6 +11,7 @@
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/screens/WeatherSymbols.h"
 #include "displayapp/InfiniTimeTheme.h"
+#include <string>
 
 using namespace Pinetime::Applications::Screens;
 
@@ -41,11 +42,13 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   notificationIcon = lv_label_create(container, nullptr);
 
   labelPrompt1 = lv_label_create(container, nullptr);
-  lv_obj_set_style_local_text_color(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
-  lv_label_set_text_static(labelPrompt1, "<3");
+  lv_obj_set_style_local_text_color(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::white);
+   lv_obj_set_style_local_text_font(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20); 
+  lv_label_set_text_static(labelPrompt1, "00:00 AM");
 
   labelTime = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelTime, true);
+   lv_obj_set_hidden(labelTime, true);)
 
   labelDate = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelDate, true);
@@ -108,8 +111,11 @@ void WatchFaceTerminal::Refresh() {
         hour = hour - 12;
         ampmChar[0] = 'P';
       }
+     lv_label_set_text_fmt(labelPrompt1, "%02d:%02d %s " , hour, minute, ampmChar);
       lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d %s#", hour, minute, ampmChar);
+     
     } else {
+     lv_label_set_text_fmt(labelPrompt1, "%02d:%02d %s " , hour, minute);
       lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d#", hour, minute);
     }
 
