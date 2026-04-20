@@ -68,8 +68,8 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   labelPrompt2 = lv_label_create(container, nullptr);
   lv_obj_set_style_local_text_color(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
 lv_label_set_long_mode(label_prompt_2, LV_LABEL_LONG_SROLL_CIRC);
-lv_obj_set_width(label_prompt_2, 240);
-lv_label_set_text(label_prompt_2, "Breathing 5 deep times  |  Holding eye contact · looking away less  |  Visualizing outcomes I DO want  |  Speaking in Optimum Pitch  |  Shifting attention to fun comments · remember to smile  |  Remove I · shift to invitational questions  |  Subconscious visual check-in  |  Grateful mentality · daydream what you're grateful for  |  Reading peoples social auras and delivery  |  Fasting · self control · pot · coffee · food  |  ");
+lv_obj_set_width(label_prompt2, 240);
+lv_label_set_text(label_prompt2, "Breathing 5 deep times  |  Holding eye contact · looking away less  |  Visualizing outcomes I DO want  |  Speaking in Optimum Pitch  |  Shifting attention to fun comments · remember to smile  |  Remove I · shift to invitational questions  |  Subconscious visual check-in  |  Grateful mentality · daydream what you're grateful for  |  Reading peoples social auras and delivery  |  Fasting · self control · pot · coffee · food  |  ");
   lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
 
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
