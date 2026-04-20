@@ -42,13 +42,13 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   notificationIcon = lv_label_create(container, nullptr);
 
   labelPrompt1 = lv_label_create(container, nullptr);
-  lv_obj_set_style_local_text_color(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::white);
+  lv_obj_set_style_local_text_color(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
    lv_obj_set_style_local_text_font(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20); 
   lv_label_set_text_static(labelPrompt1, "00:00 AM");
 
   labelTime = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelTime, true);
-   lv_obj_set_hidden(labelTime, true);)
+   lv_obj_set_hidden(labelTime, true);
 
   labelDate = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelDate, true);
