@@ -37,7 +37,7 @@ namespace Pinetime {
                           Controllers::HeartRateController& heartRateController,
                           Controllers::MotionController& motionController,
                           Controllers::SimpleWeatherService& weatherService,
-                          Components::LittleVgl& lvgl);
+                          Components::LittleVgl& lglDriver);
         ~WatchFaceTerminal() override;
 
         void Refresh() override;
@@ -75,7 +75,7 @@ namespace Pinetime {
         Controllers::HeartRateController& heartRateController;
         Controllers::MotionController& motionController;
         Controllers::SimpleWeatherService& weatherService;
-        Components::LittleVgl& lvgl;
+        Components::LittleVgl& lglDriver;
 
         lv_task_t* taskRefresh;
       };
