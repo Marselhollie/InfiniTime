@@ -283,4 +283,7 @@ bool LittleVgl::GetTouchPadInfo(lv_indev_data_t* ptr) {
     ptr->state = LV_INDEV_STATE_REL;
   }
   return false;
+void LittleVgl::SetOrientation(uint8_t madctl) {
+  lcd.SetOrientation(madctl);
+}
 }
