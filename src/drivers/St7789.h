@@ -1,108 +1,210 @@
-#pragma once
+#include <lvgl/lvgl.h>
 
-#include <cstddef>
-#include <cstdint>
-#include <functional>
+#include "displayapp/screens/WatchFaceTerminal.h"
+#include "displayapp/screens/BatteryIcon.h"
+#include "components/battery/BatteryController.h"
+#include "components/ble/BleController.h"
+#include "components/ble/NotificationManager.h"
+#include "components/heartrate/HeartRateController.h"
+#include "components/motion/MotionController.h"
+#include "components/settings/Settings.h"
+#include "components/ble/SimpleWeatherService.h"
+#include "displayapp/screens/WeatherSymbols.h"
+#include "displayapp/InfiniTimeTheme.h"
+#include <string>
 
-#include <FreeRTOS.h>
+using namespace Pinetime::Applications::Screens;
 
-namespace Pinetime {
-  namespace Drivers {
-    class Spi;
+WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
+                                     const Controllers::Battery& batteryController,
+                                     const Controllers::Ble& bleController,
+                                     Controllers::NotificationManager& notificationManager,
+                                     Controllers::Settings& settingsController,
+                                     Controllers::HeartRateController& heartRateController,
+                                     Controllers::MotionController& motionController,
+                                     Controllers::SimpleWeatherService& weatherService)
+  : currentDateTime {{}},
+    dateTimeController {dateTimeController},
+    batteryController {batteryController},
+    bleController {bleController},
+    notificationManager {notificationManager},
+    settingsController {settingsController},
+    heartRateController {heartRateController},
+    motionController {motionController},
+    weatherService {weatherService} {
 
-    class St7789 {
-    public:
-      explicit St7789(Spi& spi, uint8_t pinDataCommand, uint8_t pinReset);
-      St7789(const St7789&) = delete;
-      St7789& operator=(const St7789&) = delete;
-      St7789(St7789&&) = delete;
-      St7789& operator=(St7789&&) = delete;
+  container = lv_cont_create(lv_scr_act(), nullptr);
+  lv_cont_set_layout(container, LV_LAYOUT_COLUMN_LEFT);
+  lv_cont_set_fit(container, LV_FIT_TIGHT);
+  lv_obj_set_style_local_pad_inner(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, -3);
+  lv_obj_set_style_local_bg_opa(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
 
-      void Init();
-      void Uninit();
+  notificationIcon = lv_label_create(container, nullptr);
 
-      void VerticalScrollStartAddress(uint16_t line);
+  labelPrompt1 = lv_label_create(container, nullptr);
+  lv_obj_set_style_local_text_color(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
+  lv_obj_set_style_local_text_font(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_extrabold_compressed);
+  lv_label_set_text_static(labelPrompt1, "00:00 AM");
 
-      void DrawBuffer(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const uint8_t* data, size_t size);
+  labelTime = lv_label_create(container, nullptr);
+  lv_label_set_recolor(labelTime, true);
+  lv_obj_set_hidden(labelTime, true);
 
-      void LowPowerOn();
-      void LowPowerOff();
-      void Sleep();
-      void Wakeup();
+  labelDate = lv_label_create(container, nullptr);
+  lv_label_set_recolor(labelDate, true);
 
-      // Set the Memory Data Access Control (MADCTL) register directly.
-      // Use this to change display orientation at runtime.
-      // Restore by calling with the original value when done.
-      void SetOrientation(uint8_t madctl);
+  batteryValue = lv_label_create(container, nullptr);
+  lv_label_set_recolor(batteryValue, true);
 
-    private:
-      Spi& spi;
-      uint8_t pinDataCommand;
-      uint8_t pinReset;
-      uint8_t verticalScrollingStartAddress = 0;
-      bool sleepIn;
+  stepValue = lv_label_create(container, nullptr);
+  lv_label_set_recolor(stepValue, true);
+  lv_obj_set_style_local_text_color(stepValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::orange);
 
-      // Keep the rest of the private interface exactly as-is
-      enum class Commands : uint8_t {
-        SoftwareReset = 0x01,
-        SleepIn = 0x10,
-        SleepOut = 0x11,
-        NormalModeOn = 0x13,
-        DisplayInversionOn = 0x21,
-        DisplayInversionOff = 0x20,
-        DisplayOff = 0x28,
-        DisplayOn = 0x29,
-        ColumnAddressSet = 0x2a,
-        RowAddressSet = 0x2b,
-        WriteToRam = 0x2c,
-        MemoryDataAccessControl = 0x36,
-        VerticalScrollStartAddress = 0x37,
-        IdleModeOff = 0x38,
-        IdleModeOn = 0x39,
-        PixelFormat = 0x3a,
-        Command2Enable = 0xdf,
-        Porch = 0xb2,
-        GateControl = 0xb7,
-        FrameRateNormal = 0xbb,
-        FrameRateIdle = 0xc2,
-        PowerControl1 = 0xd0,
-        PowerControl2 = 0xd6,
-        VdvSet = 0xc4,
-      };
+  heartbeatValue = lv_label_create(container, nullptr);
+  lv_label_set_recolor(heartbeatValue, true);
 
-      TickType_t lastSleepExit = 0;
-      uint8_t addrWindowArgs[4] = {};
-      uint8_t verticalScrollArgs[2] = {};
+  weather = lv_label_create(container, nullptr);
+  lv_label_set_recolor(weather, true);
 
-      void HardwareReset();
-      void SoftwareReset();
-      void Command2Enable();
-      void SleepOut();
-      void SleepIn();
-      void EnsureSleepOutPostDelay();
-      void PixelFormat();
-      void MemoryDataAccessControl();
-      void DisplayInversionOn();
-      void NormalModeOn();
-      void IdleModeOn();
-      void IdleModeOff();
-      void PorchSet();
-      void FrameRateNormalSet();
-      void IdleFrameRateOn();
-      void IdleFrameRateOff();
-      void DisplayOn();
-      void DisplayOff();
-      void PowerControl();
-      void GateControl();
-      void SetAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
-      void WriteToRam(const uint8_t* data, size_t size);
-      void SetVdv();
+  connectState = lv_label_create(container, nullptr);
+  lv_label_set_recolor(connectState, true);
 
-      void WriteData(uint8_t data);
-      void WriteData(const uint8_t* data, size_t size);
-      void WriteCommand(uint8_t data);
-      void WriteCommand(const uint8_t* data, size_t size);
-      void WriteSpi(const uint8_t* data, size_t size, const std::function<void()>& preTransactionHook);
-    };
+  labelPrompt2 = lv_label_create(container, nullptr);
+  lv_obj_set_style_local_text_color(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
+  lv_label_set_long_mode(labelPrompt2, LV_LABEL_LONG_SROLL_CIRC);
+  lv_obj_set_width(labelPrompt2, 240);
+
+  static const char* promptText = "Breathing 5 deep times  |  Holding eye contact · looking away less  |  Visualizing outcomes I DO want  |  Speaking in Optimum Pitch  |  Shifting attention to fun comments · remember to smile  |  Remove I · shift to invitational questions  |  Subconscious visual check-in  |  Grateful mentality · daydream what you're grateful for  |  Reading peoples social auras and delivery  |  Fasting · self control · pot · coffee · food  |  ";
+  uint16_t len = strlen(promptText);
+  uint16_t startPos = xTaskGetTickCount() % len;
+  std::string shifted = std::string(promptText + startPos) + std::string(promptText, startPos);
+  lv_label_set_text(labelPrompt2, shifted.c_str());
+
+  lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
+
+  // Rotate the display 90° clockwise for this watch face only.
+  // lv_disp_set_rotation is restored in the destructor so other screens are unaffected.
+  lv_disp_t* disp = lv_disp_get_default();
+  disp->driver.sw_rotate = 1;
+  lv_disp_set_rotation(disp, LV_DISP_ROT_90);
+
+  taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
+  Refresh();
+}
+
+WatchFaceTerminal::~WatchFaceTerminal() {
+  lv_task_del(taskRefresh);
+  // Restore default display rotation before leaving this watch face.
+  lv_disp_t* disp = lv_disp_get_default();
+  lv_disp_set_rotation(disp, LV_DISP_ROT_NONE);
+  disp->driver.sw_rotate = 0;
+  lv_obj_clean(lv_scr_act());
+}
+
+void WatchFaceTerminal::Refresh() {
+  notificationState = notificationManager.AreNewNotificationsAvailable();
+  if (notificationState.IsUpdated()) {
+    if (notificationState.Get()) {
+      lv_label_set_text_static(notificationIcon, "[1]+ Notify");
+    } else {
+      lv_label_set_text_static(notificationIcon, "");
+    }
+  }
+
+  currentDateTime = std::chrono::time_point_cast<std::chrono::seconds>(dateTimeController.CurrentDateTime());
+  if (currentDateTime.IsUpdated()) {
+    uint8_t hour = dateTimeController.Hours();
+    uint8_t minute = dateTimeController.Minutes();
+
+    if (settingsController.GetClockType() == Controllers::Settings::ClockType::H12) {
+      char ampmChar[3] = "AM";
+      if (hour == 0) {
+        hour = 12;
+      } else if (hour == 12) {
+        ampmChar[0] = 'P';
+      } else if (hour > 12) {
+        hour = hour - 12;
+        ampmChar[0] = 'P';
+      }
+      lv_label_set_text_fmt(labelPrompt1, "%02d:%02d %s", hour, minute, ampmChar);
+      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d %s#", hour, minute, ampmChar);
+    } else {
+      lv_label_set_text_fmt(labelPrompt1, "%02d:%02d", hour, minute);
+      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d#", hour, minute);
+    }
+
+    currentDate = std::chrono::time_point_cast<std::chrono::days>(currentDateTime.Get());
+    if (currentDate.IsUpdated()) {
+      Controllers::DateTime::Months month = dateTimeController.Month();
+      uint8_t day = dateTimeController.Day();
+      lv_label_set_text_fmt(labelDate, "#ffffff [DATE]# #007fff %02d-%02d#", month, day);
+    }
+  }
+
+  powerPresent = batteryController.IsPowerPresent();
+  batteryPercentRemaining = batteryController.PercentRemaining();
+  if (batteryPercentRemaining.IsUpdated() || powerPresent.IsUpdated()) {
+    lv_obj_set_style_local_text_color(batteryValue,
+                                      LV_LABEL_PART_MAIN,
+                                      LV_STATE_DEFAULT,
+                                      BatteryIcon::ColorFromPercentage(batteryPercentRemaining.Get()));
+    lv_label_set_text_fmt(batteryValue, "#ffffff [BATT]# %d%%", batteryPercentRemaining.Get());
+    if (batteryController.IsCharging()) {
+      lv_label_ins_text(batteryValue, LV_LABEL_POS_LAST, " Charging");
+    }
+  }
+
+  stepCount = motionController.NbSteps();
+  if (stepCount.IsUpdated()) {
+    lv_label_set_text_fmt(stepValue, "#ffffff [STEP]# %lu steps", stepCount.Get());
+  }
+
+  heartbeat = heartRateController.HeartRate();
+  heartbeatRunning = heartRateController.State() != Controllers::HeartRateController::States::Stopped;
+  if (heartbeat.IsUpdated() || heartbeatRunning.IsUpdated()) {
+    if (heartbeatRunning.Get()) {
+      lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::deepOrange);
+      lv_label_set_text_fmt(heartbeatValue, "#ffffff [L_HR]# %d bpm", heartbeat.Get());
+    } else {
+      lv_label_set_text_static(heartbeatValue, "#ffffff [L_HR]# ---");
+      lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
+    }
+  }
+
+  currentWeather = weatherService.Current();
+  if (currentWeather.IsUpdated()) {
+    auto optCurrentWeather = currentWeather.Get();
+    if (optCurrentWeather) {
+      int16_t temp = optCurrentWeather->temperature.Celsius();
+      char tempUnit = 'C';
+      if (settingsController.GetWeatherFormat() == Controllers::Settings::WeatherFormat::Imperial) {
+        temp = optCurrentWeather->temperature.Fahrenheit();
+        tempUnit = 'F';
+      }
+      lv_label_set_text_fmt(weather,
+                            "#ffffff [WTHR]# #ffdd00 %d°%c %s#",
+                            temp,
+                            tempUnit,
+                            Symbols::GetSimpleCondition(optCurrentWeather->iconId));
+    } else {
+      lv_label_set_text(weather, "#ffffff [WTHR]# #ffdd00 ---");
+    }
+  }
+
+  bleState = bleController.IsConnected();
+  bleRadioEnabled = bleController.IsRadioEnabled();
+  if (bleState.IsUpdated() || bleRadioEnabled.IsUpdated()) {
+    if (!bleRadioEnabled.Get()) {
+      lv_label_set_text_static(connectState, "#ffffff [STAT]# Disabled");
+      lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
+    } else {
+      if (bleState.Get()) {
+        lv_label_set_text_static(connectState, "#ffffff [STAT]# Connected");
+        lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::blue);
+      } else {
+        lv_label_set_text_static(connectState, "#ffffff [STAT]# Disconnected");
+        lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
+      }
+    }
   }
 }
