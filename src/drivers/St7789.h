@@ -1,4 +1,5 @@
 #pragma once
+
 #include <cstddef>
 #include <cstdint>
 #include <functional>
@@ -28,7 +29,8 @@ namespace Pinetime {
       void LowPowerOff();
       void Sleep();
       void Wakeup();
-void SetOrientation(uint8_t madctl);
+
+      void SetOrientation(uint8_t madctl);
 
     private:
       Spi& spi;
@@ -37,34 +39,6 @@ void SetOrientation(uint8_t madctl);
       uint8_t verticalScrollingStartAddress = 0;
       bool sleepIn;
       TickType_t lastSleepExit;
-
-      void HardwareReset();
-      void SoftwareReset();
-      void Command2Enable();
-      void SleepOut();
-      void EnsureSleepOutPostDelay();
-      void SleepIn();
-      void PixelFormat();
-      void MemoryDataAccessControl();
-      void DisplayInversionOn();
-      void NormalModeOn();
-      void WriteToRam(const uint8_t* data, size_t size);
-      void IdleModeOn();
-      void IdleModeOff();
-      void FrameRateNormalSet();
-      void IdleFrameRateOff();
-      void IdleFrameRateOn();
-      void DisplayOn();
-      void DisplayOff();
-      void PowerControl();
-      void GateControl();
-      void PorchSet();
-
-      void SetAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
-      void SetVdv();
-      void WriteCommand(uint8_t cmd);
-      void WriteCommand(const uint8_t* data, size_t size);
-      void WriteSpi(const uint8_t* data, size_t size, const std::function<void()>& preTransactionHook);
 
       enum class Commands : uint8_t {
         SoftwareReset = 0x01,
@@ -92,6 +66,7 @@ void SetOrientation(uint8_t madctl);
         GateControl = 0xb7,
         Porch = 0xb2,
       };
+
       void WriteData(uint8_t data);
       void WriteData(const uint8_t* data, size_t size);
 
@@ -100,6 +75,34 @@ void SetOrientation(uint8_t madctl);
 
       uint8_t addrWindowArgs[4];
       uint8_t verticalScrollArgs[2];
+
+      void WriteCommand(uint8_t data);
+      void WriteCommand(const uint8_t* data, size_t size);
+      void WriteSpi(const uint8_t* data, size_t size, const std::function<void()>& preTransactionHook);
+
+      void HardwareReset();
+      void SoftwareReset();
+      void Command2Enable();
+      void SleepOut();
+      void SleepIn();
+      void EnsureSleepOutPostDelay();
+      void PixelFormat();
+      void MemoryDataAccessControl();
+      void DisplayInversionOn();
+      void NormalModeOn();
+      void IdleModeOn();
+      void IdleModeOff();
+      void PorchSet();
+      void FrameRateNormalSet();
+      void IdleFrameRateOn();
+      void IdleFrameRateOff();
+      void DisplayOn();
+      void DisplayOff();
+      void PowerControl();
+      void GateControl();
+      void SetAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
+      void WriteToRam(const uint8_t* data, size_t size);
+      void SetVdv();
     };
   }
 }
