@@ -260,7 +260,9 @@ void LittleVgl::CancelTap() {
     touchPoint = {-1, -1};
   }
 }
-
+void LittleVgl::SetOrientation(uint8_t madctl) {
+  lcd.SetOrientation(madctl);
+}
 // Clear the current tapped state
 // Signifies that touch input processing is suspended
 void LittleVgl::ClearTouchState() {
