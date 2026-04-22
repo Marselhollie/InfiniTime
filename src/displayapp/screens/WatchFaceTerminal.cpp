@@ -11,6 +11,7 @@
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/screens/WeatherSymbols.h"
 #include "displayapp/InfiniTimeTheme.h"
+#include "displayapp/LittleVgl.h"
 #include <string>
 
 using namespace Pinetime::Applications::Screens;
@@ -43,7 +44,8 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
                                      Controllers::Settings& settingsController,
                                      Controllers::HeartRateController& heartRateController,
                                      Controllers::MotionController& motionController,
-                                     Controllers::SimpleWeatherService& weatherService)
+                                     Controllers::SimpleWeatherService& weatherService,
+                                     Pinetime::Components::LittleVgl& lglDriver)
   : currentDateTime {{}},
     dateTimeController {dateTimeController},
     batteryController {batteryController},
@@ -52,7 +54,8 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
     settingsController {settingsController},
     heartRateController {heartRateController},
     motionController {motionController},
-    weatherService {weatherService} {
+    weatherService {weatherService},
+    lglDriver {lglDriver} {
 
   container = lv_cont_create(lv_scr_act(), nullptr);
   lv_cont_set_layout(container, LV_LAYOUT_COLUMN_LEFT);
@@ -97,8 +100,11 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   lv_label_set_text(labelPrompt2, mantras[mantraIndex]);
   lv_obj_align(labelPrompt2, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
 
+  // Rotate display 90° clockwise via ST7789 MADCTL hardware register.
+  // MX (0x40) | MV (0x20) = 90° CW. Restored in destructor.
+  lglDriver.SetOrientation(0x60);
+
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
-  // Advance to next mantra every 24 hours
   taskMantra = lv_task_create(MantraTaskCallback, 24 * 60 * 60 * 1000u, LV_TASK_PRIO_LOW, this);
   Refresh();
 }
@@ -106,6 +112,12 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 WatchFaceTerminal::~WatchFaceTerminal() {
   lv_task_del(taskRefresh);
   lv_task_del(taskMantra);
+  // Restore default orientation
+#ifdef DRIVER_DISPLAY_MIRROR
+  lglDriver.SetOrientation(0b01000000);
+#else
+  lglDriver.SetOrientation(0x00);
+#endif
   lv_obj_clean(lv_scr_act());
 }
 
