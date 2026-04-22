@@ -11,7 +11,6 @@
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/screens/WeatherSymbols.h"
 #include "displayapp/InfiniTimeTheme.h"
-#include "displayapp/LittleVgl.h"
 #include <string>
 
 using namespace Pinetime::Applications::Screens;
@@ -23,8 +22,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
                                      Controllers::Settings& settingsController,
                                      Controllers::HeartRateController& heartRateController,
                                      Controllers::MotionController& motionController,
-                                     Controllers::SimpleWeatherService& weatherService,
-                                     Pinetime::Components::LittleVgl& lglDriver)
+                                     Controllers::SimpleWeatherService& weatherService)
   : currentDateTime {{}},
     dateTimeController {dateTimeController},
     batteryController {batteryController},
@@ -33,8 +31,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
     settingsController {settingsController},
     heartRateController {heartRateController},
     motionController {motionController},
-    weatherService {weatherService},
-    lglDriver {lglDriver} {
+    weatherService {weatherService} {
 
   container = lv_cont_create(lv_scr_act(), nullptr);
   lv_cont_set_layout(container, LV_LAYOUT_COLUMN_LEFT);
@@ -56,18 +53,8 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   labelDate = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelDate, true);
 
-  batteryValue = lv_label_create(container, nullptr);
-  lv_label_set_recolor(batteryValue, true);
-
-  stepValue = lv_label_create(container, nullptr);
-  lv_label_set_recolor(stepValue, true);
-  lv_obj_set_style_local_text_color(stepValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::orange);
-
   heartbeatValue = lv_label_create(container, nullptr);
   lv_label_set_recolor(heartbeatValue, true);
-
-  weather = lv_label_create(container, nullptr);
-  lv_label_set_recolor(weather, true);
 
   connectState = lv_label_create(container, nullptr);
   lv_label_set_recolor(connectState, true);
@@ -85,9 +72,11 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
   lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
 
-  // Rotate display 90° clockwise via ST7789 MADCTL hardware register.
-  // MX (0x40) | MV (0x20) = 90° CW. Restored in destructor.
-  lglDriver.SetOrientation(0x60);
+  // Battery icon pinned to top-right corner, independent of the container
+  batteryIcon = lv_label_create(lv_scr_act(), nullptr);
+  
+  lv_label_set_text_static(batteryIcon, Symbols::batteryHalf);
+  lv_obj_align(batteryIcon, nullptr, LV_ALIGN_IN_TOP_RIGHT, -4, 4);
 
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
   Refresh();
@@ -95,12 +84,6 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
 WatchFaceTerminal::~WatchFaceTerminal() {
   lv_task_del(taskRefresh);
-  // Restore default orientation (matches MemoryDataAccessControl() in St7789.cpp).
-#ifdef DRIVER_DISPLAY_MIRROR
-  lglDriver.SetOrientation(0b01000000);
-#else
-  lglDriver.SetOrientation(0x00);
-#endif
   lv_obj_clean(lv_scr_act());
 }
 
@@ -147,19 +130,11 @@ void WatchFaceTerminal::Refresh() {
   powerPresent = batteryController.IsPowerPresent();
   batteryPercentRemaining = batteryController.PercentRemaining();
   if (batteryPercentRemaining.IsUpdated() || powerPresent.IsUpdated()) {
-    lv_obj_set_style_local_text_color(batteryValue,
+    lv_obj_set_style_local_text_color(batteryIcon,
                                       LV_LABEL_PART_MAIN,
                                       LV_STATE_DEFAULT,
                                       BatteryIcon::ColorFromPercentage(batteryPercentRemaining.Get()));
-    lv_label_set_text_fmt(batteryValue, "#ffffff [BATT]# %d%%", batteryPercentRemaining.Get());
-    if (batteryController.IsCharging()) {
-      lv_label_ins_text(batteryValue, LV_LABEL_POS_LAST, " Charging");
-    }
-  }
-
-  stepCount = motionController.NbSteps();
-  if (stepCount.IsUpdated()) {
-    lv_label_set_text_fmt(stepValue, "#ffffff [STEP]# %lu steps", stepCount.Get());
+    lv_label_set_text_static(batteryIcon, Symbols::batteryHalf);
   }
 
   heartbeat = heartRateController.HeartRate();
@@ -171,26 +146,6 @@ void WatchFaceTerminal::Refresh() {
     } else {
       lv_label_set_text_static(heartbeatValue, "#ffffff [L_HR]# ---");
       lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
-    }
-  }
-
-  currentWeather = weatherService.Current();
-  if (currentWeather.IsUpdated()) {
-    auto optCurrentWeather = currentWeather.Get();
-    if (optCurrentWeather) {
-      int16_t temp = optCurrentWeather->temperature.Celsius();
-      char tempUnit = 'C';
-      if (settingsController.GetWeatherFormat() == Controllers::Settings::WeatherFormat::Imperial) {
-        temp = optCurrentWeather->temperature.Fahrenheit();
-        tempUnit = 'F';
-      }
-      lv_label_set_text_fmt(weather,
-                            "#ffffff [WTHR]# #ffdd00 %d°%c %s#",
-                            temp,
-                            tempUnit,
-                            Symbols::GetSimpleCondition(optCurrentWeather->iconId));
-    } else {
-      lv_label_set_text(weather, "#ffffff [WTHR]# #ffdd00 ---");
     }
   }
 
