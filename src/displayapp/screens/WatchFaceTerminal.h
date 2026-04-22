@@ -90,6 +90,6 @@ namespace Pinetime {
       static bool IsAvailable(Pinetime::Controllers::FS& /*filesystem*/) {
         return true;
       }
-    }
+    };
   }
 }
