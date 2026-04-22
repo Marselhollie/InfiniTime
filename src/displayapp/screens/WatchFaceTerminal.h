@@ -36,6 +36,7 @@ namespace Pinetime {
         ~WatchFaceTerminal() override;
 
         void Refresh() override;
+        void NextMantra();
 
       private:
         Utility::DirtyValue<int> batteryPercentRemaining {};
@@ -68,6 +69,8 @@ namespace Pinetime {
         Controllers::SimpleWeatherService& weatherService;
 
         lv_task_t* taskRefresh;
+        lv_task_t* taskMantra;
+        uint8_t mantraIndex = 0;
       };
     }
 
