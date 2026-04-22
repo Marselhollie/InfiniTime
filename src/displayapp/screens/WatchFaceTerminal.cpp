@@ -75,7 +75,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   // Battery icon pinned to top-right corner, independent of the container
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   
-  lv_label_set_text_static(batteryIcon, Symbols::batteryFull);
+  lv_label_set_text_static(batteryIcon, Symbols::batteryHalf);
   lv_obj_align(batteryIcon, nullptr, LV_ALIGN_IN_TOP_RIGHT, -4, 4);
 
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
@@ -130,14 +130,11 @@ void WatchFaceTerminal::Refresh() {
   powerPresent = batteryController.IsPowerPresent();
   batteryPercentRemaining = batteryController.PercentRemaining();
   if (batteryPercentRemaining.IsUpdated() || powerPresent.IsUpdated()) {
-    lv_label_set_text_static(batteryIcon, BatteryIcon::GetBatteryIcon(batteryPercentRemaining.Get()));
     lv_obj_set_style_local_text_color(batteryIcon,
                                       LV_LABEL_PART_MAIN,
                                       LV_STATE_DEFAULT,
                                       BatteryIcon::ColorFromPercentage(batteryPercentRemaining.Get()));
-    if (batteryController.IsCharging()) {
-      lv_label_set_text_static(batteryIcon, Symbols::batteryCharging);
-    }
+    lv_label_set_text_static(batteryIcon, Symbols::batteryHalf);
   }
 
   heartbeat = heartRateController.HeartRate();
