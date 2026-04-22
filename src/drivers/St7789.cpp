@@ -312,4 +312,4 @@ void St7789::Wakeup() {
   VerticalScrollStartAddress(verticalScrollingStartAddress);
   DisplayOn();
   NRF_LOG_INFO("[LCD] Wakeup")
-}}
+}
