@@ -16,20 +16,20 @@
 
 using namespace Pinetime::Applications::Screens;
 
-LV_FONT_DECLARE(jetbrains_mono_bold_20)
+LV_FONT_DECLARE(jetbrains_mono_bold_20
 
 static const char* mantras[] = {
   "Breathe 5 deep times",
-  "Hold eye contact · look away less",
-  "Visualize outcomes you DO want",
+  "Hold eye contact · Be direct",
   "Speak in Optimum Pitch",
-  "Shift attention to fun · remember to smile",
-  "Remove I · shift to invitational questions",
+  "Witty comments",
+  "Phrase without ego",
   "Subconscious visual check-in",
-  "Grateful mentality · daydream gratitude",
+  "Imagine 3 reasons for Gratitude",
   "Read peoples social auras and delivery",
   "Fasting · self control · pot · coffee · food",
-};
+  "Read books for more Skills stay well rounded "
+} ;
 static constexpr uint8_t mantraCount = sizeof(mantras) / sizeof(mantras[0]);
 
 static void MantraTaskCallback(lv_task_t* task) {
