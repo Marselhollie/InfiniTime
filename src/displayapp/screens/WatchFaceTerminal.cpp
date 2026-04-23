@@ -16,7 +16,7 @@
 
 using namespace Pinetime::Applications::Screens;
 
-LV_FONT_DECLARE(jetbrains_mono_bold_20
+LV_FONT_DECLARE(jetbrains_mono_bold_20);
 
 static const char* mantras[] = {
   "Breathe 5 deep times",
