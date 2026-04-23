@@ -29,6 +29,7 @@ static const char* mantras[] = {
   "Read peoples social auras and delivery",
   "Fasting · self control · pot · coffee · food",
   "Read books for more Skills stay well rounded "
+". Being direct intimidates people  So I subconsciously gravitated into being non-threatening and toxic politeness on accident "
 } ;
 static constexpr uint8_t mantraCount = sizeof(mantras) / sizeof(mantras[0]);
 
