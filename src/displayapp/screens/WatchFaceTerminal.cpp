@@ -20,15 +20,15 @@ LV_FONT_DECLARE(jetbrains_mono_bold_20)
 
 static const char* mantras[] = {
   "Breathe 5 deep times",
-  "Hold eye contact · look away less",
-  "Visualize outcomes you DO want",
+  "Hold eye contact · Be direct without being hostile",
+  "Volume",
   "Speak in Optimum Pitch",
-  "Shift attention to fun · remember to smile",
-  "Remove I · shift to invitational questions",
-  "Subconscious visual check-in",
-  "Grateful mentality · daydream gratitude",
+  "Shift attention and mood in conversation",
+  "Remove i. shift to invitational phrasing",
+  "Grateful 3 things daydream gratitude",
   "Read peoples social auras and delivery",
   "Fasting · self control · pot · coffee · food",
+
 };
 static constexpr uint8_t mantraCount = sizeof(mantras) / sizeof(mantras[0]);
 
