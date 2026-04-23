@@ -9,34 +9,28 @@
 #include "components/motion/MotionController.h"
 #include "components/settings/Settings.h"
 #include "components/ble/SimpleWeatherService.h"
+#include "displayapp/screens/WeatherSymbols.h"
 #include "displayapp/InfiniTimeTheme.h"
 #include "displayapp/LittleVgl.h"
 #include <string>
 
 using namespace Pinetime::Applications::Screens;
 
-LV_FONT_DECLARE(jetbrains_mono_bold_20);
-LV_FONT_DECLARE(jetbrains_mono_extrabold_compressed);
+LV_FONT_DECLARE(jetbrains_mono_bold_20)
 
 static const char* mantras[] = {
   "Breathe 5 deep times",
-  "Hold eye contact · Be direct",
+  "Hold eye contact · look away less",
+  "Visualize outcomes you DO want",
   "Speak in Optimum Pitch",
-  "Witty comments",
-  "Phrase without ego",
+  "Shift attention to fun · remember to smile",
+  "Remove I · shift to invitational questions",
   "Subconscious visual check-in",
-  "Imagine 3 reasons for Gratitude",
+  "Grateful mentality · daydream gratitude",
   "Read peoples social auras and delivery",
   "Fasting · self control · pot · coffee · food",
-  "Read books for more Skills stay well rounded "
-  ". Being direct intimidates people  So I subconsciously gravitated into being non-threatening and toxic politeness on accident "
 };
 static constexpr uint8_t mantraCount = sizeof(mantras) / sizeof(mantras[0]);
-
-static void RefreshTaskCallback(lv_task_t* task) {
-  auto* screen = static_cast<WatchFaceTerminal*>(task->user_data);
-  screen->Refresh();
-}
 
 static void MantraTaskCallback(lv_task_t* task) {
   auto* screen = static_cast<WatchFaceTerminal*>(task->user_data);
@@ -96,7 +90,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   lv_label_set_text_static(batteryIcon, Symbols::batteryHalf);
   lv_obj_align(batteryIcon, nullptr, LV_ALIGN_IN_TOP_RIGHT, -4, 4);
 
-  // Mantra scrolling label — pinned to bottom, yellow, one mantra per day
+  // Mantra scrolling label — pinned to bottom, yellow, larger font, one mantra per day
   mantraIndex = xTaskGetTickCount() % mantraCount;
   labelPrompt2 = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_set_style_local_text_color(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_YELLOW);
