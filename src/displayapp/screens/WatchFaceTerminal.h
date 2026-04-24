@@ -20,10 +20,6 @@ namespace Pinetime {
     class MotionController;
   }
 
-  namespace Components {
-    class LittleVgl;
-  }
-
   namespace Applications {
     namespace Screens {
 
@@ -36,8 +32,7 @@ namespace Pinetime {
                           Controllers::Settings& settingsController,
                           Controllers::HeartRateController& heartRateController,
                           Controllers::MotionController& motionController,
-                          Controllers::SimpleWeatherService& weatherService,
-                          Components::LittleVgl& lglDriver);
+                          Controllers::SimpleWeatherService& weatherService);
         ~WatchFaceTerminal() override;
 
         void Refresh() override;
@@ -64,8 +59,6 @@ namespace Pinetime {
         lv_obj_t* connectState;
         lv_obj_t* labelPrompt2;
 
-        uint8_t mantraIndex;
-
         Controllers::DateTime& dateTimeController;
         const Controllers::Battery& batteryController;
         const Controllers::Ble& bleController;
@@ -74,10 +67,10 @@ namespace Pinetime {
         Controllers::HeartRateController& heartRateController;
         Controllers::MotionController& motionController;
         Controllers::SimpleWeatherService& weatherService;
-        Components::LittleVgl& lglDriver;
 
         lv_task_t* taskRefresh;
         lv_task_t* taskMantra;
+        uint8_t mantraIndex = 0;
       };
     }
 
@@ -94,8 +87,7 @@ namespace Pinetime {
                                               controllers.settingsController,
                                               controllers.heartRateController,
                                               controllers.motionController,
-                                              *controllers.weatherController,
-                                              controllers.lvgl);
+                                              *controllers.weatherController);
       };
 
       static bool IsAvailable(Pinetime::Controllers::FS& /*filesystem*/) {
