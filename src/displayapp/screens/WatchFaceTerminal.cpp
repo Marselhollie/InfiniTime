@@ -1,5 +1,4 @@
 #include <lvgl/lvgl.h>
-
 #include "displayapp/screens/WatchFaceTerminal.h"
 #include "displayapp/screens/BatteryIcon.h"
 #include "components/battery/BatteryController.h"
@@ -11,30 +10,8 @@
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/screens/WeatherSymbols.h"
 #include "displayapp/InfiniTimeTheme.h"
-#include <string>
 
 using namespace Pinetime::Applications::Screens;
-
-LV_FONT_DECLARE(jetbrains_mono_bold_20)
-
-static const char* mantras[] = {
-  "Breathe 5 deep times",
-  "Hold eye contact replying ",
-  "Be Direct w/o being hostile",
-  "Speak in Optimum Pitch",
-  "Shift attention and mood in conversation",
-  "Remove i as much beginning statements shift to invitational phrasing",
-  "Grateful 3 things",
-  "Read peoples social auras and delivery",
-  "Fasting|pot|coffee|food",
-  "Re-Calm non verbals"
-};
-static constexpr uint8_t mantraCount = sizeof(mantras) / sizeof(mantras[0]);
-
-static void MantraTaskCallback(lv_task_t* task) {
-  auto* screen = static_cast<WatchFaceTerminal*>(task->user_data);
-  screen->NextMantra();
-}
 
 WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
                                      const Controllers::Battery& batteryController,
@@ -64,51 +41,43 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
   labelPrompt1 = lv_label_create(container, nullptr);
   lv_obj_set_style_local_text_color(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
-  lv_obj_set_style_local_text_font(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_extrabold_compressed);
-  lv_label_set_text_static(labelPrompt1, "00:00 AM");
+  lv_label_set_text_static(labelPrompt1, "user@watch:~ $ now");
 
   labelTime = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelTime, true);
-  lv_obj_set_hidden(labelTime, true);
 
   labelDate = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelDate, true);
 
+  batteryValue = lv_label_create(container, nullptr);
+  lv_label_set_recolor(batteryValue, true);
+
+  stepValue = lv_label_create(container, nullptr);
+  lv_label_set_recolor(stepValue, true);
+  lv_obj_set_style_local_text_color(stepValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::orange);
+
   heartbeatValue = lv_label_create(container, nullptr);
   lv_label_set_recolor(heartbeatValue, true);
+
+  weather = lv_label_create(container, nullptr);
+  lv_label_set_recolor(weather, true);
 
   connectState = lv_label_create(container, nullptr);
   lv_label_set_recolor(connectState, true);
 
+  labelPrompt2 = lv_label_create(container, nullptr);
+  lv_obj_set_style_local_text_color(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
+  lv_label_set_text_static(labelPrompt2, "user@watch:~ $");
+
   lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
 
-  batteryIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text_static(batteryIcon, Symbols::batteryHalf);
-  lv_obj_align(batteryIcon, nullptr, LV_ALIGN_IN_TOP_RIGHT, -4, 4);
-
-  mantraIndex = xTaskGetTickCount() % mantraCount;
-  labelPrompt2 = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_YELLOW);
-  lv_obj_set_style_local_text_font(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
-  lv_label_set_long_mode(labelPrompt2, LV_LABEL_LONG_SROLL_CIRC);
-  lv_obj_set_width(labelPrompt2, 240);
-  lv_label_set_text(labelPrompt2, mantras[mantraIndex]);
-  lv_obj_align(labelPrompt2, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
-
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
-  taskMantra = lv_task_create(MantraTaskCallback, 24 * 60 * 60 * 1000u, LV_TASK_PRIO_LOW, this);
   Refresh();
 }
 
 WatchFaceTerminal::~WatchFaceTerminal() {
   lv_task_del(taskRefresh);
-  lv_task_del(taskMantra);
   lv_obj_clean(lv_scr_act());
-}
-
-void WatchFaceTerminal::NextMantra() {
-  mantraIndex = (mantraIndex + 1) % mantraCount;
-  lv_label_set_text(labelPrompt2, mantras[mantraIndex]);
 }
 
 void WatchFaceTerminal::Refresh() {
@@ -125,6 +94,7 @@ void WatchFaceTerminal::Refresh() {
   if (currentDateTime.IsUpdated()) {
     uint8_t hour = dateTimeController.Hours();
     uint8_t minute = dateTimeController.Minutes();
+    uint8_t second = dateTimeController.Seconds();
 
     if (settingsController.GetClockType() == Controllers::Settings::ClockType::H12) {
       char ampmChar[3] = "AM";
@@ -136,29 +106,36 @@ void WatchFaceTerminal::Refresh() {
         hour = hour - 12;
         ampmChar[0] = 'P';
       }
-      lv_label_set_text_fmt(labelPrompt1, "%02d:%02d %s", hour, minute, ampmChar);
-      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d %s#", hour, minute, ampmChar);
+      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d:%02d %s#", hour, minute, second, ampmChar);
     } else {
-      lv_label_set_text_fmt(labelPrompt1, "%02d:%02d", hour, minute);
-      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d#", hour, minute);
+      lv_label_set_text_fmt(labelTime, "#ffffff [TIME]# #11cc55 %02d:%02d:%02d#", hour, minute, second);
     }
 
     currentDate = std::chrono::time_point_cast<std::chrono::days>(currentDateTime.Get());
     if (currentDate.IsUpdated()) {
+      uint16_t year = dateTimeController.Year();
       Controllers::DateTime::Months month = dateTimeController.Month();
       uint8_t day = dateTimeController.Day();
-      lv_label_set_text_fmt(labelDate, "#ffffff [DATE]# #007fff %02d-%02d#", month, day);
+      lv_label_set_text_fmt(labelDate, "#ffffff [DATE]# #007fff %04d-%02d-%02d#", year, month, day);
     }
   }
 
   powerPresent = batteryController.IsPowerPresent();
   batteryPercentRemaining = batteryController.PercentRemaining();
   if (batteryPercentRemaining.IsUpdated() || powerPresent.IsUpdated()) {
-    lv_obj_set_style_local_text_color(batteryIcon,
+    lv_obj_set_style_local_text_color(batteryValue,
                                       LV_LABEL_PART_MAIN,
                                       LV_STATE_DEFAULT,
                                       BatteryIcon::ColorFromPercentage(batteryPercentRemaining.Get()));
-    lv_label_set_text_static(batteryIcon, Symbols::batteryHalf);
+    lv_label_set_text_fmt(batteryValue, "#ffffff [BATT]# %d%%", batteryPercentRemaining.Get());
+    if (batteryController.IsCharging()) {
+      lv_label_ins_text(batteryValue, LV_LABEL_POS_LAST, " Charging");
+    }
+  }
+
+  stepCount = motionController.NbSteps();
+  if (stepCount.IsUpdated()) {
+    lv_label_set_text_fmt(stepValue, "#ffffff [STEP]# %lu steps", stepCount.Get());
   }
 
   heartbeat = heartRateController.HeartRate();
@@ -170,6 +147,26 @@ void WatchFaceTerminal::Refresh() {
     } else {
       lv_label_set_text_static(heartbeatValue, "#ffffff [L_HR]# ---");
       lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
+    }
+  }
+
+  currentWeather = weatherService.Current();
+  if (currentWeather.IsUpdated()) {
+    auto optCurrentWeather = currentWeather.Get();
+    if (optCurrentWeather) {
+      int16_t temp = optCurrentWeather->temperature.Celsius();
+      char tempUnit = 'C';
+      if (settingsController.GetWeatherFormat() == Controllers::Settings::WeatherFormat::Imperial) {
+        temp = optCurrentWeather->temperature.Fahrenheit();
+        tempUnit = 'F';
+      }
+      lv_label_set_text_fmt(weather,
+                            "#ffffff [WTHR]# #ffdd00 %d°%c %s#",
+                            temp,
+                            tempUnit,
+                            Symbols::GetSimpleCondition(optCurrentWeather->iconId));
+    } else {
+      lv_label_set_text(weather, "#ffffff [WTHR]# #ffdd00 ---");
     }
   }
 
