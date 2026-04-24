@@ -28,7 +28,7 @@ static const char* mantras[] = {
   "Grateful 3 things",
   "Read peoples social auras and delivery",
   "Fasting|pot|coffee|food",
-"Calm strong delivery"
+"Re-Calm non verbals"
 
 };
 static constexpr uint8_t mantraCount = sizeof(mantras) / sizeof(mantras[0]);
