@@ -11,7 +11,6 @@
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/screens/WeatherSymbols.h"
 #include "displayapp/InfiniTimeTheme.h"
-#include "displayapp/LittleVgl.h"
 #include <string>
 
 using namespace Pinetime::Applications::Screens;
@@ -21,15 +20,14 @@ LV_FONT_DECLARE(jetbrains_mono_bold_20)
 static const char* mantras[] = {
   "Breathe 5 deep times",
   "Hold eye contact replying ",
-"Be Direct w/o being hostile",
+  "Be Direct w/o being hostile",
   "Speak in Optimum Pitch",
   "Shift attention and mood in conversation",
   "Remove i as much beginning statements shift to invitational phrasing",
   "Grateful 3 things",
   "Read peoples social auras and delivery",
   "Fasting|pot|coffee|food",
-"Re-Calm non verbals"
-
+  "Re-Calm non verbals"
 };
 static constexpr uint8_t mantraCount = sizeof(mantras) / sizeof(mantras[0]);
 
@@ -45,8 +43,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
                                      Controllers::Settings& settingsController,
                                      Controllers::HeartRateController& heartRateController,
                                      Controllers::MotionController& motionController,
-                                     Controllers::SimpleWeatherService& weatherService,
-                                     Pinetime::Components::LittleVgl& lglDriver)
+                                     Controllers::SimpleWeatherService& weatherService)
   : currentDateTime {{}},
     dateTimeController {dateTimeController},
     batteryController {batteryController},
@@ -55,8 +52,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
     settingsController {settingsController},
     heartRateController {heartRateController},
     motionController {motionController},
-    weatherService {weatherService},
-    lglDriver {lglDriver} {
+    weatherService {weatherService} {
 
   container = lv_cont_create(lv_scr_act(), nullptr);
   lv_cont_set_layout(container, LV_LAYOUT_COLUMN_LEFT);
@@ -86,12 +82,10 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
   lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
 
-  // Battery icon pinned to top-right corner
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text_static(batteryIcon, Symbols::batteryHalf);
   lv_obj_align(batteryIcon, nullptr, LV_ALIGN_IN_TOP_RIGHT, -4, 4);
 
-  // Mantra scrolling label — pinned to bottom, yellow, larger font, one mantra per day
   mantraIndex = xTaskGetTickCount() % mantraCount;
   labelPrompt2 = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_set_style_local_text_color(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_YELLOW);
@@ -101,12 +95,6 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   lv_label_set_text(labelPrompt2, mantras[mantraIndex]);
   lv_obj_align(labelPrompt2, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
 
-#ifndef MONITOR_ZOOM
-  // Rotate display 90° clockwise via ST7789 MADCTL hardware register.
-  // MX (0x40) | MV (0x20) = 90° CW. Restored in destructor.
-  lglDriver.SetOrientation(0x60);
-#endif
-
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
   taskMantra = lv_task_create(MantraTaskCallback, 24 * 60 * 60 * 1000u, LV_TASK_PRIO_LOW, this);
   Refresh();
@@ -115,14 +103,6 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 WatchFaceTerminal::~WatchFaceTerminal() {
   lv_task_del(taskRefresh);
   lv_task_del(taskMantra);
-#ifndef MONITOR_ZOOM
-  // Restore default orientation
-#ifdef DRIVER_DISPLAY_MIRROR
-  lglDriver.SetOrientation(0b01000000);
-#else
-  lglDriver.SetOrientation(0x00);
-#endif
-#endif
   lv_obj_clean(lv_scr_act());
 }
 
