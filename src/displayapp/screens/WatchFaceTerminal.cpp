@@ -17,16 +17,16 @@ using namespace Pinetime::Applications::Screens;
 LV_FONT_DECLARE(jetbrains_mono_bold_20)
 
 static const char* mantras[] = {
-  "Breathe 5 deep times",
-  "Hold eye contact replying ",
-  "Be Direct w/o being hostile",
-  "Speak in Optimum Pitch",
-  "Shift attention and mood in conversation",
-  "Remove i as much beginning statements shift to invitational phrasing",
-  "Grateful 3 things",
-  "Read peoples social auras and delivery",
-  "Say NO to porn |ZERO Coffee AM ",
-  "Re-Calm non verbals"
+  "BREATHE 5 DEEP TIMES",
+  "HOLD EYE CONTACT REPLYING",
+  "BE DIRECT W/O BEING HOSTILE",
+  "SPEAK IN OPTIMUM PITCH",
+  "SHIFT ATTENTION AND MOOD IN CONVERSATION",
+  "REMOVE I · SHIFT TO INVITATIONAL PHRASING",
+  "GRATEFUL 3 THINGS",
+  "READ PEOPLES SOCIAL AURAS AND DELIVERY",
+  "FASTING|SAYNOTOPORN|POT|NO COFFEE BETTER SOCIAL",
+  "RE-CALM NON VERBALS"
 };
 static constexpr uint8_t mantraCount = sizeof(mantras) / sizeof(mantras[0]);
 
@@ -63,7 +63,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
   labelPrompt1 = lv_label_create(container, nullptr);
   lv_obj_set_style_local_text_color(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
-  lv_obj_set_style_local_text_font(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_extrabold_compressed);
+  lv_obj_set_style_local_text_font(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
   lv_label_set_text_static(labelPrompt1, "00:00 AM");
 
   labelTime = lv_label_create(container, nullptr);
@@ -88,7 +88,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
   mantraIndex = xTaskGetTickCount() % mantraCount;
   labelPrompt2 = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_YELLOW);
+  lv_obj_set_style_local_text_color(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
   lv_obj_set_style_local_text_font(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
   lv_label_set_long_mode(labelPrompt2, LV_LABEL_LONG_SROLL_CIRC);
   lv_obj_set_width(labelPrompt2, 240);
@@ -148,7 +148,7 @@ void WatchFaceTerminal::Refresh() {
     if (currentDate.IsUpdated()) {
       Controllers::DateTime::Months month = dateTimeController.Month();
       uint8_t day = dateTimeController.Day();
-      lv_label_set_text_fmt(labelDate, "#ffffff [DATE]# #007fff %02d-%02d#", month, day);
+      lv_label_set_text_fmt(labelDate, "#ffffff [DATE]# #00ffff %02d-%02d#", month, day);
     }
   }
 
@@ -156,10 +156,14 @@ void WatchFaceTerminal::Refresh() {
   batteryPercentRemaining = batteryController.PercentRemaining();
   if (batteryPercentRemaining.IsUpdated() || powerPresent.IsUpdated()) {
     auto pct = batteryPercentRemaining.Get();
+    const char* color;
     if (batteryController.IsCharging()) {
       lv_label_set_text_fmt(batteryIcon, "#ffffff [BATT]# #00ff00 CHG %d%%%#", pct);
     } else {
-      lv_label_set_text_fmt(batteryIcon, "#ffffff [BATT]# #11cc55 %d%%%#", pct);
+      if (pct > 60) color = "00ff00";
+      else if (pct > 30) color = "ffaa00";
+      else color = "ff2200";
+      lv_label_set_text_fmt(batteryIcon, "#ffffff [BATT]# #%s %d%%%#", color, pct);
     }
   }
 
@@ -168,9 +172,9 @@ void WatchFaceTerminal::Refresh() {
   if (heartbeat.IsUpdated() || heartbeatRunning.IsUpdated()) {
     if (heartbeatRunning.Get()) {
       lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::deepOrange);
-      lv_label_set_text_fmt(heartbeatValue, "#ffffff [L_HR]# %d bpm", heartbeat.Get());
+      lv_label_set_text_fmt(heartbeatValue, "#ffffff [<3]# %d bpm", heartbeat.Get());
     } else {
-      lv_label_set_text_static(heartbeatValue, "#ffffff [L_HR]# ---");
+      lv_label_set_text_static(heartbeatValue, "#ffffff [<3]# ---");
       lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
     }
   }
@@ -179,14 +183,14 @@ void WatchFaceTerminal::Refresh() {
   bleRadioEnabled = bleController.IsRadioEnabled();
   if (bleState.IsUpdated() || bleRadioEnabled.IsUpdated()) {
     if (!bleRadioEnabled.Get()) {
-      lv_label_set_text_static(connectState, "#ffffff [STAT]# Disabled");
+      lv_label_set_text_static(connectState, "#ffffff [*]# Disabled");
       lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
     } else {
       if (bleState.Get()) {
-        lv_label_set_text_static(connectState, "#ffffff [STAT]# Connected");
-        lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::blue);
+        lv_label_set_text_static(connectState, "#ffffff [*]# Connected");
+        lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
       } else {
-        lv_label_set_text_static(connectState, "#ffffff [STAT]# Disconnected");
+        lv_label_set_text_static(connectState, "#ffffff [*]# Disconnected");
         lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
       }
     }
