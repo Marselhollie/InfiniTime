@@ -38,8 +38,9 @@ namespace Pinetime::Applications::Screens {
 
     static bool IsAvailable() { return true; }
 
-  private:
     void NextMantra();
+
+  private:
     void UpdateCalendarDisplay();
     void UpdateMantraDisplay();
 
