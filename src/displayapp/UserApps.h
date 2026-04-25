@@ -38,7 +38,7 @@ namespace Pinetime {
 
     template <Apps t>
     consteval AppDescription CreateAppDescription() {
-      return {AppTraits<t>::app, AppTraits<t>::icon, &AppTraits<t>::Create, &AppTraits<t>::IsAvailable};
+      return {AppTraits<t>::app, AppTraits<t>::icon, &AppTraits<t>::create, &AppTraits<t>::isAvailable};
     }
 
     template <WatchFace t>
