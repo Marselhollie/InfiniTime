@@ -31,6 +31,8 @@ namespace Pinetime::Applications::Screens {
 
     void Refresh() override;
 
+    static bool IsAvailable() { return true; }
+
   private:
     void NextMantra();
     void UpdateCalendarDisplay();
@@ -67,14 +69,14 @@ namespace Pinetime::Applications::Screens {
     uint32_t lastMantraUpdateTime;
 
     // State tracking
-    Pinetime::Utilities::DirtyValue<bool> notificationState;
-    Pinetime::Utilities::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::seconds>> currentDateTime;
-    Pinetime::Utilities::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::days>> currentDate;
-    Pinetime::Utilities::DirtyValue<uint8_t> batteryPercentRemaining;
-    Pinetime::Utilities::DirtyValue<bool> powerPresent;
-    Pinetime::Utilities::DirtyValue<uint8_t> heartbeat;
-    Pinetime::Utilities::DirtyValue<bool> heartbeatRunning;
-    Pinetime::Utilities::DirtyValue<bool> bleState;
-    Pinetime::Utilities::DirtyValue<bool> bleRadioEnabled;
+    Pinetime::Utility::DirtyValue<bool> notificationState;
+    Pinetime::Utility::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::seconds>> currentDateTime;
+    Pinetime::Utility::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::days>> currentDate;
+    Pinetime::Utility::DirtyValue<uint8_t> batteryPercentRemaining;
+    Pinetime::Utility::DirtyValue<bool> powerPresent;
+    Pinetime::Utility::DirtyValue<uint8_t> heartbeat;
+    Pinetime::Utility::DirtyValue<bool> heartbeatRunning;
+    Pinetime::Utility::DirtyValue<bool> bleState;
+    Pinetime::Utility::DirtyValue<bool> bleRadioEnabled;
   };
 }
