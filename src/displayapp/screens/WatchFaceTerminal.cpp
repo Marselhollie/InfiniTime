@@ -25,7 +25,7 @@ static const char* mantras[] = {
   "REMOVE I · SHIFT TO INVITATIONAL PHRASING",
   "GRATEFUL 3 THINGS",
   "READ PEOPLES SOCIAL AURAS AND DELIVERY",
-  "FASTING |SAYNOTOPORN|NOCOFFEE",
+  "|NOCOFFEE|$TRETCH/WITHOLD_MONEY|SAYNOTOPORN",
   "RE-CALM NON VERBALS"
 };
 static constexpr uint8_t mantraCount = sizeof(mantras) / sizeof(mantras[0]);
