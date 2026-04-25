@@ -49,23 +49,27 @@ namespace Pinetime::Applications::Screens {
     Controllers::SimpleWeatherService& weatherService;
     Controllers::CalendarEventService* calendarService;
 
+    // Display elements
     lv_obj_t* container;
     lv_obj_t* notificationIcon;
-    lv_obj_t* labelPrompt1;
+    lv_obj_t* labelPrompt1;  // Time
     lv_obj_t* labelTime;
     lv_obj_t* labelDate;
     lv_obj_t* heartbeatValue;
     lv_obj_t* connectState;
     lv_obj_t* batteryIcon;
-    lv_obj_t* labelMantra;
-    lv_obj_t* labelCalendar;
+    lv_obj_t* labelMantra;     // Scrolling mantras (top line - always on)
+    lv_obj_t* labelCalendar;   // Scrolling calendar events (bottom line)
 
+    // Tasks
     lv_task_t* taskRefresh;
     lv_task_t* taskMantra;
 
+    // Mantra management
     uint8_t mantraIndex;
     uint32_t lastMantraUpdateTime;
 
+    // State tracking
     Pinetime::Utility::DirtyValue<bool> notificationState;
     Pinetime::Utility::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::seconds>> currentDateTime;
     Pinetime::Utility::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::days>> currentDate;
@@ -84,20 +88,26 @@ namespace Pinetime::Applications {
     static constexpr WatchFace watchFace = WatchFace::Terminal;
     static constexpr const char* name = "Terminal";
 
-    static Screens::Screen* create(AppControllers& controllers) {
-      return new Screens::WatchFaceTerminal(controllers.dateTimeController,
-                                            controllers.batteryController,
-                                            controllers.bleController,
-                                            controllers.notificationManager,
-                                            controllers.settingsController,
-                                            controllers.heartRateController,
-                                            controllers.motionController,
-                                            controllers.weatherController,
+    static Screens::Screen* Create(DisplayApp* app,
+                                   Controllers::DateTime& dateTimeController,
+                                   const Controllers::Battery& batteryController,
+                                   const Controllers::Ble& bleController,
+                                   Controllers::NotificationManager& notificationManager,
+                                   Controllers::Settings& settingsController,
+                                   Controllers::HeartRateController& heartRateController,
+                                   Controllers::MotionController& motionController,
+                                   Controllers::SimpleWeatherService& weatherService) {
+      return new Screens::WatchFaceTerminal(dateTimeController,
+                                            batteryController,
+                                            bleController,
+                                            notificationManager,
+                                            settingsController,
+                                            heartRateController,
+                                            motionController,
+                                            weatherService,
                                             nullptr);
     }
 
-    static bool isAvailable(Controllers::FS& fileSystem) { 
-      return true; 
-    }
+    static bool IsAvailable() { return true; }
   };
 }
