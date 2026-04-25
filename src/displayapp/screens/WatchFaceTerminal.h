@@ -92,7 +92,7 @@ namespace Pinetime::Applications {
                                             controllers.settingsController,
                                             controllers.heartRateController,
                                             controllers.motionController,
-                                            controllers.weatherService,
+                                            controllers.weatherController,
                                             nullptr);
     }
 
