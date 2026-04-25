@@ -42,7 +42,8 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
                                      Controllers::Settings& settingsController,
                                      Controllers::HeartRateController& heartRateController,
                                      Controllers::MotionController& motionController,
-                                     Controllers::SimpleWeatherService& weatherService)
+                                     Controllers::SimpleWeatherService& weatherService,
+                                     Controllers::CalendarEventService& calendarService)
   : currentDateTime {{}},
     dateTimeController {dateTimeController},
     batteryController {batteryController},
@@ -51,7 +52,8 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
     settingsController {settingsController},
     heartRateController {heartRateController},
     motionController {motionController},
-    weatherService {weatherService} {
+    weatherService {weatherService},
+    calendarService {calendarService} {
 
   container = lv_cont_create(lv_scr_act(), nullptr);
   lv_cont_set_layout(container, LV_LAYOUT_COLUMN_LEFT);
@@ -87,14 +89,26 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   lv_label_set_text_static(batteryIcon, "#ffffff [PWR]# ---%");
 
   mantraIndex = xTaskGetTickCount() % mantraCount;
-  labelPrompt2 = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
-  lv_obj_set_style_local_text_font(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
-  lv_label_set_long_mode(labelPrompt2, LV_LABEL_LONG_SROLL_CIRC);
-  lv_obj_set_width(labelPrompt2, 240);
-  lv_obj_set_height(labelPrompt2, 44);
-  lv_label_set_text(labelPrompt2, mantras[mantraIndex]);
-  lv_obj_align(labelPrompt2, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
+  
+  // Top scrolling line: Mantras (always visible)
+  labelMantra = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
+  lv_obj_set_style_local_text_font(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
+  lv_label_set_long_mode(labelMantra, LV_LABEL_LONG_SROLL_CIRC);
+  lv_obj_set_width(labelMantra, 240);
+  lv_obj_set_height(labelMantra, 44);
+  lv_label_set_text(labelMantra, mantras[mantraIndex]);
+  lv_obj_align(labelMantra, nullptr, LV_ALIGN_IN_BOTTOM_MID, 0, -44);  // Middle area
+
+  // Bottom scrolling line: Calendar events
+  labelCalendar = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_set_style_local_text_color(labelCalendar, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_LIME);
+  lv_obj_set_style_local_text_font(labelCalendar, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
+  lv_label_set_long_mode(labelCalendar, LV_LABEL_LONG_SROLL_CIRC);
+  lv_obj_set_width(labelCalendar, 240);
+  lv_obj_set_height(labelCalendar, 44);
+  lv_label_set_text_static(labelCalendar, "");  // Empty initially
+  lv_obj_align(labelCalendar, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
 
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
   taskMantra = lv_task_create(MantraTaskCallback, 24 * 60 * 60 * 1000u, LV_TASK_PRIO_LOW, this);
@@ -109,7 +123,36 @@ WatchFaceTerminal::~WatchFaceTerminal() {
 
 void WatchFaceTerminal::NextMantra() {
   mantraIndex = (mantraIndex + 1) % mantraCount;
-  lv_label_set_text(labelPrompt2, mantras[mantraIndex]);
+  lv_label_set_text(labelMantra, mantras[mantraIndex]);
+}
+
+void WatchFaceTerminal::UpdateMantraDisplay() {
+  // Mantras rotate every 24 hours - this is handled by taskMantra
+  // No update needed per refresh cycle, just keep current mantra visible
+}
+
+void WatchFaceTerminal::UpdateCalendarDisplay() {
+  // Check if there are upcoming events
+  uint64_t currentTime = std::chrono::system_clock::now().time_since_epoch().count() / 1000000000;
+  
+  Controllers::CalendarEventService::CalendarEvent nextEvent;
+  if (calendarService.GetNextEvent(nextEvent, currentTime)) {
+    // Format calendar event for display on bottom line
+    char calendarText[240];
+    calendarService.UpdateDisplayString(calendarText, sizeof(calendarText), currentTime);
+    
+    // Update bottom line with calendar event
+    const char* currentText = lv_label_get_text(labelCalendar);
+    if (std::strcmp(currentText, calendarText) != 0) {
+      lv_label_set_text(labelCalendar, calendarText);
+    }
+  } else {
+    // No upcoming events - clear bottom line
+    const char* currentText = lv_label_get_text(labelCalendar);
+    if (std::strcmp(currentText, "") != 0) {
+      lv_label_set_text_static(labelCalendar, "");
+    }
+  }
 }
 
 void WatchFaceTerminal::Refresh() {
@@ -195,4 +238,8 @@ void WatchFaceTerminal::Refresh() {
       }
     }
   }
+
+  // Update calendar display (runs every refresh cycle)
+  UpdateMantraDisplay();
+  UpdateCalendarDisplay();
 }

@@ -1,98 +1,80 @@
 #pragma once
 
-#include <lvgl/src/lv_core/lv_obj.h>
-#include <chrono>
 #include <cstdint>
-#include <memory>
-#include <displayapp/Controllers.h>
-#include "displayapp/screens/Screen.h"
+#include <chrono>
 #include "components/datetime/DateTimeController.h"
+#include "components/battery/BatteryController.h"
+#include "components/ble/BleController.h"
+#include "components/ble/NotificationManager.h"
+#include "components/heartrate/HeartRateController.h"
+#include "components/motion/MotionController.h"
+#include "components/settings/Settings.h"
 #include "components/ble/SimpleWeatherService.h"
-#include "utility/DirtyValue.h"
+#include "components/ble/CalendarEventService.h"
+#include "displayapp/screens/Screen.h"
 
-namespace Pinetime {
-  namespace Controllers {
-    class Settings;
-    class Battery;
-    class Ble;
-    class NotificationManager;
-    class HeartRateController;
-    class MotionController;
-  }
+namespace Pinetime::Applications::Screens {
 
-  namespace Applications {
-    namespace Screens {
+  class WatchFaceTerminal : public Screen {
+  public:
+    WatchFaceTerminal(Controllers::DateTime& dateTimeController,
+                     const Controllers::Battery& batteryController,
+                     const Controllers::Ble& bleController,
+                     Controllers::NotificationManager& notificationManager,
+                     Controllers::Settings& settingsController,
+                     Controllers::HeartRateController& heartRateController,
+                     Controllers::MotionController& motionController,
+                     Controllers::SimpleWeatherService& weatherService,
+                     Controllers::CalendarEventService& calendarService);
 
-      class WatchFaceTerminal : public Screen {
-      public:
-        WatchFaceTerminal(Controllers::DateTime& dateTimeController,
-                          const Controllers::Battery& batteryController,
-                          const Controllers::Ble& bleController,
-                          Controllers::NotificationManager& notificationManager,
-                          Controllers::Settings& settingsController,
-                          Controllers::HeartRateController& heartRateController,
-                          Controllers::MotionController& motionController,
-                          Controllers::SimpleWeatherService& weatherService);
-        ~WatchFaceTerminal() override;
+    ~WatchFaceTerminal() override;
 
-        void Refresh() override;
-        void NextMantra();
+    void Refresh() override;
 
-      private:
-        Utility::DirtyValue<int> batteryPercentRemaining {};
-        Utility::DirtyValue<bool> powerPresent {};
-        Utility::DirtyValue<bool> bleState {};
-        Utility::DirtyValue<bool> bleRadioEnabled {};
-        Utility::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::seconds>> currentDateTime {};
-        Utility::DirtyValue<uint8_t> heartbeat {};
-        Utility::DirtyValue<bool> heartbeatRunning {};
-        Utility::DirtyValue<bool> notificationState {};
-        Utility::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::days>> currentDate;
+  private:
+    void NextMantra();
+    void UpdateCalendarDisplay();
+    void UpdateMantraDisplay();
 
-        lv_obj_t* container;
-        lv_obj_t* notificationIcon;
-        lv_obj_t* labelPrompt1;
-        lv_obj_t* labelTime;
-        lv_obj_t* labelDate;
-        lv_obj_t* batteryIcon;
-        lv_obj_t* heartbeatValue;
-        lv_obj_t* connectState;
-        lv_obj_t* labelPrompt2;
+    Controllers::DateTime& dateTimeController;
+    const Controllers::Battery& batteryController;
+    const Controllers::Ble& bleController;
+    Controllers::NotificationManager& notificationManager;
+    Controllers::Settings& settingsController;
+    Controllers::HeartRateController& heartRateController;
+    Controllers::MotionController& motionController;
+    Controllers::SimpleWeatherService& weatherService;
+    Controllers::CalendarEventService& calendarService;
 
-        Controllers::DateTime& dateTimeController;
-        const Controllers::Battery& batteryController;
-        const Controllers::Ble& bleController;
-        Controllers::NotificationManager& notificationManager;
-        Controllers::Settings& settingsController;
-        Controllers::HeartRateController& heartRateController;
-        Controllers::MotionController& motionController;
-        Controllers::SimpleWeatherService& weatherService;
+    // Display elements
+    lv_obj_t* container;
+    lv_obj_t* notificationIcon;
+    lv_obj_t* labelPrompt1;  // Time
+    lv_obj_t* labelTime;
+    lv_obj_t* labelDate;
+    lv_obj_t* heartbeatValue;
+    lv_obj_t* connectState;
+    lv_obj_t* batteryIcon;
+    lv_obj_t* labelMantra;     // Scrolling mantras (top line - always on)
+    lv_obj_t* labelCalendar;   // Scrolling calendar events (bottom line)
 
-        lv_task_t* taskRefresh;
-        lv_task_t* taskMantra;
-        uint8_t mantraIndex = 0;
-      };
-    }
+    // Tasks
+    lv_task_t* taskRefresh;
+    lv_task_t* taskMantra;
 
-    template <>
-    struct WatchFaceTraits<WatchFace::Terminal> {
-      static constexpr WatchFace watchFace = WatchFace::Terminal;
-      static constexpr const char* name = "Terminal";
+    // Mantra management
+    uint8_t mantraIndex;
+    uint32_t lastMantraUpdateTime;
 
-      static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::WatchFaceTerminal(controllers.dateTimeController,
-                                              controllers.batteryController,
-                                              controllers.bleController,
-                                              controllers.notificationManager,
-                                              controllers.settingsController,
-                                              controllers.heartRateController,
-                                              controllers.motionController,
-                                              *controllers.weatherController);
-      };
-
-      static bool IsAvailable(Pinetime::Controllers::FS& /*filesystem*/) {
-        return true;
-      }
-    };
-  }
+    // State tracking
+    Pinetime::Utilities::DirtyValue<bool> notificationState;
+    Pinetime::Utilities::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::seconds>> currentDateTime;
+    Pinetime::Utilities::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::days>> currentDate;
+    Pinetime::Utilities::DirtyValue<uint8_t> batteryPercentRemaining;
+    Pinetime::Utilities::DirtyValue<bool> powerPresent;
+    Pinetime::Utilities::DirtyValue<uint8_t> heartbeat;
+    Pinetime::Utilities::DirtyValue<bool> heartbeatRunning;
+    Pinetime::Utilities::DirtyValue<bool> bleState;
+    Pinetime::Utilities::DirtyValue<bool> bleRadioEnabled;
+  };
 }
