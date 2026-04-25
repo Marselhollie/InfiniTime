@@ -14,13 +14,6 @@
 #include "displayapp/screens/Screen.h"
 #include "utility/DirtyValue.h"
 
-// Forward declaration
-void MantraTaskCallback(lv_task_t* task);
-
-namespace Pinetime::Applications::Screens {
-  class WatchFaceTerminal;
-}
-
 namespace Pinetime::Applications::Screens {
 
   class WatchFaceTerminal : public Screen {
@@ -41,10 +34,8 @@ namespace Pinetime::Applications::Screens {
 
     static bool IsAvailable() { return true; }
 
-    void NextMantra();
-
   private:
-    friend void ::MantraTaskCallback(lv_task_t*);
+    void NextMantra();
     void UpdateCalendarDisplay();
     void UpdateMantraDisplay();
 
