@@ -25,7 +25,7 @@ static const char* mantras[] = {
   "REMOVE I · SHIFT TO INVITATIONAL PHRASING",
   "GRATEFUL 3 THINGS",
   "READ PEOPLES SOCIAL AURAS AND DELIVERY",
-  "FASTING|SAYNOTOPORN|POT|NO COFFEE BETTER SOCIAL",
+  "FASTING |SAYNOTOPORN|NOCOFFEE",
   "RE-CALM NON VERBALS"
 };
 static constexpr uint8_t mantraCount = sizeof(mantras) / sizeof(mantras[0]);
@@ -63,7 +63,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
   labelPrompt1 = lv_label_create(container, nullptr);
   lv_obj_set_style_local_text_color(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
-  lv_obj_set_style_local_text_font(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
+  lv_obj_set_style_local_text_font(labelPrompt1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_extrabold_compressed);
   lv_label_set_text_static(labelPrompt1, "00:00 AM");
 
   labelTime = lv_label_create(container, nullptr);
@@ -84,7 +84,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   // Battery as text label inside the container (default terminal position)
   batteryIcon = lv_label_create(container, nullptr);
   lv_label_set_recolor(batteryIcon, true);
-  lv_label_set_text_static(batteryIcon, "#ffffff [BATT]# ---%");
+  lv_label_set_text_static(batteryIcon, "#ffffff [PWR]# ---%");
 
   mantraIndex = xTaskGetTickCount() % mantraCount;
   labelPrompt2 = lv_label_create(lv_scr_act(), nullptr);
@@ -158,12 +158,12 @@ void WatchFaceTerminal::Refresh() {
     auto pct = batteryPercentRemaining.Get();
     const char* color;
     if (batteryController.IsCharging()) {
-      lv_label_set_text_fmt(batteryIcon, "#ffffff [BATT]# #00ff00 CHG %d%%%#", pct);
+      lv_label_set_text_fmt(batteryIcon, "#ffffff [PWR]# #00ff00 CHG %d%%%#", pct);
     } else {
       if (pct > 60) color = "00ff00";
       else if (pct > 30) color = "ffaa00";
       else color = "ff2200";
-      lv_label_set_text_fmt(batteryIcon, "#ffffff [BATT]# #%s %d%%%#", color, pct);
+      lv_label_set_text_fmt(batteryIcon, "#ffffff [PWR]# #%s %d%%%#", color, pct);
     }
   }
 
