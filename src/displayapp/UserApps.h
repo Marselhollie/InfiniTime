@@ -38,12 +38,12 @@ namespace Pinetime {
 
     template <Apps t>
     consteval AppDescription CreateAppDescription() {
-      return {AppTraits<t>::app, AppTraits<t>::icon, &AppTraits<t>::create, &AppTraits<t>::isavailable};
+      return {AppTraits<t>::app, AppTraits<t>::icon, &AppTraits<t>::create, &AppTraits<t>::isAvailable};
     }
 
     template <WatchFace t>
     consteval WatchFaceDescription CreateWatchFaceDescription() {
-      return {WatchFaceTraits<t>::watchFace, WatchFaceTraits<t>::name, &WatchFaceTraits<t>::create, &WatchFaceTraits<t>::isavailable};
+      return {WatchFaceTraits<t>::watchFace, WatchFaceTraits<t>::name, &WatchFaceTraits<t>::create, &WatchFaceTraits<t>::isAvailable};
     }
 
     template <template <Apps...> typename T, Apps... ts>
