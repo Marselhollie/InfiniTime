@@ -35,10 +35,11 @@ namespace Pinetime::Applications::Screens {
     static bool IsAvailable() { return true; }
 
   private:
-    friend void MantraTaskCallback(lv_task_t*);
-    void NextMantra();
     void UpdateCalendarDisplay();
     void UpdateMantraDisplay();
+
+  public:
+    void NextMantra();
 
     Controllers::DateTime& dateTimeController;
     const Controllers::Battery& batteryController;
@@ -89,7 +90,7 @@ namespace Pinetime::Applications {
     static constexpr WatchFace watchFace = WatchFace::Terminal;
     static constexpr const char* name = "Terminal";
 
-    static Screens::Screen* Create(AppControllers& controllers) {
+    static Screens::Screen* create(AppControllers& controllers) {
       return new Screens::WatchFaceTerminal(controllers.dateTimeController,
                                             controllers.batteryController,
                                             controllers.bleController,
@@ -101,7 +102,7 @@ namespace Pinetime::Applications {
                                             nullptr);
     }
 
-    static bool IsAvailable() { 
+    static bool isAvailable(Controllers::FS& fileSystem) { 
       return true; 
     }
   };
