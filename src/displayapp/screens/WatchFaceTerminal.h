@@ -49,27 +49,23 @@ namespace Pinetime::Applications::Screens {
     Controllers::SimpleWeatherService& weatherService;
     Controllers::CalendarEventService* calendarService;
 
-    // Display elements
     lv_obj_t* container;
     lv_obj_t* notificationIcon;
-    lv_obj_t* labelPrompt1;  // Time
+    lv_obj_t* labelPrompt1;
     lv_obj_t* labelTime;
     lv_obj_t* labelDate;
     lv_obj_t* heartbeatValue;
     lv_obj_t* connectState;
     lv_obj_t* batteryIcon;
-    lv_obj_t* labelMantra;     // Scrolling mantras (top line - always on)
-    lv_obj_t* labelCalendar;   // Scrolling calendar events (bottom line)
+    lv_obj_t* labelMantra;
+    lv_obj_t* labelCalendar;
 
-    // Tasks
     lv_task_t* taskRefresh;
     lv_task_t* taskMantra;
 
-    // Mantra management
     uint8_t mantraIndex;
     uint32_t lastMantraUpdateTime;
 
-    // State tracking
     Pinetime::Utility::DirtyValue<bool> notificationState;
     Pinetime::Utility::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::seconds>> currentDateTime;
     Pinetime::Utility::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::days>> currentDate;
