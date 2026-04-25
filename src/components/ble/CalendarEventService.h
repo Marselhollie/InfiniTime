@@ -39,6 +39,8 @@ namespace Pinetime::Controllers {
     CalendarEventService();
     ~CalendarEventService() = default;
 
+    void Init() {}  // Required by InfiniTime service pattern (no-op for calendar)
+
     // Add or update an event
     bool AddEvent(const CalendarEvent& event);
     
