@@ -14,6 +14,9 @@
 #include "displayapp/screens/Screen.h"
 #include "utility/DirtyValue.h"
 
+// Forward declaration
+void MantraTaskCallback(lv_task_t* task);
+
 namespace Pinetime::Applications::Screens {
   class WatchFaceTerminal;
 }
@@ -41,6 +44,7 @@ namespace Pinetime::Applications::Screens {
     void NextMantra();
 
   private:
+    friend void ::MantraTaskCallback(lv_task_t*);
     void UpdateCalendarDisplay();
     void UpdateMantraDisplay();
 
@@ -84,5 +88,35 @@ namespace Pinetime::Applications::Screens {
     Pinetime::Utility::DirtyValue<bool> heartbeatRunning;
     Pinetime::Utility::DirtyValue<bool> bleState;
     Pinetime::Utility::DirtyValue<bool> bleRadioEnabled;
+  };
+}
+
+namespace Pinetime::Applications {
+  template <>
+  struct WatchFaceTraits<WatchFace::Terminal> {
+    static constexpr WatchFace watchFace = WatchFace::Terminal;
+    static constexpr const char* name = "Terminal";
+
+    static Screens::Screen* Create(DisplayApp* app,
+                                   Controllers::DateTime& dateTimeController,
+                                   const Controllers::Battery& batteryController,
+                                   const Controllers::Ble& bleController,
+                                   Controllers::NotificationManager& notificationManager,
+                                   Controllers::Settings& settingsController,
+                                   Controllers::HeartRateController& heartRateController,
+                                   Controllers::MotionController& motionController,
+                                   Controllers::SimpleWeatherService& weatherService) {
+      return new Screens::WatchFaceTerminal(dateTimeController,
+                                            batteryController,
+                                            bleController,
+                                            notificationManager,
+                                            settingsController,
+                                            heartRateController,
+                                            motionController,
+                                            weatherService,
+                                            nullptr);
+    }
+
+    static bool IsAvailable() { return true; }
   };
 }
