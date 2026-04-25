@@ -84,26 +84,20 @@ namespace Pinetime::Applications {
     static constexpr WatchFace watchFace = WatchFace::Terminal;
     static constexpr const char* name = "Terminal";
 
-    static Screens::Screen* Create(DisplayApp* app,
-                                   Controllers::DateTime& dateTimeController,
-                                   const Controllers::Battery& batteryController,
-                                   const Controllers::Ble& bleController,
-                                   Controllers::NotificationManager& notificationManager,
-                                   Controllers::Settings& settingsController,
-                                   Controllers::HeartRateController& heartRateController,
-                                   Controllers::MotionController& motionController,
-                                   Controllers::SimpleWeatherService& weatherService) {
-      return new Screens::WatchFaceTerminal(dateTimeController,
-                                            batteryController,
-                                            bleController,
-                                            notificationManager,
-                                            settingsController,
-                                            heartRateController,
-                                            motionController,
-                                            weatherService,
+    static Screens::Screen* create(AppControllers& controllers) {
+      return new Screens::WatchFaceTerminal(controllers.dateTimeController,
+                                            controllers.batteryController,
+                                            controllers.bleController,
+                                            controllers.notificationManager,
+                                            controllers.settingsController,
+                                            controllers.heartRateController,
+                                            controllers.motionController,
+                                            controllers.weatherService,
                                             nullptr);
     }
 
-    static bool IsAvailable() { return true; }
+    static bool isAvailable(Controllers::FS& fileSystem) { 
+      return true; 
+    }
   };
 }
