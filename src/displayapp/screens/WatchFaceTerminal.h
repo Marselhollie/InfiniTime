@@ -41,7 +41,7 @@ namespace Pinetime::Applications {
                                             heartRateController,
                                             motionController,
                                             weatherService,
-                                            app->GetNimbleController().calendar());
+                                            nullptr);
     }
 
     static bool IsAvailable() { return true; }
@@ -60,7 +60,7 @@ namespace Pinetime::Applications::Screens {
                      Controllers::HeartRateController& heartRateController,
                      Controllers::MotionController& motionController,
                      Controllers::SimpleWeatherService& weatherService,
-                     Controllers::CalendarEventService& calendarService);
+                     Controllers::CalendarEventService* calendarService = nullptr);
 
     ~WatchFaceTerminal() override;
 
@@ -81,7 +81,7 @@ namespace Pinetime::Applications::Screens {
     Controllers::HeartRateController& heartRateController;
     Controllers::MotionController& motionController;
     Controllers::SimpleWeatherService& weatherService;
-    Controllers::CalendarEventService& calendarService;
+    Controllers::CalendarEventService* calendarService;
 
     // Display elements
     lv_obj_t* container;

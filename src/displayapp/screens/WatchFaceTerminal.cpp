@@ -43,7 +43,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
                                      Controllers::HeartRateController& heartRateController,
                                      Controllers::MotionController& motionController,
                                      Controllers::SimpleWeatherService& weatherService,
-                                     Controllers::CalendarEventService& calendarService)
+                                     Controllers::CalendarEventService* calendarService)
   : currentDateTime {{}},
     dateTimeController {dateTimeController},
     batteryController {batteryController},
@@ -133,13 +133,17 @@ void WatchFaceTerminal::UpdateMantraDisplay() {
 
 void WatchFaceTerminal::UpdateCalendarDisplay() {
   // Check if there are upcoming events
+  if (calendarService == nullptr) {
+    return;  // Calendar service not available
+  }
+  
   uint64_t currentTime = std::chrono::system_clock::now().time_since_epoch().count() / 1000000000;
   
   Controllers::CalendarEventService::CalendarEvent nextEvent;
-  if (calendarService.GetNextEvent(nextEvent, currentTime)) {
+  if (calendarService->GetNextEvent(nextEvent, currentTime)) {
     // Format calendar event for display on bottom line
     char calendarText[240];
-    calendarService.UpdateDisplayString(calendarText, sizeof(calendarText), currentTime);
+    calendarService->UpdateDisplayString(calendarText, sizeof(calendarText), currentTime);
     
     // Update bottom line with calendar event
     const char* currentText = lv_label_get_text(labelCalendar);
