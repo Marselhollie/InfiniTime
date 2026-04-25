@@ -1,7 +1,6 @@
 #include <lvgl/lvgl.h>
 
 #include "displayapp/screens/WatchFaceTerminal.h"
-#include "displayapp/screens/BatteryIcon.h"
 #include "components/battery/BatteryController.h"
 #include "components/ble/BleController.h"
 #include "components/ble/NotificationManager.h"
@@ -26,7 +25,7 @@ static const char* mantras[] = {
   "Remove i as much beginning statements shift to invitational phrasing",
   "Grateful 3 things",
   "Read peoples social auras and delivery",
-  "Fasting|pot|coffee|food",
+  "Say NO to porn |ZERO Coffee AM ",
   "Re-Calm non verbals"
 };
 static constexpr uint8_t mantraCount = sizeof(mantras) / sizeof(mantras[0]);
@@ -82,9 +81,10 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
   lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
 
-  batteryIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text_static(batteryIcon, Symbols::batteryHalf);
-  lv_obj_align(batteryIcon, nullptr, LV_ALIGN_IN_TOP_RIGHT, -4, 4);
+  // Battery as text label inside the container (default terminal position)
+  batteryIcon = lv_label_create(container, nullptr);
+  lv_label_set_recolor(batteryIcon, true);
+  lv_label_set_text_static(batteryIcon, "#ffffff [BATT]# ---%");
 
   mantraIndex = xTaskGetTickCount() % mantraCount;
   labelPrompt2 = lv_label_create(lv_scr_act(), nullptr);
@@ -92,6 +92,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   lv_obj_set_style_local_text_font(labelPrompt2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
   lv_label_set_long_mode(labelPrompt2, LV_LABEL_LONG_SROLL_CIRC);
   lv_obj_set_width(labelPrompt2, 240);
+  lv_obj_set_height(labelPrompt2, 44);
   lv_label_set_text(labelPrompt2, mantras[mantraIndex]);
   lv_obj_align(labelPrompt2, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
 
@@ -154,11 +155,12 @@ void WatchFaceTerminal::Refresh() {
   powerPresent = batteryController.IsPowerPresent();
   batteryPercentRemaining = batteryController.PercentRemaining();
   if (batteryPercentRemaining.IsUpdated() || powerPresent.IsUpdated()) {
-    lv_obj_set_style_local_text_color(batteryIcon,
-                                      LV_LABEL_PART_MAIN,
-                                      LV_STATE_DEFAULT,
-                                      BatteryIcon::ColorFromPercentage(batteryPercentRemaining.Get()));
-    lv_label_set_text_static(batteryIcon, Symbols::batteryHalf);
+    auto pct = batteryPercentRemaining.Get();
+    if (batteryController.IsCharging()) {
+      lv_label_set_text_fmt(batteryIcon, "#ffffff [BATT]# #00ff00 CHG %d%%%#", pct);
+    } else {
+      lv_label_set_text_fmt(batteryIcon, "#ffffff [BATT]# #11cc55 %d%%%#", pct);
+    }
   }
 
   heartbeat = heartRateController.HeartRate();
