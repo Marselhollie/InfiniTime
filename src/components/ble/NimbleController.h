@@ -22,6 +22,7 @@
 #include "components/ble/ServiceDiscovery.h"
 #include "components/ble/MotionService.h"
 #include "components/ble/SimpleWeatherService.h"
+#include "components/ble/CalendarEventService.h"
 #include "components/fs/FS.h"
 
 namespace Pinetime {
@@ -71,6 +72,10 @@ namespace Pinetime {
         return weatherService;
       };
 
+      Pinetime::Controllers::CalendarEventService& calendar() {
+        return calendarService;
+      };
+
       uint16_t connHandle();
       void NotifyBatteryLevel(uint8_t level);
 
@@ -100,6 +105,7 @@ namespace Pinetime {
       CurrentTimeService currentTimeService;
       MusicService musicService;
       SimpleWeatherService weatherService;
+      CalendarEventService calendarService;
       NavigationService navService;
       BatteryInformationService batteryInformationService;
       ImmediateAlertService immediateAlertService;
