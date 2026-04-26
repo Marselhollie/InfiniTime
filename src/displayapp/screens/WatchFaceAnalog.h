@@ -93,7 +93,7 @@ namespace Pinetime {
       static constexpr WatchFace watchFace = WatchFace::Analog;
       static constexpr const char* name = "Analog";
 
-      static Screens::Screen* Create(AppControllers& controllers) {
+      static Screens::Screen* create(AppControllers& controllers) {
         return new Screens::WatchFaceAnalog(controllers.dateTimeController,
                                             controllers.batteryController,
                                             controllers.bleController,
@@ -101,7 +101,7 @@ namespace Pinetime {
                                             controllers.settingsController);
       };
 
-      static bool IsAvailable(Pinetime::Controllers::FS& /*filesystem*/) {
+      static bool isAvailable(Pinetime::Controllers::FS& /*filesystem*/) {
         return true;
       }
     };
