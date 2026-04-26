@@ -107,7 +107,7 @@ namespace Pinetime {
       static constexpr WatchFace watchFace = WatchFace::CasioStyleG7710;
       static constexpr const char* name = "Casio G7710";
 
-      static Screens::Screen* Create(AppControllers& controllers) {
+      static Screens::Screen* create(AppControllers& controllers) {
         return new Screens::WatchFaceCasioStyleG7710(controllers.dateTimeController,
                                                      controllers.batteryController,
                                                      controllers.bleController,
@@ -118,7 +118,7 @@ namespace Pinetime {
                                                      controllers.filesystem);
       };
 
-      static bool IsAvailable(Pinetime::Controllers::FS& filesystem) {
+      static bool isAvailable(Pinetime::Controllers::FS& filesystem) {
         return Screens::WatchFaceCasioStyleG7710::IsAvailable(filesystem);
       }
     };
