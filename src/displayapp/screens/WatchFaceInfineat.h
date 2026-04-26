@@ -106,7 +106,7 @@ namespace Pinetime {
       static constexpr WatchFace watchFace = WatchFace::Infineat;
       static constexpr const char* name = "Infineat";
 
-      static Screens::Screen* Create(AppControllers& controllers) {
+      static Screens::Screen* create(AppControllers& controllers) {
         return new Screens::WatchFaceInfineat(controllers.dateTimeController,
                                               controllers.batteryController,
                                               controllers.bleController,
@@ -116,7 +116,7 @@ namespace Pinetime {
                                               controllers.filesystem);
       };
 
-      static bool IsAvailable(Pinetime::Controllers::FS& filesystem) {
+      static bool isAvailable(Pinetime::Controllers::FS& filesystem) {
         return Screens::WatchFaceInfineat::IsAvailable(filesystem);
       }
     };
