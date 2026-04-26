@@ -82,7 +82,7 @@ namespace Pinetime {
       static constexpr WatchFace watchFace = WatchFace::Digital;
       static constexpr const char* name = "Digital";
 
-      static Screens::Screen* Create(AppControllers& controllers) {
+      static Screens::Screen* create(AppControllers& controllers) {
         return new Screens::WatchFaceDigital(controllers.dateTimeController,
                                              controllers.batteryController,
                                              controllers.bleController,
@@ -94,7 +94,7 @@ namespace Pinetime {
                                              *controllers.weatherController);
       };
 
-      static bool IsAvailable(Pinetime::Controllers::FS& /*filesystem*/) {
+      static bool isAvailable(Pinetime::Controllers::FS& /*filesystem*/) {
         return true;
       }
     };

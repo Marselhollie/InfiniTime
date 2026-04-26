@@ -85,7 +85,7 @@ namespace Pinetime {
       static constexpr WatchFace watchFace = WatchFace::PrideFlag;
       static constexpr const char* name = "Pride Flag";
 
-      static Screens::Screen* Create(AppControllers& controllers) {
+      static Screens::Screen* create(AppControllers& controllers) {
         return new Screens::WatchFacePrideFlag(controllers.dateTimeController,
                                                controllers.batteryController,
                                                controllers.bleController,
@@ -94,7 +94,7 @@ namespace Pinetime {
                                                controllers.motionController);
       };
 
-      static bool IsAvailable(Pinetime::Controllers::FS& /*filesystem*/) {
+      static bool isAvailable(Pinetime::Controllers::FS& /*filesystem*/) {
         return true;
       }
     };
