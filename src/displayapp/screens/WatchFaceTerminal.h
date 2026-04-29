@@ -59,6 +59,7 @@ namespace Pinetime {
         lv_obj_t* connectState;
         lv_obj_t* batteryValue;
         lv_obj_t* labelMantra;
+        lv_obj_t* statusIcons;
 
         Controllers::DateTime& dateTimeController;
         const Controllers::Battery& batteryController;
