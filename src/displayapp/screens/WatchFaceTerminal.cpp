@@ -10,7 +10,7 @@
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/InfiniTimeTheme.h"
 #include "displayapp/screens/Symbols.h"
-//
+
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 extern lv_font_t lv_font_sys_48;
 
@@ -201,7 +201,7 @@ void WatchFaceTerminal::Refresh() {
                           connected ? Symbols::bluetooth : "",
                           hasNotif ? Symbols::bell : "",
                           (batColor.ch.red << 3),
-                          (batColor.ch.green << 2),
+                          ((batColor.ch.green_h << 3) | batColor.ch.green_l),
                           (batColor.ch.blue << 3),
                           Symbols::batteryHalf);
   }
