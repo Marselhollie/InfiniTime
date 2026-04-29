@@ -9,7 +9,7 @@
 #include "components/settings/Settings.h"
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/InfiniTimeTheme.h"
-
+//
 using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
