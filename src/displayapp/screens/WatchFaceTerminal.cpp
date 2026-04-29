@@ -22,7 +22,7 @@ static const char* mantras[] = {
   "BE DIRECT W/O BEING HOSTILE",
   "practice OPTIMUM PITCH W/O dragging Mood",
   "SHIFT ATTENTION AND MOOD IN CONVERSATION",
-  "skip "I" from intros.INVITATIONAL PHRASING",
+  "skip i from intros & use INVITATIONAL PHRASING",
   "GRATEFUL 3 THINGS",
   "READING SOCIAL AURAS AND Effect of their DELIVERY",
   "|NOCOFFEE better socials|",
