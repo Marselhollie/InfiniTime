@@ -9,8 +9,10 @@
 #include "components/settings/Settings.h"
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/InfiniTimeTheme.h"
+#include "displayapp/screens/Symbols.h"
 
 extern lv_font_t jetbrains_mono_extrabold_compressed;
+extern lv_font_t lv_font_sys_48;
 
 using namespace Pinetime::Applications::Screens;
 
@@ -18,14 +20,13 @@ static const char* mantras[] = {
   "BREATHE 5 DEEP TIMES",
   "HOLD EYE CONTACT REPLYING",
   "BE DIRECT W/O BEING HOSTILE",
-  "OPTIMUM PITCH without dragging the MOOD",
+  "SPEAK IN OPTIMUM PITCH",
   "SHIFT ATTENTION AND MOOD IN CONVERSATION",
   "REMOVE I · SHIFT TO INVITATIONAL PHRASING",
   "GRATEFUL 3 THINGS",
   "READ PEOPLES SOCIAL AURAS AND DELIVERY",
-  "|NOCOFFEE|Productive Passtimes | Spend Less",
-  " Stretch MONEY|SAYNOTOPORN",
-  
+  "|NOCOFFEE|$TRETCH/WITHOLD_MONEY|SAYNOTOPORN",
+  "RE-CALM NON VERBALS"
 };
 static const int mantraCount = 10;
 
@@ -54,6 +55,12 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   lv_obj_set_style_local_bg_opa(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
 
   notificationIcon = lv_label_create(container, nullptr);
+
+  statusIcons = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_set_style_local_text_font(statusIcons, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_sys_48);
+  lv_obj_set_style_local_text_color(statusIcons, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
+  lv_label_set_recolor(statusIcons, true);
+  lv_obj_align(statusIcons, nullptr, LV_ALIGN_IN_TOP_RIGHT, 0, 0);
 
   labelTime = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelTime, true);
@@ -184,5 +191,18 @@ void WatchFaceTerminal::Refresh() {
         lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
       }
     }
+    // Update status icon row: bluetooth + bell + battery
+    bool connected = bleRadioEnabled.Get() && bleState.Get();
+    bool hasNotif = notificationManager.AreNewNotificationsAvailable();
+    int batPct = batteryPercentRemaining.Get();
+    lv_color_t batColor = BatteryIcon::ColorFromPercentage(batPct);
+    lv_label_set_text_fmt(statusIcons,
+                          "%s %s #%02x%02x%02x %s#",
+                          connected ? Symbols::bluetooth : "",
+                          hasNotif ? Symbols::bell : "",
+                          (batColor.ch.red << 3),
+                          (batColor.ch.green << 2),
+                          (batColor.ch.blue << 3),
+                          Symbols::batteryHalf);
   }
 }
