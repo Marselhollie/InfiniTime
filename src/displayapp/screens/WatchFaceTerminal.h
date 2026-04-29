@@ -36,6 +36,8 @@ namespace Pinetime {
         ~WatchFaceTerminal() override;
 
         void Refresh() override;
+        void UpdateMantra();
+        static void MantraTaskCallback(lv_task_t* task);
 
       private:
         Utility::DirtyValue<int> batteryPercentRemaining {};
@@ -43,7 +45,6 @@ namespace Pinetime {
         Utility::DirtyValue<bool> bleState {};
         Utility::DirtyValue<bool> bleRadioEnabled {};
         Utility::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::seconds>> currentDateTime {};
-        Utility::DirtyValue<uint32_t> stepCount {};
         Utility::DirtyValue<uint8_t> heartbeat {};
         Utility::DirtyValue<bool> heartbeatRunning {};
         Utility::DirtyValue<bool> notificationState {};
@@ -52,15 +53,12 @@ namespace Pinetime {
 
         lv_obj_t* container;
         lv_obj_t* notificationIcon;
-        lv_obj_t* labelPrompt1;
         lv_obj_t* labelTime;
         lv_obj_t* labelDate;
-        lv_obj_t* batteryValue;
-        lv_obj_t* stepValue;
         lv_obj_t* heartbeatValue;
-        lv_obj_t* weather;
         lv_obj_t* connectState;
-        lv_obj_t* labelPrompt2;
+        lv_obj_t* batteryValue;
+        lv_obj_t* labelMantra;
 
         Controllers::DateTime& dateTimeController;
         const Controllers::Battery& batteryController;
@@ -72,6 +70,7 @@ namespace Pinetime {
         Controllers::SimpleWeatherService& weatherService;
 
         lv_task_t* taskRefresh;
+        lv_task_t* taskMantra;
       };
     }
 
