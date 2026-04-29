@@ -10,7 +10,7 @@
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/InfiniTimeTheme.h"
 #include "displayapp/screens/Symbols.h"
-
+//
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 extern lv_font_t lv_font_sys_48;
 
