@@ -10,7 +10,7 @@
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/screens/WeatherSymbols.h"
 #include "displayapp/InfiniTimeTheme.h"
-
+// 
 using namespace Pinetime::Applications::Screens;
 
 WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
