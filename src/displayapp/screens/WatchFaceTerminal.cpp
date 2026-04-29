@@ -187,3 +187,4 @@ void WatchFaceTerminal::Refresh() {
     }
   }
 }
+
