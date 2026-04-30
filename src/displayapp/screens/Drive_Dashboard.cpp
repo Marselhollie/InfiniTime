@@ -13,7 +13,7 @@ static const char* const dashText =
   "\n"
   "ALSO REMEMBER THAT I CAN LIVE AND WORK MORE ON THE OUTSKIRTS/ OTHER CITIES. THERE'S MAYBE MORE LARGER WINDOWS OF OPPORTUNITY FARTHER OUT FROM LA.";
 
-Drive_Dashboard::Drive_Dashboard(DisplayApp* app) : Screen(app) {
+Drive_Dashboard::Drive_Dashboard(DisplayApp* app) : displayApp {app} {
   lv_obj_t* page = lv_page_create(lv_scr_act(), nullptr);
   lv_obj_set_size(page, 240, 240);
   lv_obj_set_pos(page, 0, 0);
@@ -33,7 +33,7 @@ Drive_Dashboard::~Drive_Dashboard() {
 
 bool Drive_Dashboard::OnTouchEvent(TouchEvents event) {
   if (event == TouchEvents::SwipeRight) {
-    app->StartApp(Apps::Clock, DisplayApp::FullRefreshDirections::LeftAnim);
+    displayApp->StartApp(Apps::Clock, DisplayApp::FullRefreshDirections::LeftAnim);
     return true;
   }
   return false;
