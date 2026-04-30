@@ -15,6 +15,7 @@ namespace Pinetime {
         bool OnTouchEvent(TouchEvents event) override;
 
       private:
+        DisplayApp* displayApp;
         lv_obj_t* label;
       };
     }
