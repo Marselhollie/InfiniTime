@@ -25,7 +25,8 @@ namespace Pinetime {
 
       class WatchFaceTerminal : public Screen {
       public:
-        WatchFaceTerminal(Controllers::DateTime& dateTimeController,
+        WatchFaceTerminal(DisplayApp* app,
+                          Controllers::DateTime& dateTimeController,
                           const Controllers::Battery& batteryController,
                           const Controllers::Ble& bleController,
                           Controllers::NotificationManager& notificationManager,
@@ -36,6 +37,7 @@ namespace Pinetime {
         ~WatchFaceTerminal() override;
 
         void Refresh() override;
+        bool OnTouchEvent(TouchEvents event) override;
         void UpdateMantra();
         static void MantraTaskCallback(lv_task_t* task);
 
@@ -81,7 +83,8 @@ namespace Pinetime {
       static constexpr const char* name = "Terminal";
 
       static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::WatchFaceTerminal(controllers.dateTimeController,
+        return new Screens::WatchFaceTerminal(controllers.displayApp,
+                                              controllers.dateTimeController,
                                               controllers.batteryController,
                                               controllers.bleController,
                                               controllers.notificationManager,
