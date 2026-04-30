@@ -11,7 +11,6 @@
 #include "displayapp/InfiniTimeTheme.h"
 #include "displayapp/screens/Symbols.h"
 #include "displayapp/DisplayApp.h"
-#include "displayapp/Apps.h"
 
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 
