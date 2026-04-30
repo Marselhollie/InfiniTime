@@ -12,7 +12,6 @@
 #include "displayapp/screens/Symbols.h"
 
 extern lv_font_t jetbrains_mono_extrabold_compressed;
-extern lv_font_t lv_font_sys_48;
 
 using namespace Pinetime::Applications::Screens;
 
@@ -20,17 +19,16 @@ static const char* mantras[] = {
   "BREATHE 5 DEEP TIMES",
   "HOLD EYE CONTACT REPLYING",
   "BE DIRECT W/O BEING HOSTILE",
-  "practice OPTIMUM PITCH W/O dragging Mood",
+  "PRACTICE OPTIMUM PITCH W/O DRAGGING MOOD",
   "SHIFT ATTENTION AND MOOD IN CONVERSATION",
-  "skip i from intros & use INVITATIONAL PHRASING",
+  "REMOVE I FROM INTROS. INVITATIONAL PHRASING",
   "GRATEFUL 3 THINGS",
-  "READING SOCIAL AURAS AND Effect of their DELIVERY",
-  "|NOCOFFEE better socials|",
-"LONGERTERM Activities SAVES MONEY" ,
-"NTLOOKNG@PORN = moving closer 2GF" ,
- 
+  "READ PEOPLES SOCIAL AURAS AND EFFECT OF THEIR DELIVERY",
+  "|NOCOFFEE BETTER SOCIALS|",
+  "LONGERTERM ACTIVITIES SAVES MONEY",
+  "NTLOOKNG@PORN = MOVING CLOSER 2GF"
 };
-static const int mantraCount = 10;
+static const int mantraCount = 11;
 
 WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
                                      const Controllers::Battery& batteryController,
@@ -59,10 +57,9 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   notificationIcon = lv_label_create(container, nullptr);
 
   statusIcons = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_font(statusIcons, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_sys_48);
   lv_obj_set_style_local_text_color(statusIcons, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
   lv_label_set_recolor(statusIcons, true);
-  lv_obj_align(statusIcons, nullptr, LV_ALIGN_IN_TOP_RIGHT, 0, 0);
+  lv_obj_align(statusIcons, nullptr, LV_ALIGN_IN_TOP_RIGHT, -5, 5);
 
   labelTime = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelTime, true);
