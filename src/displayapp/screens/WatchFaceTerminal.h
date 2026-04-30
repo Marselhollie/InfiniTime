@@ -9,7 +9,7 @@
 #include "components/datetime/DateTimeController.h"
 #include "components/ble/SimpleWeatherService.h"
 #include "utility/DirtyValue.h"
-
+//
 namespace Pinetime {
   namespace Controllers {
     class Settings;
