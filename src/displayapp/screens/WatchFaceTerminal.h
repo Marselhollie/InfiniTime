@@ -63,6 +63,8 @@ namespace Pinetime {
         lv_obj_t* labelMantra;
         lv_obj_t* statusIcons;
 
+        DisplayApp* displayApp;
+
         Controllers::DateTime& dateTimeController;
         const Controllers::Battery& batteryController;
         const Controllers::Ble& bleController;
