@@ -2,7 +2,7 @@
 
 #include <lvgl/src/lv_core/lv_obj.h>
 #include "displayapp/screens/Screen.h"
-#include "displayapp/Apps.h"
+#include "UserApps.h"
 #include "displayapp/DisplayApp.h"
 
 namespace Pinetime {
