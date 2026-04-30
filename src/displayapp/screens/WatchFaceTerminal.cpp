@@ -79,9 +79,9 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   lv_label_set_recolor(batteryValue, true);
 
   labelMantra = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
+  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
   lv_label_set_long_mode(labelMantra, LV_LABEL_LONG_SROLL_CIRC);
-  lv_label_set_anim_speed(labelMantra, 80);
+  lv_label_set_anim_speed(labelMantra, 60);
   lv_obj_set_width(labelMantra, 240);
   lv_obj_align(labelMantra, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
 
