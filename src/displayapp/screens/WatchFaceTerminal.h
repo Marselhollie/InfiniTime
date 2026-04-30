@@ -9,7 +9,7 @@
 #include "components/datetime/DateTimeController.h"
 #include "components/ble/SimpleWeatherService.h"
 #include "utility/DirtyValue.h"
-//
+
 namespace Pinetime {
   namespace Controllers {
     class Settings;
@@ -42,6 +42,8 @@ namespace Pinetime {
         static void MantraTaskCallback(lv_task_t* task);
 
       private:
+        DisplayApp* displayApp;
+
         Utility::DirtyValue<int> batteryPercentRemaining {};
         Utility::DirtyValue<bool> powerPresent {};
         Utility::DirtyValue<bool> bleState {};
@@ -62,8 +64,6 @@ namespace Pinetime {
         lv_obj_t* batteryValue;
         lv_obj_t* labelMantra;
         lv_obj_t* statusIcons;
-
-        DisplayApp* displayApp;
 
         Controllers::DateTime& dateTimeController;
         const Controllers::Battery& batteryController;
