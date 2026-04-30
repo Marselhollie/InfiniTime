@@ -21,14 +21,15 @@ static const char* mantras[] = {
   "BE DIRECT W/O BEING HOSTILE",
   "PRACTICE OPTIMUM PITCH W/O DRAGGING MOOD",
   "SHIFT ATTENTION AND MOOD IN CONVERSATION",
-  "REMOVE I FROM INTROS. INVITATIONAL PHRASING",
+  "REMOVE I FROM INTROS INVITATIONAL PHRASING",
   "GRATEFUL 3 THINGS",
   "READ PEOPLES SOCIAL AURAS AND EFFECT OF THEIR DELIVERY",
   "|NOCOFFEE BETTER SOCIALS|",
+  "ASKING GOD. KEEPING GOD ON MY MIND.",
   "LONGERTERM ACTIVITIES SAVES MONEY",
   "NTLOOKNG@PORN = MOVING CLOSER 2GF"
 };
-static const int mantraCount = 11;
+static const int mantraCount = 12;
 
 WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
                                      const Controllers::Battery& batteryController,
@@ -78,8 +79,9 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   lv_label_set_recolor(batteryValue, true);
 
   labelMantra = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_YELLOW);
+  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
   lv_label_set_long_mode(labelMantra, LV_LABEL_LONG_SROLL_CIRC);
+  lv_obj_set_style_local_anim_speed(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, 80);
   lv_obj_set_width(labelMantra, 240);
   lv_obj_align(labelMantra, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
 
