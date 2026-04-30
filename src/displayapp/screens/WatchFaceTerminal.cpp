@@ -41,7 +41,8 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
                                      Controllers::HeartRateController& heartRateController,
                                      Controllers::MotionController& motionController,
                                      Controllers::SimpleWeatherService& weatherService)
-  : Screen(app),
+  : currentDateTime {{}},
+    displayApp {app},
     currentDateTime {{}},
     dateTimeController {dateTimeController},
     batteryController {batteryController},
@@ -108,7 +109,7 @@ WatchFaceTerminal::~WatchFaceTerminal() {
 
 bool WatchFaceTerminal::OnTouchEvent(TouchEvents event) {
   if (event == TouchEvents::SwipeLeft) {
-    app->StartApp(Apps::DriveDashboard, DisplayApp::FullRefreshDirections::LeftAnim);
+    displayApp->StartApp(Apps::DriveDashboard, DisplayApp::FullRefreshDirections::LeftAnim);
     return true;
   }
   return false;
