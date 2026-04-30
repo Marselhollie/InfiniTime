@@ -10,6 +10,8 @@
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/InfiniTimeTheme.h"
 #include "displayapp/screens/Symbols.h"
+#include "displayapp/DisplayApp.h"
+#include "displayapp/Apps.h"
 
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 
@@ -31,7 +33,8 @@ static const char* mantras[] = {
 };
 static const int mantraCount = 12;
 
-WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
+WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
+                                     Controllers::DateTime& dateTimeController,
                                      const Controllers::Battery& batteryController,
                                      const Controllers::Ble& bleController,
                                      Controllers::NotificationManager& notificationManager,
@@ -39,7 +42,8 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
                                      Controllers::HeartRateController& heartRateController,
                                      Controllers::MotionController& motionController,
                                      Controllers::SimpleWeatherService& weatherService)
-  : currentDateTime {{}},
+  : Screen(app),
+    currentDateTime {{}},
     dateTimeController {dateTimeController},
     batteryController {batteryController},
     bleController {bleController},
@@ -101,6 +105,14 @@ WatchFaceTerminal::~WatchFaceTerminal() {
   lv_task_del(taskRefresh);
   lv_task_del(taskMantra);
   lv_obj_clean(lv_scr_act());
+}
+
+bool WatchFaceTerminal::OnTouchEvent(TouchEvents event) {
+  if (event == TouchEvents::SwipeLeft) {
+    app->StartApp(Apps::DriveDashboard, DisplayApp::FullRefreshDirections::LeftAnim);
+    return true;
+  }
+  return false;
 }
 
 void WatchFaceTerminal::MantraTaskCallback(lv_task_t* task) {
@@ -200,7 +212,6 @@ void WatchFaceTerminal::Refresh() {
         lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
       }
     }
-    // Update status icon row: bluetooth only
     bool connected = bleRadioEnabled.Get() && bleState.Get();
     lv_label_set_text(statusIcons, connected ? Symbols::bluetooth : "");
   }
