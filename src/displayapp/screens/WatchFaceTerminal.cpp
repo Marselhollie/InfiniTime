@@ -19,15 +19,17 @@ static const char* mantras[] = {
   "BREATHE 5 DEEP TIMES",
   "HOLD EYE CONTACT REPLYING",
   "BE DIRECT W/O BEING HOSTILE",
-  "SPEAK IN OPTIMUM PITCH",
+  "PRACTICE OPTIMUM PITCH W/O DRAGGING MOOD",
   "SHIFT ATTENTION AND MOOD IN CONVERSATION",
-  "REMOVE I · SHIFT TO INVITATIONAL PHRASING",
+  "REMOVE I FROM INTROS INVITATIONAL PHRASING",
   "GRATEFUL 3 THINGS",
-  "READ PEOPLES SOCIAL AURAS AND DELIVERY",
-  "|NOCOFFEE|$TRETCH/WITHOLD_MONEY|SAYNOTOPORN",
-  "RE-CALM NON VERBALS"
+  "READ PEOPLES SOCIAL AURAS AND EFFECT OF THEIR DELIVERY",
+  "|NOCOFFEE BETTER SOCIALS|",
+  "ASKING GOD. KEEPING GOD ON MY MIND.",
+  "LONGERTERM ACTIVITIES SAVES MONEY",
+  "NTLOOKNG@PORN = MOVING CLOSER 2GF"
 };
-static const int mantraCount = 10;
+static const int mantraCount = 12;
 
 WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
                                      const Controllers::Battery& batteryController,
@@ -77,8 +79,9 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
   lv_label_set_recolor(batteryValue, true);
 
   labelMantra = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
+  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
   lv_label_set_long_mode(labelMantra, LV_LABEL_LONG_SROLL_CIRC);
+  lv_obj_set_style_local_anim_time(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, 2000);
   lv_obj_set_width(labelMantra, 240);
   lv_obj_align(labelMantra, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
 
@@ -152,11 +155,19 @@ void WatchFaceTerminal::Refresh() {
   powerPresent = batteryController.IsPowerPresent();
   batteryPercentRemaining = batteryController.PercentRemaining();
   if (batteryPercentRemaining.IsUpdated() || powerPresent.IsUpdated()) {
-    lv_obj_set_style_local_text_color(batteryValue,
-                                      LV_LABEL_PART_MAIN,
-                                      LV_STATE_DEFAULT,
-                                      BatteryIcon::ColorFromPercentage(batteryPercentRemaining.Get()));
-    lv_label_set_text_fmt(batteryValue, "#ffffff [PWR]# %d%%", batteryPercentRemaining.Get());
+    int pct = batteryPercentRemaining.Get();
+    lv_color_t batColor;
+    if (batteryController.IsCharging()) {
+      batColor = LV_COLOR_GREEN;
+    } else if (pct <= 10) {
+      batColor = LV_COLOR_RED;
+    } else if (pct <= 20) {
+      batColor = LV_COLOR_YELLOW;
+    } else {
+      batColor = LV_COLOR_WHITE;
+    }
+    lv_obj_set_style_local_text_color(batteryValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, batColor);
+    lv_label_set_text_fmt(batteryValue, "#ffffff [BATT]# %d%%", pct);
     if (batteryController.IsCharging()) {
       lv_label_ins_text(batteryValue, LV_LABEL_POS_LAST, " Charging");
     }
@@ -167,9 +178,9 @@ void WatchFaceTerminal::Refresh() {
   if (heartbeat.IsUpdated() || heartbeatRunning.IsUpdated()) {
     if (heartbeatRunning.Get()) {
       lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::deepOrange);
-      lv_label_set_text_fmt(heartbeatValue, "#ffffff [<3]# %d bpm", heartbeat.Get());
+      lv_label_set_text_fmt(heartbeatValue, "#ffffff [HR]# %d bpm", heartbeat.Get());
     } else {
-      lv_label_set_text_static(heartbeatValue, "#ffffff [<3]# ---");
+      lv_label_set_text_static(heartbeatValue, "#ffffff [HR]# ---");
       lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
     }
   }
@@ -178,29 +189,19 @@ void WatchFaceTerminal::Refresh() {
   bleRadioEnabled = bleController.IsRadioEnabled();
   if (bleState.IsUpdated() || bleRadioEnabled.IsUpdated()) {
     if (!bleRadioEnabled.Get()) {
-      lv_label_set_text_static(connectState, "#ffffff [*]# Disabled");
+      lv_label_set_text_static(connectState, "#ffffff [BLE]# Disabled");
       lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
     } else {
       if (bleState.Get()) {
-        lv_label_set_text_static(connectState, "#ffffff [*]# Connected");
+        lv_label_set_text_static(connectState, "#ffffff [BLE]# Connected");
         lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::blue);
       } else {
-        lv_label_set_text_static(connectState, "#ffffff [*]# Disconnected");
+        lv_label_set_text_static(connectState, "#ffffff [BLE]# Disconnected");
         lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
       }
     }
-    // Update status icon row: bluetooth + bell + battery
+    // Update status icon row: bluetooth only
     bool connected = bleRadioEnabled.Get() && bleState.Get();
-    bool hasNotif = notificationManager.AreNewNotificationsAvailable();
-    int batPct = batteryPercentRemaining.Get();
-    lv_color_t batColor = BatteryIcon::ColorFromPercentage(batPct);
-    lv_label_set_text_fmt(statusIcons,
-                          "%s %s #%02x%02x%02x %s#",
-                          connected ? Symbols::bluetooth : "",
-                          hasNotif ? Symbols::bell : "",
-                          (batColor.ch.red << 3),
-                          ((batColor.ch.green_h << 3) | batColor.ch.green_l),
-                          (batColor.ch.blue << 3),
-                          Symbols::batteryHalf);
+    lv_label_set_text(statusIcons, connected ? Symbols::bluetooth : "");
   }
 }
