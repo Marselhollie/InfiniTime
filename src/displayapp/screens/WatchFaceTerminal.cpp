@@ -11,6 +11,8 @@
 #include "displayapp/InfiniTimeTheme.h"
 #include "displayapp/screens/Symbols.h"
 #include "displayapp/DisplayApp.h"
+#include <cstdlib>
+#include "UserApps.h"
 
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 
@@ -41,7 +43,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
                                      Controllers::HeartRateController& heartRateController,
                                      Controllers::MotionController& motionController,
                                      Controllers::SimpleWeatherService& weatherService)
-: displayApp {app},
+  : displayApp {app},
     currentDateTime {{}},
     dateTimeController {dateTimeController},
     batteryController {batteryController},
@@ -82,17 +84,16 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   lv_label_set_recolor(batteryValue, true);
 
   labelMantra = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
+  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::orange);
+  lv_obj_set_style_local_text_font(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
   lv_label_set_long_mode(labelMantra, LV_LABEL_LONG_SROLL_CIRC);
   lv_label_set_anim_speed(labelMantra, 60);
   lv_obj_set_width(labelMantra, 240);
   lv_obj_align(labelMantra, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
 
-  uint8_t dayOfYear = dateTimeController.Day();
-  int idx = dayOfYear % mantraCount;
+  srand(dateTimeController.CurrentDateTime().time_since_epoch().count());
+  int idx = rand() % mantraCount;
   lv_label_set_text(labelMantra, mantras[idx]);
-
-  taskMantra = lv_task_create(MantraTaskCallback, 86400000u, LV_TASK_PRIO_LOW, this);
 
   lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
 
@@ -102,7 +103,6 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
 
 WatchFaceTerminal::~WatchFaceTerminal() {
   lv_task_del(taskRefresh);
-  lv_task_del(taskMantra);
   lv_obj_clean(lv_scr_act());
 }
 
@@ -112,17 +112,6 @@ bool WatchFaceTerminal::OnTouchEvent(TouchEvents event) {
     return true;
   }
   return false;
-}
-
-void WatchFaceTerminal::MantraTaskCallback(lv_task_t* task) {
-  auto* screen = static_cast<WatchFaceTerminal*>(task->user_data);
-  screen->UpdateMantra();
-}
-
-void WatchFaceTerminal::UpdateMantra() {
-  uint8_t dayOfYear = dateTimeController.Day();
-  int idx = dayOfYear % mantraCount;
-  lv_label_set_text(labelMantra, mantras[idx]);
 }
 
 void WatchFaceTerminal::Refresh() {
