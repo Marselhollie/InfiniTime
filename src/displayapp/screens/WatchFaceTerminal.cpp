@@ -12,7 +12,7 @@
 #include "displayapp/screens/Symbols.h"
 #include "displayapp/DisplayApp.h"
 #include <cstdlib>
-#include "UserApps.h"
+#include "displayapp/UserApps.h"
 
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 
@@ -84,7 +84,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   lv_label_set_recolor(batteryValue, true);
 
   labelMantra = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::orange);
+  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
   lv_obj_set_style_local_text_font(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
   lv_label_set_long_mode(labelMantra, LV_LABEL_LONG_SROLL_CIRC);
   lv_label_set_anim_speed(labelMantra, 60);
