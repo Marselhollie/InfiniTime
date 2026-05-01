@@ -5,13 +5,9 @@
 using namespace Pinetime::Applications::Screens;
 
 static const char* const dashText =
-  "APARTMENT/HOUSING OPTIONS\n"
+  "DASHBOARD\n"
   "\n"
-  "ARTIST RESIDENCY IS ONE AREA TO REALLY START PLANTING SOME HOUSING SEEDS. I'VE KNOWN WHAT WELDING WITH APARTMENT IS LIKE. AND EVEN THOUGH THE WAIT-LIST FOR RESIDENCIES MAY BE MONTHS OR OVER A YEAR, THE BENEFITS OF CO-ED A RESIDENCY IS WORTH PURSUING A PARALLEL OPTION FOR HOUSING.\n"
-  "\n"
-  "CONSIDER THAT AN ARTIST RESIDENCY IS A LONG TERM PARALLEL HOUSING SOLUTION TO KEEP THIS IRON IN THE FIRE. IS ONE TYPE OF LIVING SCENARIO I WOULD THRIVE. AN ARTIST RESIDENCY, EVEN MORESO THAN WELDING WITH APARTMENT, I WOULD HONESTLY FIND GREAT PEACE LIVING WITH A BUNCH OF ARTISTS. IT COULD HELP SOLVE A LOT OF MY LONGING. I DEEPLY BELIEVE I CAN EARN A PLACE AT AN ARTIST RESIDENCE LONG TERM. THE CULTURE THERE WOULD BE MORE HAPPY AND IT FEELS LIKE THE CORAL REEF SET ANCHOR AT IN MY PSYCHEDELIC DREAM.\n"
-  "\n"
-  "ALSO REMEMBER THAT I CAN LIVE AND WORK MORE ON THE OUTSKIRTS/ OTHER CITIES. THERE'S MAYBE MORE LARGER WINDOWS OF OPPORTUNITY FARTHER OUT FROM LA.";
+  "Journaling how the mantras work for myself, and journaling how other people handle similar situations, is really powerful for integration. When I recognize and write down qualities in others that I want to practice, the change gets rooted deeper. The watch mantras, the journaling how it's been working, and the seeing deliveries and effect in 3rd person from others.";
 
 Drive_Dashboard::Drive_Dashboard(DisplayApp* app) : displayApp {app} {
   lv_obj_t* page = lv_page_create(lv_scr_act(), nullptr);
