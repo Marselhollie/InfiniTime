@@ -1,16 +1,16 @@
 #include "displayapp/screens/Drive_Dashboard.h"
 #include "displayapp/TouchEvents.h"
-#include "UserApps.h"
+#include "displayapp/UserApps.h"
 #include <lvgl/lvgl.h>
 
 using namespace Pinetime::Applications::Screens;
 
 static const char* const dashText =
-  "   DASHBOARD  \n"
+  "DASHBOARD\n"
   "\n"
-  "FOCUS on Keeping my grades higher to keep up the grants and Money for a Car when I start going full time. ARTIST RESIDENCY- is a branch to land at. I know it's not gonna be a bunch of hot girls, but I think it could be a place of a lot of fun and genuine friendships and soulcial Ive wanted to commit myself to. \n"
+  "Focus on Keeping my grades higher to keep up the grants and money for a Car when I start going full time. ARTIST RESIDENCY- is a branch to land at. I know it's not gonna be a bunch of hot girls, but I think it could be a place of a lot of fun and genuine friendships and soulcial Ive wanted to commit myself to.\n"
   "\n"
-  " I deeply believe I can earn a living and stay happier in simple ways. >>> Book of enoch, emerald  tablets, sumerian or pre-bible books,atomic habit, mussolini; A LIFE OF LISTENING i like reading biographies about strategic events they moved through, the power of positive thinking Norman Peele. Ego is the enemy Ryan Holiday.\n"
+  "I deeply believe I can earn a living and stay happier in simple ways. >>> Book of enoch, emerald tablets, sumerian or pre-bible books, atomic habit, mussolini; A LIFE OF LISTENING i like reading biographies about strategic events they moved through, the power of positive thinking Norman Peele. Ego is the enemy Ryan Holiday.\n"
   "\n"
   "ALSO REMEMBER THAT I CAN LIVE AND WORK MORE ON THE OUTSKIRTS/ OTHER CITIES. THERE'S MAYBE MORE LARGER WINDOWS OF OPPORTUNITY FARTHER OUT FROM LA.";
 
