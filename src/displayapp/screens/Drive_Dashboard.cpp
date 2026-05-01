@@ -27,7 +27,7 @@ Drive_Dashboard::Drive_Dashboard(DisplayApp* app) : displayApp {app} {
   lv_obj_set_style_local_radius(page, LV_PAGE_PART_SCROLLBAR, LV_STATE_DEFAULT, 2);
 
   label = lv_label_create(page, nullptr);
-  lv_obj_set_style_local_text_font(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_28);
+  lv_obj_set_style_local_text_font(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_22);
   lv_obj_set_style_local_text_color(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_YELLOW);
   lv_label_set_long_mode(label, LV_LABEL_LONG_BREAK);
   lv_obj_set_width(label, 220);
