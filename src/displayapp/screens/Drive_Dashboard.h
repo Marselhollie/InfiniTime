@@ -20,7 +20,6 @@ namespace Pinetime {
 
         DisplayApp* displayApp;
         lv_obj_t* label;
-        lv_obj_t* scrollBar;
         int currentPage = 0;
         static constexpr int pageCount = 3;
       };
