@@ -8,9 +8,9 @@ using namespace Pinetime::Applications::Screens;
 static const char* const pages[] = {
   "DASHBOARD\n"
   "\n"
-  "Journaling how the mantras work for myself, and journaling how other people handle similar situations, is really powerful for integration.",
+  "Journaling examples of how the mantras work for myself,how other people handle similar situations, is really powerful for integration.",
 
-  "When I recognize and write down qualities in others that I want to practice, the change gets rooted deeper.",
+  "Sometimes I will be daydreaming in my own thoughts, but listening to conversations unfold and how people respond, times, aura during delivery the change gets rooted deeper.",
 
   "The watch mantras, the journaling how it's been working, and the seeing deliveries and effect in 3rd person from others."
 };
