@@ -31,6 +31,7 @@
 #include "displayapp/screens/PassKey.h"
 #include "displayapp/screens/Error.h"
 #include "displayapp/screens/Calculator.h"
+#include "displayapp/screens/Drive_Dashboard.h"
 
 #include "drivers/Cst816s.h"
 #include "drivers/St7789.h"
@@ -651,6 +652,10 @@ void DisplayApp::LoadScreen(Apps app, DisplayApp::FullRefreshDirections directio
     case Apps::FlashLight:
       currentScreen = std::make_unique<Screens::FlashLight>(*systemTask, brightnessController);
       break;
+case Apps::DriveDashboard:
+      currentScreen = std::make_unique<Screens::Drive_Dashboard>(this);
+      break;
+
     default: {
       const auto* d = std::ranges::find_if(userApps, [app](const AppDescription& appDescription) {
         return appDescription.app == app;
