@@ -12,7 +12,6 @@
 #include "displayapp/screens/Symbols.h"
 #include "displayapp/DisplayApp.h"
 #include <cstdlib>
-#include "displayapp/UserApps.h"
 
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 
