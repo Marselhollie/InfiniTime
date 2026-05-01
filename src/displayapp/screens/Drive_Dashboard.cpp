@@ -1,6 +1,5 @@
 #include "displayapp/screens/Drive_Dashboard.h"
 #include "displayapp/TouchEvents.h"
-#include "displayapp/UserApps.h"
 #include <lvgl/lvgl.h>
 
 using namespace Pinetime::Applications::Screens;
@@ -21,8 +20,15 @@ Drive_Dashboard::Drive_Dashboard(DisplayApp* app) : displayApp {app} {
   lv_obj_set_style_local_bg_color(page, LV_PAGE_PART_BG, LV_STATE_DEFAULT, LV_COLOR_BLACK);
   lv_obj_set_style_local_border_width(page, LV_PAGE_PART_BG, LV_STATE_DEFAULT, 0);
 
+  lv_page_set_scrlbar_mode(page, LV_SCRLBAR_MODE_ON);
+  lv_obj_set_style_local_bg_color(page, LV_PAGE_PART_SCRL, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+  lv_obj_set_style_local_bg_color(page, LV_PAGE_PART_SCRLBAR, LV_STATE_DEFAULT, LV_COLOR_CYAN);
+  lv_obj_set_style_local_size(page, LV_PAGE_PART_SCRLBAR, LV_STATE_DEFAULT, 4);
+  lv_obj_set_style_local_radius(page, LV_PAGE_PART_SCRLBAR, LV_STATE_DEFAULT, 2);
+
   label = lv_label_create(page, nullptr);
-  lv_obj_set_style_local_text_color(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
+  lv_obj_set_style_local_text_font(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_14);
+  lv_obj_set_style_local_text_color(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_YELLOW);
   lv_label_set_long_mode(label, LV_LABEL_LONG_BREAK);
   lv_obj_set_width(label, 220);
   lv_label_set_text_static(label, dashText);
