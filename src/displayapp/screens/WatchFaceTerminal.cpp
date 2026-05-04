@@ -157,7 +157,7 @@ void WatchFaceTerminal::Refresh() {
     int pct = batteryPercentRemaining.Get();
     lv_color_t batColor;
     if (batteryController.IsCharging()) {
-      batColor = LV_COLOR_GREEN;
+      batColor = Colors::orange;
     } else if (pct <= 10) {
       batColor = LV_COLOR_RED;
     } else if (pct <= 20) {
@@ -166,9 +166,10 @@ void WatchFaceTerminal::Refresh() {
       batColor = LV_COLOR_WHITE;
     }
     lv_obj_set_style_local_text_color(batteryValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, batColor);
-    lv_label_set_text_fmt(batteryValue, "#ffffff [BATT]# %d%%", pct);
     if (batteryController.IsCharging()) {
-      lv_label_ins_text(batteryValue, LV_LABEL_POS_LAST, " Charging");
+      lv_label_set_text_fmt(batteryValue, "[BATT] %d%% Charging", pct);
+    } else {
+      lv_label_set_text_fmt(batteryValue, "#ffffff [BATT]# %d%%", pct);
     }
   }
 
