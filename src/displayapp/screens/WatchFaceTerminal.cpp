@@ -138,9 +138,17 @@ void WatchFaceTerminal::Refresh() {
         hour = hour - 12;
         ampmChar[0] = 'P';
       }
-      lv_label_set_text_fmt(labelTime, "#ffffff %02d:%02d %s#", hour, minute, ampmChar);
+      if (hour < 10) {
+        lv_label_set_text_fmt(labelTime, "#ffffff _%d:%02d %s#", hour, minute, ampmChar);
+      } else {
+        lv_label_set_text_fmt(labelTime, "#ffffff %02d:%02d %s#", hour, minute, ampmChar);
+      }
     } else {
-      lv_label_set_text_fmt(labelTime, "#ffffff %02d:%02d#", hour, minute);
+      if (hour < 10) {
+        lv_label_set_text_fmt(labelTime, "#ffffff _%d:%02d#", hour, minute);
+      } else {
+        lv_label_set_text_fmt(labelTime, "#ffffff %02d:%02d#", hour, minute);
+      }
     }
 
     currentDate = std::chrono::time_point_cast<std::chrono::days>(currentDateTime.Get());
