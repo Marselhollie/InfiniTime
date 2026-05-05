@@ -139,15 +139,15 @@ void WatchFaceTerminal::Refresh() {
         ampmChar[0] = 'P';
       }
       if (hour < 10) {
-        lv_label_set_text_fmt(labelTime, "#ffffff _%d:%02d %s#", hour, minute, ampmChar);
+        lv_label_set_text_fmt(labelTime, "#00bfff _%d:%02d %s#", hour, minute, ampmChar);
       } else {
-        lv_label_set_text_fmt(labelTime, "#ffffff %02d:%02d %s#", hour, minute, ampmChar);
+        lv_label_set_text_fmt(labelTime, "#00bfff %02d:%02d %s#", hour, minute, ampmChar);
       }
     } else {
       if (hour < 10) {
-        lv_label_set_text_fmt(labelTime, "#ffffff _%d:%02d#", hour, minute);
+        lv_label_set_text_fmt(labelTime, "#00bfff _%d:%02d#", hour, minute);
       } else {
-        lv_label_set_text_fmt(labelTime, "#ffffff %02d:%02d#", hour, minute);
+        lv_label_set_text_fmt(labelTime, "#00bfff %02d:%02d#", hour, minute);
       }
     }
 
@@ -155,7 +155,13 @@ void WatchFaceTerminal::Refresh() {
     if (currentDate.IsUpdated()) {
       Controllers::DateTime::Months month = dateTimeController.Month();
       uint8_t day = dateTimeController.Day();
-      lv_label_set_text_fmt(labelDate, "#ffffff [DATE]# #00bfff %02d-%02d#", month, day);
+      uint16_t year = dateTimeController.Year();
+      static const char* monthNames[] = {
+        "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+        "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
+      };
+      const char* monthStr = monthNames[static_cast<int>(month) - 1];
+      lv_label_set_text_fmt(labelDate, "#ffff00 [DATE] %s_%d_%d#", monthStr, day, year);
     }
   }
 
