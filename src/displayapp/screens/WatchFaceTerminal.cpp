@@ -128,6 +128,9 @@ void WatchFaceTerminal::Refresh() {
     uint8_t hour = dateTimeController.Hours();
     uint8_t minute = dateTimeController.Minutes();
 
+    static const char* dayNames[] = {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"};
+    const char* dayStr = dayNames[static_cast<int>(dateTimeController.DayOfWeek())];
+
     if (settingsController.GetClockType() == Controllers::Settings::ClockType::H12) {
       char ampmChar[3] = "AM";
       if (hour == 0) {
@@ -139,15 +142,15 @@ void WatchFaceTerminal::Refresh() {
         ampmChar[0] = 'P';
       }
       if (hour < 10) {
-        lv_label_set_text_fmt(labelTime, "#00bfff _%d:%02d %s#", hour, minute, ampmChar);
+        lv_label_set_text_fmt(labelTime, "#00bfff _%d:%02d %s#", hour, minute, dayStr);
       } else {
-        lv_label_set_text_fmt(labelTime, "#00bfff %02d:%02d %s#", hour, minute, ampmChar);
+        lv_label_set_text_fmt(labelTime, "#00bfff %02d:%02d %s#", hour, minute, dayStr);
       }
     } else {
       if (hour < 10) {
-        lv_label_set_text_fmt(labelTime, "#00bfff _%d:%02d#", hour, minute);
+        lv_label_set_text_fmt(labelTime, "#00bfff _%d:%02d %s#", hour, minute, dayStr);
       } else {
-        lv_label_set_text_fmt(labelTime, "#00bfff %02d:%02d#", hour, minute);
+        lv_label_set_text_fmt(labelTime, "#00bfff %02d:%02d %s#", hour, minute, dayStr);
       }
     }
 
