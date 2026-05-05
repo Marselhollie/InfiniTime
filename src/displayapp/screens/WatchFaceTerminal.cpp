@@ -56,7 +56,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   container = lv_cont_create(lv_scr_act(), nullptr);
   lv_cont_set_layout(container, LV_LAYOUT_COLUMN_LEFT);
   lv_cont_set_fit(container, LV_FIT_TIGHT);
-  lv_obj_set_style_local_pad_inner(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, -3);
+  lv_obj_set_style_local_pad_inner(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 2);
   lv_obj_set_style_local_bg_opa(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
 
   notificationIcon = lv_label_create(container, nullptr);
