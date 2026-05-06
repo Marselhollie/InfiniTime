@@ -97,11 +97,14 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
 
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
+  taskChargeAnim = lv_task_create(ChargeAnimCallback, 750, LV_TASK_PRIO_LOW, this);
+  lv_task_set_repeat_count(taskChargeAnim, -1);
   Refresh();
 }
 
 WatchFaceTerminal::~WatchFaceTerminal() {
   lv_task_del(taskRefresh);
+  lv_task_del(taskChargeAnim);
   lv_obj_clean(lv_scr_act());
 }
 
@@ -111,6 +114,19 @@ bool WatchFaceTerminal::OnTouchEvent(TouchEvents event) {
     return true;
   }
   return false;
+}
+
+void WatchFaceTerminal::ChargeAnimCallback(lv_task_t* task) {
+  auto* screen = static_cast<WatchFaceTerminal*>(task->user_data);
+  screen->UpdateChargeAnim();
+}
+
+void WatchFaceTerminal::UpdateChargeAnim() {
+  if (!batteryController.IsCharging()) return;
+  static const char* bars[] = {"#***", "##**", "###*", "####"};
+  chargeAnimStep = (chargeAnimStep + 1) % 4;
+  lv_obj_set_style_local_text_color(batteryValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xADFF2F));
+  lv_label_set_text_fmt(batteryValue, "[BATT] %s", bars[chargeAnimStep]);
 }
 
 void WatchFaceTerminal::Refresh() {
@@ -138,15 +154,15 @@ void WatchFaceTerminal::Refresh() {
         hour = hour - 12;
       }
       if (hour < 10) {
-        lv_label_set_text_fmt(labelTime, "#00bfff _%d:%02d %s#", hour, minute, dayStr);
+        lv_label_set_text_fmt(labelTime, "#adff2f _%d:%02d %s#", hour, minute, dayStr);
       } else {
-        lv_label_set_text_fmt(labelTime, "#00bfff %02d:%02d %s#", hour, minute, dayStr);
+        lv_label_set_text_fmt(labelTime, "#adff2f %02d:%02d %s#", hour, minute, dayStr);
       }
     } else {
       if (hour < 10) {
-        lv_label_set_text_fmt(labelTime, "#00bfff _%d:%02d %s#", hour, minute, dayStr);
+        lv_label_set_text_fmt(labelTime, "#adff2f _%d:%02d %s#", hour, minute, dayStr);
       } else {
-        lv_label_set_text_fmt(labelTime, "#00bfff %02d:%02d %s#", hour, minute, dayStr);
+        lv_label_set_text_fmt(labelTime, "#adff2f %02d:%02d %s#", hour, minute, dayStr);
       }
     }
 
@@ -169,21 +185,25 @@ void WatchFaceTerminal::Refresh() {
   if (batteryPercentRemaining.IsUpdated() || powerPresent.IsUpdated()) {
     int pct = batteryPercentRemaining.Get();
     lv_color_t batColor;
+    const char* batBar;
     if (batteryController.IsCharging()) {
-      batColor = Colors::orange;
-    } else if (pct <= 10) {
+      // handled by charge anim task
+      return;
+    } else if (pct <= 25) {
       batColor = LV_COLOR_RED;
-    } else if (pct <= 20) {
+      batBar = "#***";
+    } else if (pct <= 50) {
       batColor = LV_COLOR_YELLOW;
+      batBar = "##**";
+    } else if (pct <= 74) {
+      batColor = LV_COLOR_GREEN;
+      batBar = "###*";
     } else {
-      batColor = LV_COLOR_WHITE;
+      batColor = lv_color_hex(0xADFF2F);
+      batBar = "####";
     }
     lv_obj_set_style_local_text_color(batteryValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, batColor);
-    if (batteryController.IsCharging()) {
-      lv_label_set_text_fmt(batteryValue, "[BATT] %d%% Charging", pct);
-    } else {
-      lv_label_set_text_fmt(batteryValue, "#ffffff [BATT]# %d%%", pct);
-    }
+    lv_label_set_text_fmt(batteryValue, "#ffffff [BATT]# %s", batBar);
   }
 
   heartbeat = heartRateController.HeartRate();
@@ -202,14 +222,14 @@ void WatchFaceTerminal::Refresh() {
   bleRadioEnabled = bleController.IsRadioEnabled();
   if (bleState.IsUpdated() || bleRadioEnabled.IsUpdated()) {
     if (!bleRadioEnabled.Get()) {
-      lv_label_set_text_static(connectState, "#ffffff [BLE]# Disabled");
+      lv_label_set_text_static(connectState, "#ff0000 [BLE]#");
       lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
     } else {
       if (bleState.Get()) {
-        lv_label_set_text_static(connectState, "#ffffff [BLE]# Connected");
+        lv_label_set_text_static(connectState, "#0000ff [BLE^]#");
         lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::blue);
       } else {
-        lv_label_set_text_static(connectState, "#ffffff [BLE]# Disconnected");
+        lv_label_set_text_static(connectState, "#ff0000 [BLE]#");
         lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
       }
     }
