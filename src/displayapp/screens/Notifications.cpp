@@ -9,6 +9,7 @@
 using namespace Pinetime::Applications::Screens;
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 extern lv_font_t jetbrains_mono_bold_20;
+extern lv_font_t open_sans_light;
 
 Notifications::Notifications(DisplayApp* app,
                              Pinetime::Controllers::NotificationManager& notificationManager,
@@ -63,7 +64,6 @@ Notifications::Notifications(DisplayApp* app,
 
 Notifications::~Notifications() {
   lv_task_del(taskRefresh);
-  // make sure we stop any vibrations before exiting
   motorController.StopRinging();
   lv_obj_clean(lv_scr_act());
 }
@@ -130,7 +130,6 @@ void Notifications::OnPreviewInteraction() {
 void Notifications::DismissToBlack() {
   currentItem.reset(nullptr);
   app->SetFullRefresh(DisplayApp::FullRefreshDirections::RightAnim);
-  // create black transition screen to let the notification dismiss to blackness
   lv_obj_t* blackBox = lv_obj_create(lv_scr_act(), nullptr);
   lv_obj_set_size(blackBox, LV_HOR_RES, LV_VER_RES);
   lv_obj_set_style_local_bg_color(blackBox, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
@@ -170,10 +169,6 @@ bool Notifications::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
           currentId = previousMessage.id;
         } else if (nextMessage.valid) {
           currentId = nextMessage.id;
-        } else {
-          // don't update id, notification manager will try to fetch
-          // but not find it. Refresh will try to load latest message
-          // or dismiss to watchface
         }
         DismissToBlack();
         return true;
@@ -270,27 +265,32 @@ Notifications::NotificationItem::NotificationItem(const char* title,
   lv_obj_set_style_local_pad_inner(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
   lv_obj_set_style_local_border_width(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
 
+  // n/total counter top right
+  lv_obj_t* alert_count = lv_label_create(container, nullptr);
+  lv_obj_set_style_local_text_color(alert_count, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xADFF2F));
+  lv_label_set_text_fmt(alert_count, "%i/%i", notifNr, notifNb);
+  lv_obj_align(alert_count, nullptr, LV_ALIGN_IN_TOP_RIGHT, 0, 5);
+
+  // Full-screen blue box
   subject_container = lv_cont_create(container, nullptr);
   lv_obj_set_style_local_bg_color(subject_container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, Colors::bgAlt);
   lv_obj_set_style_local_pad_all(subject_container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 10);
   lv_obj_set_style_local_pad_inner(subject_container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 5);
   lv_obj_set_style_local_border_width(subject_container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
-
-  lv_obj_set_pos(subject_container, 0, 50);
-  lv_obj_set_size(subject_container, LV_HOR_RES, LV_VER_RES - 50);
+  lv_obj_set_pos(subject_container, 0, 25);
+  lv_obj_set_size(subject_container, LV_HOR_RES, LV_VER_RES - 25);
   lv_cont_set_layout(subject_container, LV_LAYOUT_COLUMN_LEFT);
   lv_cont_set_fit(subject_container, LV_FIT_NONE);
 
-  lv_obj_t* alert_count = lv_label_create(container, nullptr);
-  lv_label_set_text_fmt(alert_count, "%i/%i", notifNr, notifNb);
-  lv_obj_align(alert_count, nullptr, LV_ALIGN_IN_TOP_RIGHT, 0, 16);
-
-  lv_obj_t* alert_type = lv_label_create(container, nullptr);
-  lv_obj_set_style_local_text_color(alert_type, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::orange);
+  // Title inside the box
+  lv_obj_t* alert_type = lv_label_create(subject_container, nullptr);
+  lv_obj_set_style_local_text_font(alert_type, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &open_sans_light);
+  lv_obj_set_style_local_text_color(alert_type, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xADFF2F));
+  lv_label_set_long_mode(alert_type, LV_LABEL_LONG_SROLL_CIRC);
+  lv_obj_set_width(alert_type, LV_HOR_RES - 20);
   if (title == nullptr) {
     lv_label_set_text_static(alert_type, "Notification");
   } else {
-    // copy title to label and replace newlines with spaces
     lv_label_set_text(alert_type, title);
     char* pchar = strchr(lv_label_get_text(alert_type), '\n');
     while (pchar != nullptr) {
@@ -299,11 +299,11 @@ Notifications::NotificationItem::NotificationItem(const char* title,
     }
     lv_label_refr_text(alert_type);
   }
-  lv_label_set_long_mode(alert_type, LV_LABEL_LONG_SROLL_CIRC);
-  lv_obj_set_width(alert_type, 180);
-  lv_obj_align(alert_type, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 16);
 
+  // Body inside the box
   lv_obj_t* alert_subject = lv_label_create(subject_container, nullptr);
+  lv_obj_set_style_local_text_font(alert_subject, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &open_sans_light);
+  lv_obj_set_style_local_text_color(alert_subject, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
   lv_label_set_long_mode(alert_subject, LV_LABEL_LONG_BREAK);
   lv_obj_set_width(alert_subject, LV_HOR_RES - 20);
 
