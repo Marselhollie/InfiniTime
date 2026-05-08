@@ -12,7 +12,7 @@
 #include "displayapp/screens/Symbols.h"
 #include "displayapp/DisplayApp.h"
 #include <cstdlib>
-//
+
 extern lv_font_t jetbrains_mono_42;
 
 using namespace Pinetime::Applications::Screens;
@@ -185,25 +185,20 @@ void WatchFaceTerminal::Refresh() {
   if (batteryPercentRemaining.IsUpdated() || powerPresent.IsUpdated()) {
     int pct = batteryPercentRemaining.Get();
     lv_color_t batColor;
-    const char* batBar;
     if (batteryController.IsCharging()) {
       // handled by charge anim task
       return;
     } else if (pct <= 25) {
       batColor = LV_COLOR_RED;
-      batBar = "#***";
     } else if (pct <= 50) {
       batColor = LV_COLOR_YELLOW;
-      batBar = "##**";
     } else if (pct <= 74) {
       batColor = LV_COLOR_GREEN;
-      batBar = "###*";
     } else {
       batColor = lv_color_hex(0xADFF2F);
-      batBar = "####";
     }
     lv_obj_set_style_local_text_color(batteryValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, batColor);
-    lv_label_set_text_fmt(batteryValue, "#ffffff [BATT]# %s", batBar);
+    lv_label_set_text_fmt(batteryValue, "#ffffff [BATT]# %d%%", pct);
   }
 
   heartbeat = heartRateController.HeartRate();
