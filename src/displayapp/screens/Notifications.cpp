@@ -242,7 +242,7 @@ namespace {
 Notifications::NotificationItem::NotificationItem(Pinetime::Controllers::AlertNotificationService& alertNotificationService,
                                                   Pinetime::Controllers::MotorController& motorController)
   : NotificationItem("Notifications",
-                     " ",
+                     "No notifications to display",
                      0,
                      Controllers::NotificationManager::Categories::Unknown,
                      0,
@@ -281,7 +281,7 @@ Notifications::NotificationItem::NotificationItem(const char* title,
   lv_obj_align(alert_count, nullptr, LV_ALIGN_IN_TOP_RIGHT, 0, 16);
 
   lv_obj_t* alert_type = lv_label_create(container, nullptr);
-  lv_obj_set_style_local_text_color(alert_type, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::orange);
+  lv_obj_set_style_local_text_color(alert_type, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xADFF2F));
   if (title == nullptr) {
     lv_label_set_text_static(alert_type, "Notification");
   } else {
