@@ -1,6 +1,5 @@
 name: CI
 
-# Run this workflow whenever the build may be affected
 on:
   push:
     branches: [ main ]
@@ -25,8 +24,6 @@ jobs:
       firmware_artifact: ${{ steps.upload-firmware.outputs.artifact-id }}
       resources_artifact: ${{ steps.upload-resources.outputs.artifact-id }}
     env:
-      # InfiniTime sources are downloaded to the current directory.
-      # Override SOURCES_DIR in build.sh
       SOURCES_DIR: .
     steps:
       - name: Checkout source files
@@ -48,7 +45,6 @@ jobs:
         run: |
           . /opt/build.sh
           .github/workflows/getSize.sh "$BUILD_DIR"/src/pinetime-app-*.out >> $GITHUB_OUTPUT
-      # Unzip the package because Upload Artifact will zip up the files
       - name: Unzip DFU package
         run: unzip ./build/output/pinetime-mcuboot-app-dfu-*.zip -d ./build/output/pinetime-mcuboot-app-dfu
       - name: Set ref_name, but replace slashes with dashes.
@@ -78,6 +74,18 @@ jobs:
         with:
           name: InfiniTime resources ${{ env.REF_NAME }}
           path: ./build/output/infinitime-resources-*.zip
+      - name: Create GitHub Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Build ${{ github.run_number }}
+          body: "Automated build from commit ${{ github.sha }}"
+          files: |
+            ./build/output/pinetime-mcuboot-app-dfu-*.zip
+            ./build/output/pinetime-mcuboot-app-image-*.bin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-simulator:
     runs-on: ubuntu-22.04
@@ -106,7 +114,6 @@ jobs:
         git -C InfiniSim submodule update --init lv_drivers
 
     - name: CMake
-      # disable BUILD_RESOURCES as this is already done when building the firmware
       run:  |
         cmake -G Ninja -S InfiniSim -B build_lv_sim -DInfiniTime_DIR="${PWD}" -DBUILD_RESOURCES=OFF
 
@@ -130,8 +137,6 @@ jobs:
       data_size: ${{ steps.output-sizes.outputs.data_size }}
       bss_size: ${{ steps.output-sizes.outputs.bss_size }}
     env:
-      # InfiniTime sources are downloaded to the current directory.
-      # Override SOURCES_DIR in build.sh
       SOURCES_DIR: .
     steps:
     - name: Checkout current base branch files
@@ -143,7 +148,6 @@ jobs:
     - name: Get base branch SHA
       id: get-base-sha
       run: |
-        # Fix for "detected dubious ownership in repository at '/__w/InfiniTime/InfiniTime'"
         git config --global --add safe.directory /__w/InfiniTime/InfiniTime
         echo base_sha=$(git rev-parse HEAD) >> $GITHUB_OUTPUT
 
@@ -157,7 +161,6 @@ jobs:
     - if: ${{ steps.cache-build.outputs.cache-hit != 'true' }}
       name: Build
       shell: bash
-      # Only pinetime-app target is needed, but post_build.sh fails
       run: /opt/build.sh all
 
     - name: Output build size
