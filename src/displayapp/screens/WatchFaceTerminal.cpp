@@ -19,17 +19,19 @@ using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
   "BREATHE 5 DEEP TIMES",
-  "HOLD EYE CONTACT REPLYING",
+  "HOLD EYE CONTACT WHEN SPEAKING",
   "BE DIRECT W/O BEING HOSTILE",
   "PRACTICE OPTIMUM PITCH W/O DRAGGING MOOD",
-  "SHIFT ATTENTION AND MOOD IN CONVERSATION",
-  "REMOVE I FROM INTROS INVITATIONAL PHRASING",
+  "REMOVING I IN COMMENTS ",
   "GRATEFUL 3 THINGS",
-  "READ PEOPLES SOCIAL AURAS AND EFFECT OF THEIR DELIVERY",
+  "RD AURAS & FX of delivery",
   "|NOCOFFEE BETTER SOCIALS|",
   "ASKING GOD. KEEPING GOD ON MY MIND.",
   "LONGERTERM ACTIVITIES SAVES MONEY",
-  "NTLOOKNG@PORN = MOVING CLOSER 2GF"
+  "NTLOOKNG@PORN = MOVING CLOSER 2GF",
+"Speak Audibly. or not at all.",
+
+
 };
 static const int mantraCount = 12;
 
@@ -133,7 +135,7 @@ void WatchFaceTerminal::Refresh() {
   notificationState = notificationManager.AreNewNotificationsAvailable();
   if (notificationState.IsUpdated()) {
     if (notificationState.Get()) {
-      lv_label_set_text_static(notificationIcon, "[1]+ Notify");
+      lv_label_set_text_fmt(notificationIcon, "[%d]", notificationManager.NbNotifications());
     } else {
       lv_label_set_text_static(notificationIcon, "");
     }
