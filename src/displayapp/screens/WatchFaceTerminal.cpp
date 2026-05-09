@@ -22,16 +22,14 @@ static const char* mantras[] = {
   "HOLD EYE CONTACT WHEN SPEAKING",
   "BE DIRECT W/O BEING HOSTILE",
   "PRACTICE OPTIMUM PITCH W/O DRAGGING MOOD",
-  "REMOVING I IN COMMENTS ",
+  "REMOVING I IN COMMENTS",
   "GRATEFUL 3 THINGS",
   "RD AURAS & FX of delivery",
   "|NOCOFFEE BETTER SOCIALS|",
   "ASKING GOD. KEEPING GOD ON MY MIND.",
   "LONGERTERM ACTIVITIES SAVES MONEY",
   "NTLOOKNG@PORN = MOVING CLOSER 2GF",
-"Speak Audibly. or not at all.",
-
-
+  "Speak Audibly. or not at all."
 };
 static const int mantraCount = 12;
 
@@ -62,6 +60,12 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   lv_obj_set_style_local_bg_opa(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
 
   notificationIcon = lv_label_create(container, nullptr);
+  lv_obj_set_style_local_text_color(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_YELLOW);
+  if (notificationManager.AreNewNotificationsAvailable()) {
+    lv_label_set_text_fmt(notificationIcon, "[%d]", notificationManager.NbNotifications());
+  } else {
+    lv_label_set_text_static(notificationIcon, "");
+  }
 
   statusIcons = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_set_style_local_text_color(statusIcons, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
