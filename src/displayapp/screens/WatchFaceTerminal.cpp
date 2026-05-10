@@ -9,7 +9,6 @@
 #include "components/settings/Settings.h"
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/InfiniTimeTheme.h"
-#include "displayapp/screens/Symbols.h"
 #include "displayapp/DisplayApp.h"
 #include <cstdlib>
 
@@ -67,10 +66,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
     lv_label_set_text_static(notificationIcon, "");
   }
 
-  statusIcons = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(statusIcons, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-  lv_label_set_recolor(statusIcons, true);
-  lv_obj_align(statusIcons, nullptr, LV_ALIGN_IN_TOP_RIGHT, -2, 2);
+
 
   labelTime = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelTime, true);
@@ -234,7 +230,5 @@ void WatchFaceTerminal::Refresh() {
         lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
       }
     }
-    bool connected = bleRadioEnabled.Get() && bleState.Get();
-    lv_label_set_text(statusIcons, connected ? Symbols::bluetooth : "");
   }
 }
