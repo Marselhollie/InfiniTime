@@ -60,7 +60,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
 
   notificationIcon = lv_label_create(container, nullptr);
   lv_obj_set_style_local_text_color(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_YELLOW);
-  if (notificationManager.AreNewNotificationsAvailable()) {
+  if (notificationManager.NbNotifications() > 0) {
     lv_label_set_text_fmt(notificationIcon, "[%d]", notificationManager.NbNotifications());
   } else {
     lv_label_set_text_static(notificationIcon, "");
@@ -134,7 +134,7 @@ void WatchFaceTerminal::UpdateChargeAnim() {
 void WatchFaceTerminal::Refresh() {
   notificationState = notificationManager.AreNewNotificationsAvailable();
   if (notificationState.IsUpdated()) {
-    if (notificationState.Get()) {
+    if (notificationManager.NbNotifications() > 0) {
       lv_label_set_text_fmt(notificationIcon, "[%d]", notificationManager.NbNotifications());
     } else {
       lv_label_set_text_static(notificationIcon, "");
