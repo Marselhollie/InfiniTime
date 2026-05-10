@@ -67,8 +67,6 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
     lv_label_set_text_static(notificationIcon, "");
   }
 
-
-
   labelTime = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelTime, true);
   lv_obj_set_style_local_text_font(labelTime, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
@@ -126,6 +124,7 @@ void WatchFaceTerminal::ChargeAnimCallback(lv_task_t* task) {
 
 void WatchFaceTerminal::UpdateChargeAnim() {
   if (!batteryController.IsCharging()) return;
+  if (batteryValue == nullptr) return;
   static const char* bars[] = {"#***", "##**", "###*", "####"};
   chargeAnimStep = (chargeAnimStep + 1) % 4;
   lv_obj_set_style_local_text_color(batteryValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xADFF2F));
@@ -189,7 +188,6 @@ void WatchFaceTerminal::Refresh() {
     int pct = batteryPercentRemaining.Get();
     lv_color_t batColor;
     if (batteryController.IsCharging()) {
-      // handled by charge anim task
       return;
     } else if (pct <= 25) {
       batColor = LV_COLOR_RED;
