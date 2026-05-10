@@ -20,17 +20,16 @@ using namespace Pinetime::Applications::Screens;
 static const char* mantras[] = {
   "Breathing deep 5x, when I notice any symptom of anxiety",
   "Landing eye contact when calmly talking more",
-  "Being direct without being hostile ",
+  "Being direct without being hostile",
   "Practice optimum pitch w/o dragging mood",
-  "Removing I as often, no filler words no mumble, ",
+  "Removing I as often, no filler words no mumble,",
   "Grateful 3 things",
   "RD AURAS & FX of delivery",
   "|NOCOFFEE BETTER SOCIALS|",
   "Asking God into more XP. Holding -God- OMM.",
   "$ LONGERTERM ACTIVITIES SAVES MONEY $",
   "NTLOOKNG@PORN = MOVING CLOSER 2GF",
-  "Practicing self control.", 
-  
+  "Practicing self control."
 };
 static const int mantraCount = 12;
 
