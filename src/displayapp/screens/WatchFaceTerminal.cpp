@@ -12,7 +12,7 @@
 #include "displayapp/DisplayApp.h"
 #include <cstdlib>
 
-extern lv_font_t jetbrains_mono_42;
+extern lv_font_t jetbrains_mono_20;
 
 using namespace Pinetime::Applications::Screens;
 
