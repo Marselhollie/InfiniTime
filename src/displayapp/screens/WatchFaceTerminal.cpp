@@ -115,7 +115,7 @@ void WatchFaceTerminal::Refresh() {
   notificationState = notificationManager.AreNewNotificationsAvailable();
   if (notificationState.IsUpdated()) {
     if (notificationState.Get()) {
-      lv_label_set_text_static(notificationIcon, "[1]+ Notify");
+      lv_label_set_text_fmt(notificationIcon, "[%d]", notificationManager.NbNotifications());
     } else {
       lv_label_set_text_static(notificationIcon, "");
     }
