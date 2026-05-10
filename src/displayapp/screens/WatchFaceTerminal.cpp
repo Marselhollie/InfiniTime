@@ -62,7 +62,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
 
   notificationIcon = lv_label_create(container, nullptr);
 
-   LV_ALIGN_IN_TOP_RIGHT, -5, 5);
+  
 
   labelTime = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelTime, true);
