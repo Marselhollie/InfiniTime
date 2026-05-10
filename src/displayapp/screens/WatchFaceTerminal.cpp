@@ -59,7 +59,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   lv_obj_set_style_local_bg_opa(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
 
   notificationIcon = lv_label_create(container, nullptr);
-  lv_obj_set_style_local_text_color(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_YELLOW);
+  lv_obj_set_style_local_text_color(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
   if (notificationManager.NbNotifications() > 0) {
     lv_label_set_text_fmt(notificationIcon, "[%d]", notificationManager.NbNotifications());
   } else {
@@ -85,7 +85,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   lv_label_set_recolor(batteryValue, true);
 
   labelMantra = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_YELLOW);
+  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xADD8E6));
   lv_obj_set_style_local_text_font(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
   lv_label_set_long_mode(labelMantra, LV_LABEL_LONG_SROLL_CIRC);
   lv_label_set_anim_speed(labelMantra, 60);
@@ -178,7 +178,7 @@ void WatchFaceTerminal::Refresh() {
         "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
       };
       const char* monthStr = monthNames[static_cast<int>(month) - 1];
-      lv_label_set_text_fmt(labelDate, "#ffff00 [DATE] %s_%d_%d#", monthStr, day, year);
+      lv_label_set_text_fmt(labelDate, "#ffffff [DATE] %s_%d_%d#", monthStr, day, year);
     }
   }
 
