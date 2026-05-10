@@ -213,13 +213,11 @@ int NimbleController::OnGAPEvent(ble_gap_event* event) {
       break;
 
     case BLE_GAP_EVENT_DISCONNECT:
-      /* Connection terminated; resume advertising. */
+      
       NRF_LOG_INFO("Disconnect event : BLE_GAP_EVENT_DISCONNECT");
       NRF_LOG_INFO("disconnect reason=%d", event->disconnect.reason);
 
-      if (event->disconnect.conn.sec_state.bonded) {
-        PersistBond(event->disconnect.conn);
-      }
+      
 
       currentTimeClient.Reset();
       alertNotificationClient.Reset();
