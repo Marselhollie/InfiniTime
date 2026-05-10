@@ -12,23 +12,25 @@
 #include "displayapp/DisplayApp.h"
 #include <cstdlib>
 
-extern lv_font_t jetbrains_mono_20;
+extern lv_font_t jetbrains_mono_42;
+extern lv_font_t jetbrains_mono_bold_20;
 
 using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
-  "BREATHE 5 DEEP TIMES",
-  "HOLD EYE CONTACT WHEN SPEAKING",
-  "BE DIRECT W/O BEING HOSTILE",
-  "PRACTICE OPTIMUM PITCH W/O DRAGGING MOOD",
-  "REMOVING I IN COMMENTS",
-  "GRATEFUL 3 THINGS",
+  "Breathing deep 5x, when I notice any symptom of anxiety",
+  "Landing eye contact when calmly talking more",
+  "Being direct without being hostile ",
+  "Practice optimum pitch w/o dragging mood",
+  "Removing I as often, no filler words no mumble, ",
+  "Grateful 3 things",
   "RD AURAS & FX of delivery",
   "|NOCOFFEE BETTER SOCIALS|",
-  "ASKING GOD. KEEPING GOD ON MY MIND.",
-  "LONGERTERM ACTIVITIES SAVES MONEY",
+  "Asking God into more XP. Holding -God- OMM.",
+  "$ LONGERTERM ACTIVITIES SAVES MONEY $",
   "NTLOOKNG@PORN = MOVING CLOSER 2GF",
-  "Speak Audibly. or not at all."
+  "Practicing self control.", 
+  
 };
 static const int mantraCount = 12;
 
