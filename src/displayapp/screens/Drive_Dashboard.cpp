@@ -8,11 +8,8 @@ using namespace Pinetime::Applications::Screens;
 static const char* const pages[] = {
   "DASHBOARD\n"
   "\n"
-  "Journaling how the mantras work for myself, and journaling how other people handle similar situations, is really powerful for integration.",
-
-  "When I recognize and write down qualities in others that I want to practice, the change gets rooted deeper.",
-
-  "The watch mantras, the journaling how it's been working, and the seeing deliveries and effect in 3rd person from others."
+  "Getting a sponsor to stay free of porn honestly is an unrealistic expectation. But what I do want a sponsor for, is to get instructions through the work. I need deeper healing and still need to look at ugly aspects of myself …I'm not a drug addict or alcoholic, but I want a sponsor to help me become a better version of myself again.
+"
 };
 
 Drive_Dashboard::Drive_Dashboard(DisplayApp* app) : displayApp {app} {
