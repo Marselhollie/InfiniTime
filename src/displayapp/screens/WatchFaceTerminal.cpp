@@ -60,7 +60,8 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   lv_obj_set_style_local_pad_inner(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, -3);
   lv_obj_set_style_local_bg_opa(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
 
-  notificationIcon = lv_label_create(container, nullptr);
+notificationIcon = lv_label_create(container, nullptr);
+lv_obj_set_width(notificationIcon, 240);
 
   if (notificationManager.NbNotifications() > 0) {
     lv_label_set_text_fmt(notificationIcon, "[%d]", notificationManager.NbNotifications());
