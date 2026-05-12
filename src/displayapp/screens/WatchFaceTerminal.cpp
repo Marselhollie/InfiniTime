@@ -116,13 +116,10 @@ bool WatchFaceTerminal::OnTouchEvent(TouchEvents event) {
 }
 
 void WatchFaceTerminal::Refresh() {
-  notificationState = notificationManager.AreNewNotificationsAvailable();
-  if (notificationState.IsUpdated()) {
-    if (notificationState.Get()) {
-      lv_label_set_text_fmt(notificationIcon, "[%d]", notificationManager.NbNotifications());
-    } else {
-      lv_label_set_text_static(notificationIcon, "");
-    }
+  if (notificationManager.AreNewNotificationsAvailable()) {
+    lv_label_set_text_static(notificationIcon, "[N]");
+  } else {
+    lv_label_set_text_static(notificationIcon, "");
   }
 
   currentDateTime = std::chrono::time_point_cast<std::chrono::seconds>(dateTimeController.CurrentDateTime());
