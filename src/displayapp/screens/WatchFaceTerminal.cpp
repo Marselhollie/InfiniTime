@@ -14,7 +14,7 @@
 #include <cstdlib>
 //
 extern lv_font_t jetbrains_mono_bold_20;
-
+extern lv_font_t jetbrains_mono_extrabold_compressed;
 
 using namespace Pinetime::Applications::Screens;
 
@@ -31,7 +31,6 @@ static const char* mantras[] = {
   "$ LONGERTERM ACTIVITIES SAVES MONEY $",
   "NTLOOKNG@PORN = MOVING CLOSER 2GF",
   "Practicing self control."
-
 };
 static const int mantraCount = 12;
 
@@ -58,12 +57,11 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   container = lv_cont_create(lv_scr_act(), nullptr);
   lv_cont_set_layout(container, LV_LAYOUT_COLUMN_LEFT);
   lv_cont_set_fit(container, LV_FIT_TIGHT);
-  lv_obj_set_style_local_pad_inner(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, -3);
+  lv_obj_set_style_local_pad_inner(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 5);
   lv_obj_set_style_local_bg_opa(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
 
-notificationIcon = lv_label_create(container, nullptr);
-lv_obj_set_width(notificationIcon, 240);
-
+  notificationIcon = lv_label_create(container, nullptr);
+  lv_obj_set_width(notificationIcon, 240);
   if (notificationManager.NbNotifications() > 0) {
     lv_label_set_text_fmt(notificationIcon, "[%d]", notificationManager.NbNotifications());
   } else {
@@ -72,7 +70,7 @@ lv_obj_set_width(notificationIcon, 240);
 
   labelTime = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelTime, true);
-  lv_obj_set_style_local_text_font(labelTime, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
+  lv_obj_set_style_local_text_font(labelTime, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_extrabold_compressed);
 
   labelDate = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelDate, true);
@@ -200,6 +198,5 @@ void WatchFaceTerminal::Refresh() {
         lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
       }
     }
-   
   }
 }
