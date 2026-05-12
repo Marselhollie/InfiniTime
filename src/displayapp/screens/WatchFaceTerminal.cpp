@@ -65,7 +65,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   if (notificationManager.NbNotifications() > 0) {
     lv_label_set_text_fmt(notificationIcon, "[%d]", notificationManager.NbNotifications());
   } else {
-    lv_label_set_text_static(notificationIcon, "");
+    lv_label_set_text_static(notificationIcon, "[N]");
   }
 
   labelTime = lv_label_create(container, nullptr);
