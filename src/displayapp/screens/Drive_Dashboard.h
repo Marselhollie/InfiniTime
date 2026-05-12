@@ -16,13 +16,11 @@ namespace Pinetime {
         bool OnTouchEvent(TouchEvents event) override;
 
       private:
-        void ShowPage(int page);
+        
 
         DisplayApp* displayApp;
         lv_obj_t* label;
-        lv_obj_t* scrollBar;
-        int currentPage = 0;
-        static constexpr int pageCount = 3;
+        
       };
     }
   }
