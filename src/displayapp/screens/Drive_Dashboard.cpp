@@ -8,7 +8,11 @@ using namespace Pinetime::Applications::Screens;
 static const char* const pages[] = {
   "DASHBOARD\n"
   "\n"
-  "Getting a sponsor to stay free of porn honestly is an unrealistic expectation. But what I do want a sponsor for, is to get instructions through the work. I need deeper healing and still need to look at ugly aspects of myself …I'm not a drug addict or alcoholic, but I want a sponsor to help me become a better version of myself again. "
+  "Getting a sponsor to stay free of porn honestly is an unrealistic expectation. But what I do want a sponsor for, is to get" 
+"\n"
+" instructions through the program. I need deeper healing and still need to look at ugly aspects of myself …I'm not a drug addict or alcoholic,"
+"\n"
+" but I want a sponsor to help me become a better version of myself again. More accountability and shadow work but structured through the AA Big Book."
 "\n"
 };
 
