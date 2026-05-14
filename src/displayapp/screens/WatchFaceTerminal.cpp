@@ -70,7 +70,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
 
   labelTime = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelTime, true);
-  lv_obj_set_style_local_text_font(labelTime, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
+  lv_obj_set_style_local_text_font(labelTime, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_extrabold_compressed);
 
   labelDate = lv_label_create(container, nullptr);
   lv_label_set_recolor(labelDate, true);
@@ -115,12 +115,12 @@ bool WatchFaceTerminal::OnTouchEvent(TouchEvents event) {
   return false;
 }
 
-uint8_t notifCount = notificationManager.NbNotifications();
+void WatchFaceTerminal::Refresh() {
+  uint8_t notifCount = notificationManager.NbNotifications();
   if (notifCount > 0) {
     lv_label_set_text_fmt(notificationIcon, "[%d]", notifCount);
   } else {
     lv_label_set_text_static(notificationIcon, "");
-  }
   }
 
   currentDateTime = std::chrono::time_point_cast<std::chrono::seconds>(dateTimeController.CurrentDateTime());
