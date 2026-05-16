@@ -19,18 +19,18 @@ extern lv_font_t jetbrains_mono_extrabold_compressed;
 using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
-  "Breathing deep 5x, when I notice any symptom of anxiety",
-  "Landing eye contact when calmly talking more",
-  "Being direct without being hostile",
+  "Breathe deep 5x, ",
+  "Land eye contact when calmly talking more",
+  "Be direct without being hostile",
   "Practice optimum pitch w/o dragging mood",
-  "Removing I as often, no filler words no mumble,",
+  "RMV: tsk; I; habits of speech, self or mumbling",
   "Grateful 3 things",
-  "RD AURAS & FX of delivery",
-  "|NOCOFFEE BETTER SOCIALS|",
-  "Asking God into more XP. Holding -God- OMM.",
-  "$ LONGERTERM ACTIVITIES SAVES MONEY $",
-  "NTLOOKNG@PORN = MOVING CLOSER 2GF",
-  "Practicing self control."
+  "RD Aura delivery/Practice ",
+  "NO COFFEE BETTER SOCIALS",
+  "Say Pray; Holding God OMM.",
+  "$ ",
+  "NT LOOKNG @PORN = MOVING CLOSER",
+  "Morning task programming ",
 };
 static const int mantraCount = 12;
 
