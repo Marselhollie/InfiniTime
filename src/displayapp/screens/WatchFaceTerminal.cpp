@@ -12,7 +12,7 @@
 #include "displayapp/screens/Symbols.h"
 #include "displayapp/DisplayApp.h"
 #include <cstdlib>
-//
+
 extern lv_font_t jetbrains_mono_bold_20;
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 
