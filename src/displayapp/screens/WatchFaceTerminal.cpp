@@ -19,7 +19,7 @@ extern lv_font_t jetbrains_mono_extrabold_compressed;
 using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
-  “Breathe deep 5x, ",
+  “Breathe deep 5x ",
   "Land eye contact or smiling or when calmly talking more ",
   "Be direct without being hostile",
   "Optimum Pitch",
