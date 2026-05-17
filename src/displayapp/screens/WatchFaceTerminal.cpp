@@ -22,7 +22,7 @@ static const char* mantras[] = {
   "Breathe deep 5x,",
   "Land eye contact or smiling or when calmly talking more",
   "Be direct without being hostile",
-  "Optimum Pitch",
+  "Optimum Pitch/ diaphragm",
   "RMV: tsk*sigh; I; habits of speech, mumbling; eye blocking",
   "Grateful 3 things",
   "Read, Aura, delivery and audience reaction / Practice",
@@ -57,7 +57,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   container = lv_cont_create(lv_scr_act(), nullptr);
   lv_cont_set_layout(container, LV_LAYOUT_COLUMN_LEFT);
   lv_cont_set_fit(container, LV_FIT_TIGHT);
-  lv_obj_set_style_local_pad_inner(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 5);
+  lv_obj_set_style_local_pad_inner(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
   lv_obj_set_style_local_bg_opa(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
 
   notificationIcon = lv_label_create(container, nullptr);
@@ -88,7 +88,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xADD8E6));
   lv_obj_set_style_local_text_font(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
   lv_label_set_long_mode(labelMantra, LV_LABEL_LONG_SROLL_CIRC);
-  lv_label_set_anim_speed(labelMantra, 60);
+  lv_label_set_anim_speed(labelMantra, 120);
   lv_obj_set_width(labelMantra, 240);
   lv_obj_align(labelMantra, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
 
