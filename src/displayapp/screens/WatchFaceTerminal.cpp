@@ -149,7 +149,6 @@ void WatchFaceTerminal::Refresh() {
 
     currentDate = std::chrono::time_point_cast<std::chrono::days>(currentDateTime.Get());
     if (currentDate.IsUpdated()) {
-      Controllers::DateTime::Months month = dateTimeController.Month();
       uint8_t day = dateTimeController.Day();
       lv_label_set_text_fmt(labelDate, "#00bfff %s %02d %04d#", dateTimeController.MonthShortToString(), day, dateTimeController.Year());
     }
