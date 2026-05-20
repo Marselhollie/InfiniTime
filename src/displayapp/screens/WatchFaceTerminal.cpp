@@ -22,7 +22,7 @@ static const char* mantras[] = {
   "Breathe deep 5x,",
   "Land eye contact or smiling or when calmly talking more",
   "Be direct without being hostile",
-  "Optimum Pitch",
+  "Optimum Pitch - speak just audibly from Diaphragm",
   "RMV: tsk*sigh; I; habits of speech, mumbling; eye blocking",
   "Grateful 3 things",
   "Read, Aura, delivery and audience reaction / Practice",
@@ -142,9 +142,9 @@ void WatchFaceTerminal::Refresh() {
         hour = hour - 12;
         ampmChar[0] = 'P';
       }
-      lv_label_set_text_fmt(labelTime, "#E7F336 %02d:%02d %s#", hour, minute, ampmChar);
+      lv_label_set_text_fmt(labelTime, "#D3D3D3 %02d:%02d %s#", hour, minute, ampmChar);
     } else {
-      lv_label_set_text_fmt(labelTime, "#E7F336 %02d:%02d#", hour, minute);
+      lv_label_set_text_fmt(labelTime, "#D3D3D3 %02d:%02d#", hour, minute);
     }
 
     currentDate = std::chrono::time_point_cast<std::chrono::days>(currentDateTime.Get());
