@@ -395,7 +395,7 @@ void DisplayApp::Refresh() {
         break;
       case Messages::ShowPairingKey:
         LoadNewScreen(Apps::PassKey, DisplayApp::FullRefreshDirections::Up);
-        motorController.RunForDuration(1000);
+        motorController.RunForDuration(250);
         break;
       case Messages::TouchEvent: {
         if (state != States::Running) {
