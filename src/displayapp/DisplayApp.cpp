@@ -32,7 +32,7 @@
 #include "displayapp/screens/Error.h"
 #include "displayapp/screens/Calculator.h"
 #include "displayapp/screens/Drive_Dashboard.h"
-
+//
 #include "drivers/Cst816s.h"
 #include "drivers/St7789.h"
 #include "drivers/Watchdog.h"
@@ -395,7 +395,7 @@ void DisplayApp::Refresh() {
         break;
       case Messages::ShowPairingKey:
         LoadNewScreen(Apps::PassKey, DisplayApp::FullRefreshDirections::Up);
-        motorController.RunForDuration(250);
+        motorController.RunForDuration(35);
         break;
       case Messages::TouchEvent: {
         if (state != States::Running) {
@@ -483,9 +483,9 @@ void DisplayApp::Refresh() {
         PushMessageToSystemTask(System::Messages::BleRadioEnableToggle);
         break;
       case Messages::Chime:
-  LoadNewScreen(Apps::Clock, DisplayApp::FullRefreshDirections::None);
-  motorController.RunForDuration(230);
-  break;
+        LoadNewScreen(Apps::Clock, DisplayApp::FullRefreshDirections::None);
+        motorController.RunForDuration(35);
+        break;
     }
   }
 
