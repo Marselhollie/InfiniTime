@@ -72,10 +72,7 @@ namespace Pinetime {
         Controllers::SimpleWeatherService& weatherService;
 
         lv_task_t* taskRefresh;
-        lv_task_t* taskChargeAnim;
-        uint8_t chargeAnimStep = 0;
-        static void ChargeAnimCallback(lv_task_t* task);
-        void UpdateChargeAnim();
+        
       };
     }
 
