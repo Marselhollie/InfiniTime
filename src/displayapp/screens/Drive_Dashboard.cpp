@@ -5,20 +5,11 @@
 using namespace Pinetime::Applications::Screens;
 
 static const char* const dashText =
-  "#"
+  "Mantras Entries"
   "\n"
   " Sometimes opportunities cross my path and I'm too tunnel visioned on art weed, and time management excuses, but I found apartment 733. OR OVER A YEAR, THE BENEFITS OF CO-ED A RESIDENCY IS WORTH PURSUING A PARALLEL OPTION FOR HOUSING.\n"
   "\n"
-  "JOURNAL ENTRY: Eye Contact versus Eye Blocking Making eye contact: if it feels weird, I will do excessive eye-blocking as a reaction because I don't want awkward unexpected eye contact for other people,/ JOURNAL ENTRY: Eye Contact versus Eye Blocking 
-Making eye contact: if it feels weird, I will do excessive eye-blocking as a reaction because I don't want awkward unexpected eye contact for other people,/ (other reasons include I don't want to risk any of my toxic/angry/dark/energy getting to in their field” don't make eye contact. Eyes are made of brain tissue and eyes and sharing facial expressions are brief windows into a person's state of mind! I feel vulnerable sometimes when I am expressive.  Well in a way yeah, it feels like mind reading to empathize deeply with people so sometimes I get psyched out andious from how intimate an exchange of expressions can be,) I do eye blocking as a default and I want to arrive at some neutral way to make more eye contact. Why? How can I be recovering friends if I'm still breaking eye contact so much? I need to not look at porn, it changes my eye patterns. The not even decaf technique has helped calm my eye sight and demeanor! Not smoking pot also helps to form a new habit of this. < Notice unconscious eye blocking and work through those hardest times> I do eye blocking when I look out of my peripherals as situational awareness. When I see ladies, when I smoke weed too often much.
-
-examples of when my body language folds, my voice folds.
-My posture and chest sometimes caves in
-. < Notice unconscious eye blocking and work through those hardest times> I do eye blocking when I look out of my peripherals as situational awareness. When I see ladies, when I smoke weed too often much.i break eye contact too fast
-
-examples of when my body language folds, my voice folds.
-My posture and chest sometimes caves in
-" 
+  "JOURNAL ENTRY: Eye Contact versus Eye Blocking Making eye contact: if it feels weird, I will do excessive eye-blocking as a reaction because I don't want awkward unexpected eye contact for other people,/ JOURNAL ENTRY: Eye Contact versus Eye Blocking ___ Making eye contact: if it feels weird, I will do excessive eye-blocking as a reaction because I don't want awkward unexpected eye contact for other people,/ (other reasons include I don't want to risk any of my toxic/angry/dark/energy getting to in their field” don't make eye contact. Eyes are made of brain tissue and eyes and sharing facial expressions are brief windows into a person's state of mind! I feel vulnerable sometimes when I am expressive.  Well in a way yeah, it feels like mind reading to empathize deeply with people so sometimes I get psyched out andious from how intimate an exchange of expressions can be,) I do eye blocking as a default and I want to arrive at some neutral way to make more eye contact. Why? How can I be recovering friends if I'm still breaking eye contact so much? I need to not look at porn, it changes my eye patterns. The not even decaf technique has helped calm my eye sight and demeanor! Not smoking pot also helps to form a new habit of this. < Notice unconscious eye blocking and work through those hardest times> I do eye blocking when I look out of my peripherals as situational awareness. When I see ladies, when I smoke weed too often much.examples of when my BODY LANGUAGE FOLDS, MY VOICE FOLDS.My posture and chest sometimes caves in. < Notice unconscious eye blocking and work through those hardest times> I do eye blocking when I look out of my peripherals as situational awareness. When I see ladies, when I smoke weed too often much.i break eye contact too fast: examples of when my body language folds, my voice folds. My posture and chest sometimes caves in" 
   "\n"
   ;
 
