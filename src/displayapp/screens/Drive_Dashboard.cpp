@@ -9,7 +9,17 @@ static const char* const dashText =
   "\n"
   " Sometimes opportunities cross my path and I'm too tunnel visioned on art weed, and time management excuses, but I found apartment 733. OR OVER A YEAR, THE BENEFITS OF CO-ED A RESIDENCY IS WORTH PURSUING A PARALLEL OPTION FOR HOUSING.\n"
   "\n"
-  "Getting a sponsor to stay free of porn honestly is an unrealistic expectation. But what I do want a sponsor for, is to get instructions through the program. I need deeper healing and still need to look at ugly aspects of myself. I'm not a drug addict or alcoholic,but I want a sponsor to help me become a better version of myself again. More accountability and shadow work but structured through the AA Big Book." 
+  "JOURNAL ENTRY: Eye Contact versus Eye Blocking 
+Making eye contact: if it feels weird, I will do excessive eye-blocking as a reaction because I don't want awkward unexpected eye contact for other people,/ JOURNAL ENTRY: Eye Contact versus Eye Blocking 
+Making eye contact: if it feels weird, I will do excessive eye-blocking as a reaction because I don't want awkward unexpected eye contact for other people,/ (other reasons include I don't want to risk any of my toxic/angry/dark/energy getting to in their field” don't make eye contact. Eyes are made of brain tissue and eyes and sharing facial expressions are brief windows into a person's state of mind! I feel vulnerable sometimes when I am expressive.  Well in a way yeah, it feels like mind reading to empathize deeply with people so sometimes I get psyched out andious from how intimate an exchange of expressions can be,) I do eye blocking as a default and I want to arrive at some neutral way to make more eye contact. Why? How can I be recovering friends if I'm still breaking eye contact so much? I need to not look at porn, it changes my eye patterns. The not even decaf technique has helped calm my eye sight and demeanor! Not smoking pot also helps to form a new habit of this. < Notice unconscious eye blocking and work through those hardest times> I do eye blocking when I look out of my peripherals as situational awareness. When I see ladies, when I smoke weed too often much.
+
+examples of when my body language folds, my voice folds.
+My posture and chest sometimes caves in
+. < Notice unconscious eye blocking and work through those hardest times> I do eye blocking when I look out of my peripherals as situational awareness. When I see ladies, when I smoke weed too often much.i break eye contact too fast
+
+examples of when my body language folds, my voice folds.
+My posture and chest sometimes caves in
+" 
   "\n"
   ;
 
