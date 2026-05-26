@@ -119,12 +119,14 @@ bool WatchFaceTerminal::OnTouchEvent(TouchEvents event) {
   return false;
 }
 
-void WatchFaceTerminal::Refresh() {
-  uint8_t notifCount = notificationManager.NbNotifications();
-  if (notifCount > 0) {
-    lv_label_set_text_fmt(notificationIcon, "[%d]", notifCount);
-  } else {
-    lv_label_set_text_static(notificationIcon, "");
+notificationState = notificationManager.AreNewNotificationsAvailable();
+  if (notificationState.IsUpdated()) {
+    uint8_t notifCount = notificationManager.NbNotifications();
+    if (notifCount > 0) {
+      lv_label_set_text_fmt(notificationIcon, "[%d]", notifCount);
+    } else {
+      lv_label_set_text_static(notificationIcon, "");
+    }
   }
 
   currentDateTime = std::chrono::time_point_cast<std::chrono::seconds>(dateTimeController.CurrentDateTime());
