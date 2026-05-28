@@ -18,20 +18,20 @@ extern lv_font_t jetbrains_mono_extrabold_compressed;
 
 using namespace Pinetime::Applications::Screens;
 
-static const char* mantras[] = {{
+static const char* mantras[] = {
   “Breathe deep 5x, ",
   "Land eye contact or smiling or when calmly talking more ",
   "Be direct without being hostile",
   "Optimum Pitch- speak from diaphragm",
-  "Withold cursewords and  mumbling thinking out loud;",
+  "Withold cursewords and  mumbling thinking out loud",
   "Grateful 3 things",
   "Read, Aura, delivery and audience reaction / Practice ",
   "NO COFFEE BETTER SOCIALS",
-  " M.A.G.I.C build Faith .",
+  " M.A.G.I.C build Faith ",
   "$_ Productive times: Saving was achieved by productive passtimes$ ",
   "NT LOOKNG @PORN = MOVING CLOSER",
-  "Glance in 3rd person  ”,
-}
+  "Glance in 3rd person”,
+
 };
 static const int mantraCount = 12;
 
