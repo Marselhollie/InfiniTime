@@ -19,18 +19,19 @@ extern lv_font_t jetbrains_mono_extrabold_compressed;
 using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
-  "Breathe deep 5x,",
-  "Land eye contact or smiling or when calmly talking more",
+  “Breathe deep 5x, ",
+  "Land eye contact or smiling or when calmly talking more ",
   "Be direct without being hostile",
-  "Optimum Pitch - speak just audibly from Diaphragm",
-  "RMV: tsk*sigh; I; habits of speech, mumbling; eye blocking",
+  "Optimum Pitch- speak from diaphragm",
+  "Withold cursewords and  mumbling thinking out loud;",
   "Grateful 3 things",
-  "Read, Aura, delivery and audience reaction / Practice",
+  "Read, Aura, delivery and audience reaction / Practice ",
   "NO COFFEE BETTER SOCIALS",
-  "Pray; Holding God OMM.",
-  "$",
+  " M.A.G.I.C build Faith .",
+  "$_ Productive times: Saving was achieved by productive passtimes$ ",
   "NT LOOKNG @PORN = MOVING CLOSER",
-  "Morning task programming, paint, read, stretch, exercise",
+  "Glance in 3rd person  ”,
+
 };
 static const int mantraCount = 12;
 
@@ -119,14 +120,12 @@ bool WatchFaceTerminal::OnTouchEvent(TouchEvents event) {
   return false;
 }
 
-notificationState = notificationManager.AreNewNotificationsAvailable();
-  if (notificationState.IsUpdated()) {
-    uint8_t notifCount = notificationManager.NbNotifications();
-    if (notifCount > 0) {
-      lv_label_set_text_fmt(notificationIcon, "[%d]", notifCount);
-    } else {
-      lv_label_set_text_static(notificationIcon, "");
-    }
+void WatchFaceTerminal::Refresh() {
+  uint8_t notifCount = notificationManager.NbNotifications();
+  if (notifCount > 0) {
+    lv_label_set_text_fmt(notificationIcon, "[%d]", notifCount);
+  } else {
+    lv_label_set_text_static(notificationIcon, "");
   }
 
   currentDateTime = std::chrono::time_point_cast<std::chrono::seconds>(dateTimeController.CurrentDateTime());
