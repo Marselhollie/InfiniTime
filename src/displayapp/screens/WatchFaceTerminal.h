@@ -61,6 +61,7 @@ namespace Pinetime {
         lv_obj_t* connectState;
         lv_obj_t* batteryValue;
         lv_obj_t* labelMantra;
+        lv_obj_t* statusIcons;
 
         Controllers::DateTime& dateTimeController;
         const Controllers::Battery& batteryController;
@@ -72,7 +73,10 @@ namespace Pinetime {
         Controllers::SimpleWeatherService& weatherService;
 
         lv_task_t* taskRefresh;
-        
+        lv_task_t* taskChargeAnim;
+        uint8_t chargeAnimStep = 0;
+        static void ChargeAnimCallback(lv_task_t* task);
+        void UpdateChargeAnim();
       };
     }
 
