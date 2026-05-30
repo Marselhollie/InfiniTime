@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-//
+
 project(pinetime-app C CXX ASM)
 
 
@@ -801,10 +801,6 @@ add_definitions(-DLFS_CONFIG=libs/lfs_config.h)
 # _sbrk is purposefully not implemented so that builds fail when it is used
 add_link_options(-Wl,-wrap=malloc -Wl,-wrap=free -Wl,-wrap=calloc -Wl,-wrap=realloc -Wl,-wrap=_malloc_r -Wl,-wrap=_sbrk)
 
-# Note: Only use this for debugging
-# Derive the low frequency clock from the main clock (SYNT)
-# add_definitions(-DCLOCK_CONFIG_LF_SRC=2)
-
 # Target hardware configuration options
 add_definitions(-DTARGET_DEVICE_${TARGET_DEVICE})
 add_definitions(-DTARGET_DEVICE_NAME="${TARGET_DEVICE}")
@@ -839,19 +835,9 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 
   # NRF SDK Logging
   add_definitions(-DNRF_LOG_ENABLED=1)
-  # add_definitions(-DNRF_LOG_BACKEND_RTT_ENABLED=1)
-  # add_definitions(-DNRF_LOG_BACKEND_SERIAL_USES_RTT=1)
 
-  # NRF SDK individual modules logging
-  # add_definitions(-DCLOCK_CONFIG_LOG_ENABLED=1)
-  # add_definitions(-DCLOCK_CONFIG_LOG_LEVEL=4)
-  # add_definitions(-DRTC_CONFIG_LOG_ENABLED=1)
-  # add_definitions(-DRTC_CONFIG_LOG_LEVEL=4)
-  
   # Nimble Logging
   add_definitions(-DMYNEWT_VAL_NEWT_FEATURE_LOGCFG=1)
-  # add_definitions(-DMYNEWT_VAL_LOG_LEVEL=0)
-  # add_definitions(-DMYNEWT_VAL_BLE_HS_LOG_LVL=0)
 endif()
 
 add_subdirectory(displayapp/fonts)
@@ -1144,4 +1130,3 @@ endif()
 if(BUILD_RESOURCES)
   add_subdirectory(resources)
 endif()
-
