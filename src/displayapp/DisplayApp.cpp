@@ -677,3 +677,4 @@ void DisplayApp::ApplyBrightness() {
   }
   brightnessController.Set(brightness);
 }
+
