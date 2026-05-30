@@ -38,8 +38,6 @@ namespace Pinetime {
 
         void Refresh() override;
         bool OnTouchEvent(TouchEvents event) override;
-        void UpdateMantra();
-        static void MantraTaskCallback(lv_task_t* task);
 
       private:
         DisplayApp* displayApp;
@@ -63,7 +61,6 @@ namespace Pinetime {
         lv_obj_t* connectState;
         lv_obj_t* batteryValue;
         lv_obj_t* labelMantra;
-        lv_obj_t* statusIcons;
 
         Controllers::DateTime& dateTimeController;
         const Controllers::Battery& batteryController;
@@ -75,7 +72,6 @@ namespace Pinetime {
         Controllers::SimpleWeatherService& weatherService;
 
         lv_task_t* taskRefresh;
-        lv_task_t* taskMantra;
       };
     }
 
