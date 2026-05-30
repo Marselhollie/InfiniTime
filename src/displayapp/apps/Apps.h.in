@@ -72,3 +72,4 @@ namespace Pinetime {
     static_assert(UserWatchFaceTypes::Count >= 1);
   }
 }
+
