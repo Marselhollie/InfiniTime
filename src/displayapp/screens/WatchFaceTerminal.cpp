@@ -12,29 +12,49 @@
 #include "displayapp/screens/Symbols.h"
 #include "displayapp/DisplayApp.h"
 #include <cstdlib>
-
+//
 extern lv_font_t jetbrains_mono_bold_20;
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 
 using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
-"$_ Productive times: Saving was achieved by productive passtimes$ ",
-“Breathe deep 5x",
-"Hold 3 things in mind I'm grateful for",
-  "Land eye contact or smiling or when calmly talking more ",
-  "Be direct without being hostile",
-  " No mumbling or half stepping",
-  "Read Aura, Delivery & Affect ",
-  "NO COFFEE , Indulgence",
- "Optimum Pitch- speak from diaphragm not throat",
-  
+  "Breathe deep 5x",
   "Sexual Abstinence NopornNofap= Divine Masculine",
-  "Glance in 3rd person  ”,
-
+  "Land eye contact or smiling or when calmly talking more",
+  "NO COFFEE , Indulgence",
+  "Be direct without being hostile",
+  "Glance in 3rd person",
+  "Optimum Pitch- speak from diaphragm not throat",
+  "Hold 3 things in mind I'm grateful for",
+  "No mumbling or half stepping",
+  "$_ Productive times: Saving was achieved by productive passtimes$",
+  "Read Aura, Delivery & Affect",
+  "Sexual Abstinence NopornNofap= Divine Masculine",
+  "Breathe deep 5x",
+  "Land eye contact or smiling or when calmly talking more",
+  "Hold 3 things in mind I'm grateful for",
+  "NO COFFEE , Indulgence",
+  "Glance in 3rd person",
+  "Be direct without being hostile",
+  "Read Aura, Delivery & Affect",
+  "Optimum Pitch- speak from diaphragm not throat",
+  "No mumbling or half stepping",
+  "$_ Productive times: Saving was achieved by productive passtimes$",
+  "Glance in 3rd person",
+  "Breathe deep 5x",
+  "NO COFFEE , Indulgence",
+  "Sexual Abstinence NopornNofap= Divine Masculine",
+  "Hold 3 things in mind I'm grateful for",
+  "Be direct without being hostile",
+  "Read Aura, Delivery & Affect",
+  "No mumbling or half stepping",
+  "Land eye contact or smiling or when calmly talking more",
+  "Optimum Pitch- speak from diaphragm not throat",
+  "$_ Productive times: Saving was achieved by productive passtimes$",
 };
 
-static const int mantraCount = 11;
+static const int mantraCount = 33;
 
 WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
                                      Controllers::DateTime& dateTimeController,
@@ -202,4 +222,3 @@ void WatchFaceTerminal::Refresh() {
     }
   }
 }
- 
