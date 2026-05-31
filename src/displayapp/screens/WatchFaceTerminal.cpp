@@ -19,42 +19,20 @@ extern lv_font_t jetbrains_mono_extrabold_compressed;
 using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
-  "Breathe deep 5x",
-  "Sexual Abstinence NopornNofap= Divine Masculine",
-  "Land eye contact or smiling or when calmly talking more",
-  "NO COFFEE , Indulgence",
-  "Be direct without being hostile",
-  "Glance in 3rd person",
-  "Optimum Pitch- speak from diaphragm not throat",
-  "Hold 3 things in mind I'm grateful for",
-  "No mumbling or half stepping",
-  "$_ Productive times: Saving was achieved by productive passtimes$",
-  "Read Aura, Delivery & Affect",
   "Sexual Abstinence NopornNofap= Divine Masculine",
   "Breathe deep 5x",
-  "Land eye contact or smiling or when calmly talking more",
-  "Hold 3 things in mind I'm grateful for",
   "NO COFFEE , Indulgence",
+  "Land eye contact or smiling or when calmly talking more",
   "Glance in 3rd person",
   "Be direct without being hostile",
-  "Read Aura, Delivery & Affect",
-  "Optimum Pitch- speak from diaphragm not throat",
-  "No mumbling or half stepping",
-  "$_ Productive times: Saving was achieved by productive passtimes$",
-  "Glance in 3rd person",
-  "Breathe deep 5x",
-  "NO COFFEE , Indulgence",
-  "Sexual Abstinence NopornNofap= Divine Masculine",
   "Hold 3 things in mind I'm grateful for",
-  "Be direct without being hostile",
-  "Read Aura, Delivery & Affect",
-  "No mumbling or half stepping",
-  "Land eye contact or smiling or when calmly talking more",
   "Optimum Pitch- speak from diaphragm not throat",
+  "No mumbling or half stepping",
+  "Read Aura, Delivery & Affect",
   "$_ Productive times: Saving was achieved by productive passtimes$",
 };
 
-static const int mantraCount = 33;
+static const int mantraCount = 11;
 
 WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
                                      Controllers::DateTime& dateTimeController,
@@ -119,8 +97,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   lv_obj_align(labelMantra, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
 
   srand(dateTimeController.CurrentDateTime().time_since_epoch().count());
-  int idx = rand() % mantraCount;
-  lv_label_set_text(labelMantra, mantras[idx]);
+  lv_label_set_text(labelMantra, mantras[rand() % mantraCount]);
 
   lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
 
@@ -170,6 +147,8 @@ void WatchFaceTerminal::Refresh() {
       uint8_t day = dateTimeController.Day();
       lv_label_set_text_fmt(labelDate, "#00bfff %s %02d %04d#", dateTimeController.MonthShortToString(), day, dateTimeController.Year());
     }
+
+    lv_label_set_text(labelMantra, mantras[rand() % mantraCount]);
   }
 
   powerPresent = batteryController.IsPowerPresent();
