@@ -19,7 +19,6 @@ extern lv_font_t jetbrains_mono_extrabold_compressed;
 using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
- 
 "$_ Productive times: Saving was achieved by productive passtimes$ ",
 “Breathe deep 5x",
 "Hold 3 things in mind I'm grateful for",
