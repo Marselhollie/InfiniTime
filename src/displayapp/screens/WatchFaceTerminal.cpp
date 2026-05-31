@@ -92,7 +92,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFFFF));
   lv_obj_set_style_local_text_font(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
   lv_label_set_long_mode(labelMantra, LV_LABEL_LONG_SROLL_CIRC);
-  lv_label_set_anim_speed(labelMantra, 100);
+  lv_label_set_anim_speed(labelMantra, 69);
   lv_obj_set_width(labelMantra, 240);
   lv_obj_align(labelMantra, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
 
