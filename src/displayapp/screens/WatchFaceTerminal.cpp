@@ -19,20 +19,21 @@ extern lv_font_t jetbrains_mono_extrabold_compressed;
 using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
-  "Sexual Abstinence NopornNofap= Divine Masculine",
+  "Sexual Abstinence NopornNofap= MOVING CLOSER",
   "Breathe deep 5x",
-  "NO COFFEE , Indulgence",
+  "NO COFFEE ,  restraint",
   "Land eye contact or smiling or when calmly talking more",
   "Glance in 3rd person",
-  "Be direct without being hostile",
-  "Hold 3 things in mind I'm grateful for",
+ "Thank God if I don't know who to pray for",
+  "Be Direct and smooth",
+  "Hold 3 things in mind I'm GRATEFUL for",
   "Optimum Pitch- speak from diaphragm not throat",
   "No mumbling or half stepping",
-  "Read Aura, Delivery & Affect",
+  "Read Aura, Delivery & Affect: Was the interaction casual or fun or? ",
   "$_ Productive times: Saving was achieved by productive passtimes$",
 };
 
-static const int mantraCount = 11;
+static const int mantraCount = 12;
 
 WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
                                      Controllers::DateTime& dateTimeController,
