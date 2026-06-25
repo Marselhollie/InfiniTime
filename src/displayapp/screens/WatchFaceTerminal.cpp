@@ -20,8 +20,8 @@ using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
   "Sexual Abstinence NopornNofap= MOVING CLOSER",
-  "Breathe deep 5x",
-  "NO COFFEE ,  restraint",
+  "ANTI ANXIETY:Breathe deep 5x practice eye restraint ",
+  "NO COFFEE, weed, vaping, restraint",
   "Land eye contact or smiling or when calmly talking more",
   "Glance in 3rd person",
  "Thank God if I don't know who to pray for",
