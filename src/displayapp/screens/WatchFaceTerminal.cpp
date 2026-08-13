@@ -98,7 +98,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   srand(dateTimeController.CurrentDateTime().time_since_epoch().count());
   lv_label_set_text(labelMantra, mantras[rand() % mantraCount]);
 
-lv_obj_set_style_local_bg_color(lv_scr_act(), LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x2A2A2A));
+lv_obj_set_style_local_bg_color(lv_scr_act(), LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xBFBFBF));
 lv_obj_set_style_local_bg_opa(lv_scr_act(), LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER);
 
   lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 7);
