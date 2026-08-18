@@ -92,7 +92,7 @@ WatchFaceTerminal::WatchFaceTerminal(DisplayApp* app,
   lv_obj_set_style_local_text_font(batteryValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
 
   labelMantra = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFFFF));
+  lv_obj_set_style_local_text_color(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
   lv_obj_set_style_local_text_font(labelMantra, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
   lv_label_set_long_mode(labelMantra, LV_LABEL_LONG_SROLL);
   lv_label_set_anim_speed(labelMantra, 69);
@@ -154,9 +154,9 @@ void WatchFaceTerminal::Refresh() {
       lv_label_set_text_fmt(labelDate, "#00bfff %s %02d %04d#", dateTimeController.MonthShortToString(), day, dateTimeController.Year());
     }
 
-    if (dateTimeController.Seconds() == 0) {
-      lv_label_set_text(labelMantra, mantras[rand() % mantraCount]);
-    }
+    if (dateTimeController.Seconds() == 0 && dateTimeController.Minutes() == 0 && dateTimeController.Hours() % 3 == 0) {
+  lv_label_set_text(labelMantra, mantras[rand() % mantraCount]);
+}
   }
 
   powerPresent = batteryController.IsPowerPresent();
