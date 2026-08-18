@@ -20,15 +20,18 @@ extern lv_font_t jetbrains_mono_extrabold_compressed;
 using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
-  " Expect to redirect urges. NopornNofap. Exit the redzone ",
-  "Respond without hostility",
-  "No Coffee and better social timing. Be smooth",
-  "Hold a gaze longer / practice holding expressions longer  intentionally.",
+  "  Zero tolerance porn. Nofap. ",
+  "Respond without hostility or weakness",
+
+  "No Coffee, no weed, no cigarettes",
+
+  "Practice holding face expressions longer  intentionally.",
+
  "Pause Pray Proceed",
   "Breathe deep 5x",
   "Repeat 2 things in mind I'm GRATEFUL for and why? ",
-  "Optimum Pitch- speak from diaphragm not throat",
-  "Read Aura, Delivery & Affect: Was the interaction casual or fun or? ",
+  "Optimum Pitch- speak from diaphragm more often",
+  "Read Aura and affect and label interactions more",
   "Productivity sessions saves money. Chip away toward goals, fill free time with mindful actions",
 };
 
