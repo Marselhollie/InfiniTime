@@ -143,15 +143,15 @@ void WatchFaceTerminal::Refresh() {
         hour = hour - 12;
         ampmChar[0] = 'P';
       }
-      lv_label_set_text_fmt(labelTime, "#ffffff %02d:%02d %s#", hour, minute, ampmChar);
+      lv_label_set_text_fmt(labelTime, "#006400 %02d:%02d %s#", hour, minute, ampmChar);
     } else {
-      lv_label_set_text_fmt(labelTime, "#ffffff %02d:%02d#", hour, minute);
+      lv_label_set_text_fmt(labelTime, "#006400 %02d:%02d#", hour, minute);
     }
 
     currentDate = std::chrono::time_point_cast<std::chrono::days>(currentDateTime.Get());
     if (currentDate.IsUpdated()) {
       uint8_t day = dateTimeController.Day();
-      lv_label_set_text_fmt(labelDate, "#00bfff %s %02d %04d#", dateTimeController.MonthShortToString(), day, dateTimeController.Year());
+      lv_label_set_text_fmt(labelDate, "#006400 %s %02d %04d#", dateTimeController.MonthShortToString(), day, dateTimeController.Year());
     }
 
     if (dateTimeController.Seconds() == 0 && dateTimeController.Minutes() == 0 && dateTimeController.Hours() % 3 == 0) {
