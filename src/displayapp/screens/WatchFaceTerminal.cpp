@@ -25,14 +25,20 @@ static const char* mantras[] = {
 
   "No Coffee, no weed, no cigarettes",
 
-  "Practice holding face expressions longer  intentionally.",
+  "Practice not having a blank face.",
+
+"Optimum Pitch- speak from diaphragm more often",
 
  "Pause Pray Proceed",
+
   "Breathe deep 5x",
-  "Repeat 2 things in mind I'm GRATEFUL for and why? ",
-  "Optimum Pitch- speak from diaphragm more often",
+
+  "Notice my eye behavior and intentions more ",
+  
   "Read Aura and affect and label interactions more",
+
   "Productivity sessions saves money. Chip away toward goals, fill free time with mindful actions",
+
 };
 
 static const int mantraCount = 10;
