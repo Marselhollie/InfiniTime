@@ -20,8 +20,10 @@ extern lv_font_t jetbrains_mono_extrabold_compressed;
 using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
-  "  Zero tolerance porn. Nofap. ",
+  
   "Respond without hostility or weakness",
+
+"  Zero tolerance porn. Nofap. ",
 
   "No Coffee, no weed, no cigarettes",
 
@@ -33,7 +35,7 @@ static const char* mantras[] = {
 
   "Breathe deep 5x",
 
-  "Notice my eye behavior and intentions more ",
+  "Notice eye behavior control eye gaze more consciously ",
   
   "Read Aura and affect and label interactions more",
 
