@@ -172,8 +172,8 @@ void WatchFaceTerminal::Refresh() {
   if (batteryPercentRemaining.IsUpdated() || powerPresent.IsUpdated()) {
     int pct = batteryPercentRemaining.Get();
     lv_color_t batColor;
-    if (batteryController.IsCharging()) {
-      batColor = LV_COLOR_GREEN;
+   if (batteryController.IsCharging()) {
+  batColor = lv_color_hex(0x00FF00);
     } else if (pct >= 50) {
       batColor = lv_color_hex(0xAAFF00);
     } else if (pct >= 25) {
@@ -184,7 +184,7 @@ void WatchFaceTerminal::Refresh() {
     lv_obj_set_style_local_text_color(batteryValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, batColor);
     lv_label_set_text_fmt(batteryValue, "#ffffff [BATT]# %d%%", pct);
     if (batteryController.IsCharging()) {
-      lv_label_ins_text(batteryValue, LV_LABEL_POS_LAST, " Charging");
+      lv_label_ins_text(batteryValue, LV_LABEL_POS_LAST, " CHARGING");
     }
   }
 
@@ -193,9 +193,9 @@ void WatchFaceTerminal::Refresh() {
   if (heartbeat.IsUpdated() || heartbeatRunning.IsUpdated()) {
     if (heartbeatRunning.Get()) {
       lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);;
-      lv_label_set_text_fmt(heartbeatValue, "#ffffff [diaphragm]# %d bpm", heartbeat.Get());
+      lv_label_set_text_fmt(heartbeatValue, "#ffffff [ ]# %d bpm", heartbeat.Get());
     } else {
-      lv_label_set_text_static(heartbeatValue, "#ffffff [diaphragm]# ---");
+      lv_label_set_text_static(heartbeatValue, "#ffffff [ ]# ---");
       lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
     }
   }
@@ -211,7 +211,7 @@ void WatchFaceTerminal::Refresh() {
         lv_label_set_text_static(connectState, "#00ff00 [BT]# Connected");
         lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x00ff00));
       } else {
-        lv_label_set_text_static(connectState, "#ff0000 [BT]# Disconnected");
+        lv_label_set_text_static(connectState, "#ff0000 [BT]# needs link -x- ");
         lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
       }
     }
