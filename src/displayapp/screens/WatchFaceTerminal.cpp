@@ -193,9 +193,9 @@ void WatchFaceTerminal::Refresh() {
   if (heartbeat.IsUpdated() || heartbeatRunning.IsUpdated()) {
     if (heartbeatRunning.Get()) {
       lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);;
-      lv_label_set_text_fmt(heartbeatValue, "#ffffff [ ]# %d bpm", heartbeat.Get());
+      lv_label_set_text_fmt(heartbeatValue, "#ffffff [<3 ]# %d bpm", heartbeat.Get());
     } else {
-      lv_label_set_text_static(heartbeatValue, "#ffffff [ ]# ---");
+      lv_label_set_text_static(heartbeatValue, "#ffffff [<3]# ---");
       lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::gray);
     }
   }
@@ -211,7 +211,7 @@ void WatchFaceTerminal::Refresh() {
         lv_label_set_text_static(connectState, "#00ff00 [BT]# Connected");
         lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x00ff00));
       } else {
-        lv_label_set_text_static(connectState, "#ff0000 [BT]# "needs link -x- ");
+        lv_label_set_text_static(connectState, "#ff0000 [BT]# needs link -x- ");
         lv_obj_set_style_local_text_color(connectState, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
       }
     }
