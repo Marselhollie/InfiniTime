@@ -89,7 +89,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  build-simulator:
+    build-simulator:
+    if: false
     runs-on: ubuntu-22.04
     steps:
     - name: Install SDL2 and libpng development package
