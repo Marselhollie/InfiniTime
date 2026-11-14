@@ -27,7 +27,7 @@ static const char* mantras[] = {
 
   "No Coffee, no weed, no cigarettes",
 
-  "Practice not having a blank face.",
+  "Practice ",
 
 "Optimum Pitch- speak from diaphragm more often",
 
@@ -39,7 +39,7 @@ static const char* mantras[] = {
   
   "Read Aura and affect and label interactions more",
 
-  "Fasting, water, grounding diverse",
+  "Fasting, sugar/bread/indulgent eating, water, grounding diverse",
 
 };
 
