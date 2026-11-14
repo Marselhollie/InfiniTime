@@ -21,7 +21,7 @@ using namespace Pinetime::Applications::Screens;
 
 static const char* mantras[] = {
   
-  "Respond without hostility or weakness",
+  " How does the tone I respond shift my mood / image ",
 
 "  set Abstinence date / noFap ",
 
