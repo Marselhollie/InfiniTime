@@ -1,3 +1,5 @@
+
+
 if(DEFINED ENABLE_USERAPPS)
     set(USERAPP_TYPES ${ENABLE_USERAPPS} CACHE STRING "List of user apps to build into the firmware")
 else ()
