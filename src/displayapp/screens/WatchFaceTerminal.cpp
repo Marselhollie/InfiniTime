@@ -25,7 +25,7 @@ static const char* mantras[] = {
 
 "  set Abstinence date / noFap ",
 
-  "No Coffee, no weed, no cigarettes",
+  "Foresight   ",
 
   "Practice ",
 
@@ -39,7 +39,7 @@ static const char* mantras[] = {
   
   "Read Aura and affect and label interactions more",
 
-  "Fasting, sugar/bread/indulgent eating, water, grounding diverse",
+  "Fasting,selective dieting , water, grounding diverse",
 
 };
 
